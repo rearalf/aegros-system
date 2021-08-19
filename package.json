@@ -1,0 +1,73 @@
+{
+	"name": "aegros-system",
+	"version": "1.0.0",
+	"description": "Aegros system helps you manage your clients' appointments",
+	"private": false,
+	"main": "main.js",
+	"scripts": {
+		"prod": "cross-env NODE_ENV=production webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
+		"start": "cross-env NODE_ENV=development webpack serve --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
+		"build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --mode production",
+		"package": "npm run build",
+		"postpackage": "electron-packager ./ --out=./builds"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rearalf/aegros-system.git"
+	},
+	"keywords": [
+		"app",
+		"boilerplate",
+		"electron",
+		"open",
+		"open-source",
+		"postcss",
+		"react",
+		"reactjs",
+		"source",
+		"webpack",
+		"sass"
+	],
+	"engines": {
+		"node": ">=9.0.0",
+		"npm": ">=5.0.0",
+		"yarn": ">=1.0.0"
+	},
+	"browserslist": [
+		"last 4 versions"
+	],
+	"author": {
+		"name": "Ricardo Alf",
+		"url": "https://github.com/rearalf"
+	},
+	"license": "BSD 2-Clause License",
+	"bugs": {
+		"url": "https://github.com/rearalf/aegros-system/issues"
+	},
+	"homepage": "https://github.com/rearalf/aegros-system#readme",
+	"devDependencies": {
+		"@babel/core": "^7.15.0",
+		"@babel/preset-env": "^7.15.0",
+		"@babel/preset-react": "^7.14.5",
+		"babel-loader": "^8.2.2",
+		"cross-env": "^7.0.3",
+		"css-loader": "^6.2.0",
+		"electron": "^13.2.1",
+		"electron-devtools-installer": "^3.2.0",
+		"electron-packager": "^15.3.0",
+		"file-loader": "^6.2.0",
+		"html-webpack-plugin": "^5.3.2",
+		"sass": "^1.38.0",
+		"sass-loader": "^12.1.0",
+		"style-loader": "^3.2.1",
+		"webpack": "^5.50.0",
+		"webpack-cli": "^4.8.0",
+		"webpack-dev-server": "^3.11.2"
+	},
+	"dependencies": {
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-icons": "^4.2.0",
+		"react-router-dom": "^5.2.0"
+	}
+}
