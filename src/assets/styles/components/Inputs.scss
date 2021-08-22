@@ -1,0 +1,51 @@
+@import '../variables.sass';
+
+.input__group {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	width: 100%;
+	.input__group__text {
+		color: $color-text-input;
+	}
+	.form__control {
+		border-radius: 50px;
+		border: $border-input;
+		padding: 10px 30px 10px 15px;
+		color: $color-text-input;
+		&:focus-visible {
+			outline: $border-input-focus-visible auto 2px;
+		}
+		&:hover {
+			border: $border-input-hover;
+		}
+		&:focus {
+			border: $border-input-focus;
+			outline: none;
+		}
+	}
+	.error__label {
+		color: $color-text-label-error;
+	}
+	.error__input {
+		background-color: $background-color-input-error;
+		border-color: $color-text-input-error;
+		&:focus {
+			border-color: $color-text-input-error;
+			outline: none;
+		}
+	}
+	.error__message {
+		font-size: 12px;
+		color: $color-text-input-error;
+		position: absolute;
+		bottom: -1.5em;
+	}
+	.error__icon {
+		color: $color-text-input-error;
+		position: absolute;
+		top: 2em;
+		right: .5em;
+	}
+}

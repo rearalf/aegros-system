@@ -1,0 +1,52 @@
+@import '../variables.sass';
+
+.header {
+	width: 100%;
+	position: fixed;
+	background-color: $background-color-primary;
+	.navbar {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid $line-color;
+		.navbar__brand {
+			align-self: center;
+			padding-left: 10px;
+			.navbar__link__brand {
+				display: flex;
+				.image__brand {
+					width: 20px;
+				}
+			}
+		}
+		.navbar__center {
+			-webkit-app-region: drag;
+			flex: 1;
+		}
+		.navbar__actions {
+			button {
+				background-color: transparent;
+				border: none;
+				height: 100%;
+				padding: 5px;
+				svg {
+					path {
+						color: $background-color-icon;
+					}
+				}
+				&:hover {
+					svg {
+						path {
+							color: $background-color-icon-hover;
+						}
+					}
+				}
+				&:focus-visible {
+					outline: $background-color-icon-hover auto 1px;
+				}
+				&.hide__btn {
+					display: none;
+				}
+			}
+		}
+	}
+}

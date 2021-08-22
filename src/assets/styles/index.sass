@@ -1,2 +1,49 @@
+@import ./variables
+
+*
+    margin: 0
+    box-sizing: border-box
 body
-    background-color: #8c0505
+    background-color: $background-color-primary
+    font-size: 16px
+    color: $color-text-paragraph
+.container
+    padding: 4em
+
+button
+    cursor: pointer
+
+h1
+    font-size: 28px
+    color: $color-text-h1
+h2
+    font-size: 24px
+    color: $color-text-h2
+h3
+    font-size: 18px
+    color: $color-text-h3
+
+button:focus-visible, a:focus-visible
+    outline: $background-color-icon-hover auto 1px
+
+.btn
+    border: none
+    border-radius: 10px
+    width: 100%
+    padding: 16px 32px
+    font-size: 18px
+    letter-spacing: 3px
+    transition: all .3s ease-in-out
+.btn__primary
+    background-color: $background-color-button-primary
+    color: $color-text-button-primary
+    &:hover
+        background-color: $background-color-button-primary-hover
+        box-shadow: $box-shadow-button-primary
+    &:focus-visible
+        outline: $background-color-button-primary-hover auto 2px
+    &:active
+        background-color: $background-color-button-primary-active
+    &:focus
+        background-color: $background-color-button-primary-focus
+        box-shadow: $box-shadow-button-primary
