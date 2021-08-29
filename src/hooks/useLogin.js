@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import notificationContext from '../context/notificationContext';
 
 export const useLogin = () => {
 	const history = useHistory();
+	const { setNotification } = useContext(notificationContext);
 	const [ formData, setFormData ] = useState({
-		email: '',
-		password: '',
+		email: 'correo@hotmail.com',
+		password: 'Qwerty12345$',
 	});
 	const [ errorForm, setErrorForm ] = useState({
 		errroEmail: false,
@@ -69,6 +71,20 @@ export const useLogin = () => {
 		e.preventDefault();
 		if (formData.email === 'correo@hotmail.com' && formData.password === 'Qwerty12345!') {
 			history.push('/home');
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Success',
+				subTitleNotification: 'La operación fue un éxito.',
+				typeNotification: 'success',
+			});
+		}
+		else {
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: 'Su datos son incorrectos',
+				typeNotification: 'error',
+			});
 		}
 	};
 
