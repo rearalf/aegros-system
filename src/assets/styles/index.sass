@@ -7,22 +7,28 @@ body
     background-color: $background-color-primary
     font-size: 16px
     color: $color-text-paragraph
-.container
-    padding: 4em
 
-button
-    cursor: pointer
+.container
+    padding: 0 0 0 8em
+    transition: padding .5s ease-in-out
+.container__open__sidebar
+    padding: 0 0 0 17em
 
 h1
-    font-size: 28px
+    font-size: 24px
     color: $color-text-h1
 h2
-    font-size: 24px
+    font-size: 18px
     color: $color-text-h2
 h3
     font-size: 18px
     color: $color-text-h3
 
+a
+    color: inherit
+
+button
+    cursor: pointer
 button:focus-visible, a:focus-visible
     outline: $background-color-icon-hover auto 1px
 

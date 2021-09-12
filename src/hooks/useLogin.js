@@ -70,7 +70,7 @@ export const useLogin = () => {
 	const handleLogin = e => {
 		e.preventDefault();
 		if (formData.email === 'correo@hotmail.com' && formData.password === 'Qwerty12345!') {
-			history.push('/home');
+			history.push('/Dashboard');
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',

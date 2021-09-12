@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
+import { useState } from 'react';
 
 export const useNavBar = () => {
+	const [ openSideBar, setOpenSideBar ] = useState(false);
 	const Closed = () => {
 		ipcRenderer.send('closed');
 	};
@@ -33,9 +35,31 @@ export const useNavBar = () => {
 		}
 	};
 
+	const meses = new Array(
+		'Enero',
+		'Febrero',
+		'Marzo',
+		'Abril',
+		'Mayo',
+		'Junio',
+		'Julio',
+		'Agosto',
+		'Septiembre',
+		'Octubre',
+		'Noviembre',
+		'Diciembre',
+	);
+	const f = new Date();
+	const date = f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear();
+
+	const changeValueSidebar = () => setOpenSideBar(!openSideBar);
+
 	return {
 		Closed,
 		Minimized,
 		Maximized,
+		openSideBar,
+		changeValueSidebar,
+		date,
 	};
 };
