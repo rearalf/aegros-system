@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import { NavBarPublic } from '../components/NavBar';
-import imageLogin from '../assets/image/image-login.svg';
-import bigBrandWhite from '../assets/image/big-brand-white.png';
-import { InputEmail, InputPassword } from '../components/Inputs';
-import { useLogin } from '../hooks/useLogin';
-import { Notification } from '../components/Notification';
-import '../assets/styles/page/Login.scss';
+import { NavBarPublic } from '@components/NavBar';
+import imageLogin from '@image/image-login.svg';
+import bigBrandWhite from '@image/big-brand-white.png';
+import { InputEmail, InputPassword } from '@components/Inputs';
+import { useLogin } from '@hooks/useLogin';
+import { Notification } from '@components/Notification';
+import '@styles/page/Login.scss';
 
 export const Login = () => {
 	const { email, password, handleChange, errroEmail, errorPassword, handleLogin } = useLogin();

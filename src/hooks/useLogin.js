@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import notificationContext from '../context/notificationContext';
+import notificationContext from '@context/notificationContext';
 
 export const useLogin = () => {
 	const history = useHistory();

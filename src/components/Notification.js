@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
-import { useNotification } from '../hooks/useNotification';
-import '../assets/styles/components/Notification.scss';
+import { useNotification } from '@hooks/useNotification';
+import '@styles/components/Notification.scss';
 
 export const Notification = () => {
 	const {

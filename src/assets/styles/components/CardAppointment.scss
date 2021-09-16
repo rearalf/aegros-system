@@ -1,0 +1,63 @@
+@import '../variables.sass';
+
+.card {
+	background-color: $background-color-secondary;
+	border-radius: 10px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	.card__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 25px;
+		.article__appointment {
+			display: flex;
+			flex-direction: column;
+			.appointment__number {
+				font-size: 24px;
+			}
+			.appointment__date {
+				font-size: 12px;
+				opacity: .8;
+			}
+		}
+		.image__perfil {
+			svg {
+				background-color: #203e70;
+				border-radius: 50%;
+				width: 45px;
+				height: 45px;
+				path,
+				circle {
+					color: $color-text-button-primary;
+				}
+			}
+		}
+	}
+	.card__appointment__information {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin-bottom: 25px;
+		:is(.appointment__username, .appointment__issue) {
+			display: flex;
+			gap: 10px;
+			.issue__information {
+				display: -webkit-box;
+				-webkit-line-clamp: 5;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+		}
+	}
+	.btn__group {
+		.btn {
+			padding: 12px 24px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			text-decoration: none;
+		}
+	}
+}

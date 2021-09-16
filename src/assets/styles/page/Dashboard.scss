@@ -1,0 +1,21 @@
+.dashboard {
+	margin-right: 2em;
+	:is(h1, .header__apointnment, .btn__action) {
+		margin-bottom: 25px;
+	}
+	.cards__apointment {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 40px;
+	}
+	@media screen and (min-width: 924px) {
+		.cards__apointment {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media screen and (min-width: 1024px) {
+		.cards__apointment {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+}

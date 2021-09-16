@@ -1,22 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo64x64 from '../assets/image/icons/logo64x64.png';
-import brand_nav from '../assets/image/brand_nav.png';
-import { useNavBar } from '../hooks/useNavBar';
+import logo64x64 from '@image/icons/logo64x64.png';
+import brand_nav from '@image/brand_nav.png';
+import { useNavBar } from '@hooks/useNavBar';
+import { FiArrowRight, FiCalendar, FiHome, FiLogOut, FiMoreVertical, FiUser } from 'react-icons/fi';
 import {
 	VscChromeMinimize,
 	VscChromeClose,
 	VscChromeMaximize,
 	VscChromeRestore,
 } from 'react-icons/vsc';
-import { FiArrowRight, FiCalendar, FiHome, FiLogOut, FiMoreVertical, FiUser } from 'react-icons/fi';
-import '../assets/styles/components/NavBar.scss';
+import '@styles/components/NavBar.scss';
 
-export const NavBar = () => {
+export const NavBar = ({ openSideBar }) => {
 	const { Closed, Maximized, Minimized, date } = useNavBar();
 
 	return (
-		<header className="header">
+		<header className={`header ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}>
 			<nav className="navbar">
 				<div className="navbar__center">
 					<FiCalendar size={20} />

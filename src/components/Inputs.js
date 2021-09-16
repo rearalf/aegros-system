@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
-import '../assets/styles/components/Inputs.scss';
+import '@styles/components/Inputs.scss';
 
 export const InputEmail = ({
 	labelText = '',

@@ -36,6 +36,17 @@ module.exports = {
 			'process.env.NODE_ENV': JSON.stringify('development'),
 		}),
 	],
+	resolve: {
+		extensions: [ '.js', '.jsx' ],
+		alias: {
+			'@image': path.resolve(__dirname, 'src/assets/image'),
+			'@styles': path.resolve(__dirname, 'src/assets/styles'),
+			'@components': path.resolve(__dirname, 'src/components'),
+			'@context': path.resolve(__dirname, 'src/context'),
+			'@hooks': path.resolve(__dirname, 'src/hooks'),
+			'@page': path.resolve(__dirname, 'src/page'),
+		},
+	},
 	devtool: 'cheap-source-map',
 	devServer: {
 		contentBase: path.resolve(__dirname, 'dist'),

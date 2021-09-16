@@ -1,11 +1,11 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { NotificationContext } from '../context/notificationContext';
-import { Login } from '../page/Login';
-import { Dashboard } from '../page/Dashboard';
-import { Perfil } from '../page/Perfil';
-import { AppLayout } from '../components/AppLayout';
-import { Appointment } from '../page/Appointment';
+import { Login } from '@page/Login';
+import { Dashboard } from '@page/Dashboard';
+import { Perfil } from '@page/Perfil';
+import { AppLayout } from '@components/AppLayout';
+import { Appointment } from '@page/Appointment';
 
 const App = () => {
 	return (
