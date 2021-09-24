@@ -37,7 +37,7 @@ export const CardAppointment = ({
 				</div>
 			</div>
 			<div className="btn__group">
-				<Link to="/appointment" className="btn btn__primary">
+				<Link to="/appointmentdata" className="btn btn__primary">
 					Ver cita
 				</Link>
 			</div>

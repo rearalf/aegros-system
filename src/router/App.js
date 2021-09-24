@@ -6,6 +6,7 @@ import { Dashboard } from '@page/Dashboard';
 import { Perfil } from '@page/Perfil';
 import { AppLayout } from '@components/AppLayout';
 import { Appointment } from '@page/Appointment';
+import { AppointmentData } from '@page/AppointmentData';
 
 const App = () => {
 	return (
@@ -17,6 +18,7 @@ const App = () => {
 						<Route path="/dashboard" exact component={Dashboard} />
 						<Route path="/perfil" exact component={Perfil} />
 						<Route path="/appointment" exact component={Appointment} />
+						<Route path="/appointmentdata" exact component={AppointmentData} />
 					</AppLayout>
 				</Switch>
 			</NotificationContext>
