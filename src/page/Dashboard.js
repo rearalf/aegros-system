@@ -8,7 +8,7 @@ export const Dashboard = () => {
 	return (
 		<div className="dashboard">
 			<h1>Bienvenido Vicente</h1>
-			<ButtonAction>
+			<ButtonAction link="/createappointment">
 				<i>
 					<FiExternalLink />
 				</i>

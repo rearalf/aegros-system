@@ -57,11 +57,17 @@ button:focus-visible, a:focus-visible
     outline: $background-color-icon-hover auto 1px
 
 .btn
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 10px
     border: none
     border-radius: 10px
     width: 100%
     padding: 16px 32px
-    font-size: 14px
+    font-size: 12px
+    font-weight: 700
+    text-transform: uppercase
     letter-spacing: 3px
     transition: all .3s ease-in-out
 .btn__primary
@@ -104,3 +110,17 @@ button:focus-visible, a:focus-visible
     &:focus
         border-color: $color-text-button-cancel
         box-shadow: $box-shadow-button-cancel
+.btn__save
+    background-color: $background-color-button-save
+    color: $color-text-button-save
+    border: 1px solid transparent
+    &:hover
+        background-color: $background-color-button-save-hover
+        box-shadow: $box-shadow-button-save
+    &:focus-visible
+        outline: $background-color-button-save-active auto 2px
+    &:active
+        background-color: $background-color-button-save-active
+    &:focus
+        background-color: $background-color-button-save-focus
+        box-shadow: $box-shadow-button-save

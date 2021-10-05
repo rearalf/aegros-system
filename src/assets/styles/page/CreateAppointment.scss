@@ -1,0 +1,47 @@
+@import '../variables.sass';
+
+.create__appointment {
+	margin-right: 2em;
+	margin-bottom: 2em;
+	.create__appontment__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 25px;
+		.btn__action {
+			padding: 12px 32px;
+			i {
+				svg {
+					border: 1.5px solid $background-color-button-primary;
+					border-radius: 50%;
+					width: 25px;
+					height: 25px;
+				}
+			}
+			&:hover {
+				i {
+					svg {
+						border-color: $background-color-secondary;
+					}
+				}
+			}
+		}
+	}
+	.forms__create__appointment {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 25px;
+		.form__create__appointment {
+			display: flex;
+			flex-direction: column;
+			gap: 25px;
+			.btn__group {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 25px;
+				margin: 50px 30%;
+			}
+		}
+	}
+}

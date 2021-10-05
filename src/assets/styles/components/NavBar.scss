@@ -5,6 +5,7 @@
 	background-color: $background-color-primary;
 	position: fixed;
 	transition: padding .5s ease-in-out;
+	z-index: 1;
 	.navbar {
 		display: flex;
 		justify-content: space-between;

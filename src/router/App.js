@@ -7,6 +7,7 @@ import { Perfil } from '@page/Perfil';
 import { AppLayout } from '@components/AppLayout';
 import { Appointment } from '@page/Appointment';
 import { AppointmentData } from '@page/AppointmentData';
+import { CreateAppointment } from '@page/CreateAppointment';
 
 const App = () => {
 	return (
@@ -19,6 +20,7 @@ const App = () => {
 						<Route path="/perfil" exact component={Perfil} />
 						<Route path="/appointment" exact component={Appointment} />
 						<Route path="/appointmentdata" exact component={AppointmentData} />
+						<Route path="/createappointment" exact component={CreateAppointment} />
 					</AppLayout>
 				</Switch>
 			</NotificationContext>
