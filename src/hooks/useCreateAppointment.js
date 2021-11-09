@@ -80,8 +80,9 @@ export const useFunctionsPage = () => {
 			idPatient: e.value,
 		});
 	};
-	const handleCreateAppointment = () => {
+	const handleCreateAppointment = e => {
 		try {
+			e.preventDefault();
 			if (formCreateAppointment.branchOfficeId === '')
 				throw 'Debe de seleccionar una sucursal';
 			if (formCreateAppointment.issue === '')

@@ -1,7 +1,11 @@
 .dashboard {
 	margin-right: 2em;
-	:is(h1, .header__apointnment, .btn__action) {
+	:is(h1, .header__apointnment, .dashboard__options) {
 		margin-bottom: 25px;
+	}
+	.dashboard__options {
+		display: flex;
+		gap: 25px;
 	}
 	.cards__apointment {
 		display: grid;

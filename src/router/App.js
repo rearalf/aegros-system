@@ -8,6 +8,7 @@ import { AppLayout } from '@components/AppLayout';
 import { Appointment } from '@page/Appointment';
 import { AppointmentData } from '@page/AppointmentData';
 import { CreateAppointment } from '@page/CreateAppointment';
+import { CreatePatient } from '@page/CreatePatient';
 
 const App = () => {
 	return (
@@ -21,6 +22,7 @@ const App = () => {
 						<Route path="/appointment" exact component={Appointment} />
 						<Route path="/appointmentdata" exact component={AppointmentData} />
 						<Route path="/createappointment" exact component={CreateAppointment} />
+						<Route path="/createpatient" exact component={CreatePatient} />
 					</AppLayout>
 				</Switch>
 			</NotificationContext>

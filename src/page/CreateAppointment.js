@@ -1,6 +1,7 @@
 import React from 'react';
-import { InputDate, InputSelect, InputTextArea, InputText } from '../components/Inputs';
-import { FiUser, FiSave, FiXCircle } from 'react-icons/fi';
+import { InputDate, InputSelect, InputTextArea } from '../components/Inputs';
+import { ButtonAction } from '@components/ButtonAction';
+import { FiUserPlus, FiXCircle, FiSave } from 'react-icons/fi';
 import { useFunctionsPage } from '../hooks/useCreateAppointment';
 import '@styles/page/CreateAppointment.scss';
 
@@ -22,12 +23,12 @@ export const CreateAppointment = () => {
 		<div className="create__appointment">
 			<div className="create__appontment__header">
 				<h1>Nueva Cita</h1>
-				<button className="btn__action">
+				<ButtonAction link="/createpatient">
 					<i>
-						<FiUser size={30} />
+						<FiUserPlus />
 					</i>
-					Crear Cita
-				</button>
+					Crear paciente
+				</ButtonAction>
 			</div>
 			<div className="forms__create__appointment">
 				<form className="form__create__appointment">
@@ -42,6 +43,9 @@ export const CreateAppointment = () => {
 						id="appointmentDate"
 						startDate={date}
 						ChangeDate={onChangeDate}
+						minDate={new Date()}
+						showTime={true}
+						dateFormat="dd/MM/yyyy hh:mm"
 					/>
 					<InputSelect
 						id="branchOffice"

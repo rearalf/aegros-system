@@ -140,7 +140,16 @@ export const InputTextArea = ({
 		</div>
 	);
 };
-export const InputDate = ({ labelText = '', id = '', ChangeDate, startDate = new Date() }) => {
+export const InputDate = ({
+	labelText = '',
+	id = '',
+	ChangeDate,
+	startDate = new Date(),
+	minDate = '',
+	maxDate = '',
+	showTime = false,
+	dateFormat = 'd/M/yyyy',
+}) => {
 	return (
 		<div className="input__group">
 			<label htmlFor={id} className="input__group__text">
@@ -150,11 +159,12 @@ export const InputDate = ({ labelText = '', id = '', ChangeDate, startDate = new
 				className="pickers form__control input__date"
 				selected={startDate}
 				onChange={ChangeDate}
-				dateFormat="dd/MM/yyyy hh:mm"
-				minDate={new Date()}
+				dateFormat={dateFormat}
+				minDate={minDate}
+				maxDate={maxDate}
 				showDisabledMonthNavigation
 				closeOnScroll={true}
-				showTimeSelect
+				showTimeSelect={showTime}
 				locale="es"
 			/>
 		</div>
@@ -182,28 +192,61 @@ export const InputSelect = ({
 		</div>
 	);
 };
-
-{
-	/* <div className="input__group input__select">
+export const InputRadio = ({
+	labelText = '',
+	id = '',
+	name = '',
+	value = '',
+	checked = true,
+	onChange,
+}) => {
+	return (
+		<div className="input__radio">
+			<input
+				type="radio"
+				id={id}
+				name={name}
+				value={value}
+				className="input__radio"
+				checked={checked}
+				onChange={w => {
+					console.log(w);
+				}}
+			/>
+			<label htmlFor={id} className="label__radio">
+				{labelText}
+			</label>
+		</div>
+	);
+};
+export const InputNumber = ({
+	labelText = '',
+	id = '',
+	ariaLabel = '',
+	ariaDescribedby = '',
+	placeholder = '',
+	onChange,
+	value,
+	disable = false,
+}) => {
+	return (
+		<div className="input__group">
 			<label htmlFor={id} className="input__group__text">
 				{labelText}
 			</label>
-			<div className="form__control">
-				<div className="input__select__title">
-					{value ? <span>{value}</span> : <span>{labelSelect}</span>}
-					<FiChevronDown />
-				</div>
-				<ul className="input__select__options">
-					{data.map(({ id, issue }) => (
-						<li
-							className="input__select__option"
-							key={id}
-							id={id}
-							onClick={onChangeSelect}>
-							{issue}
-						</li>
-					))}
-				</ul>
-			</div>
-		</div> */
-}
+			<input
+				type="number"
+				id={id}
+				name={id}
+				className="form__control"
+				placeholder={placeholder}
+				aria-label={ariaLabel}
+				aria-describedby={ariaDescribedby}
+				onChange={onChange}
+				value={value}
+				disabled={disable}
+				required
+			/>
+		</div>
+	);
+};
