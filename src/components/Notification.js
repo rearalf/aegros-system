@@ -1,7 +1,7 @@
-import React from 'react';
-import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
-import { useNotification } from '@hooks/useNotification';
-import '@styles/components/Notification.scss';
+import React from 'react'
+import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
+import { useNotification } from '@hooks/useNotification'
+import '@styles/components/Notification.scss'
 
 export const Notification = () => {
 	const {
@@ -11,7 +11,7 @@ export const Notification = () => {
 		subTitleNotification,
 		typeNotification,
 		currentCount,
-	} = useNotification();
+	} = useNotification()
 	return (
 		<div
 			className={`notification ${isOpenNotification
@@ -21,14 +21,14 @@ export const Notification = () => {
 				<div className="notification__bar" />
 				<i className="notification__icon">
 					{typeNotification === 'success' ? (
-						<FiCheckCircle color={'3BC279'} title={titleNotification} size={25} />
+						<FiCheckCircle title={titleNotification} size={25} />
 					) : typeNotification === 'error' ? (
-						<FiAlertCircle color={'E9594C'} title={titleNotification} size={25} />
+						<FiAlertCircle title={titleNotification} size={25} />
 					) : typeNotification === 'warning' ? (
-						<FiAlertTriangle color={'E8A029'} title={titleNotification} size={25} />
+						<FiAlertTriangle title={titleNotification} size={25} />
 					) : (
 						typeNotification === 'information' && (
-							<FiInfo color={'3f84e5'} title={titleNotification} size={25} />
+							<FiInfo title={titleNotification} size={25} />
 						)
 					)}
 				</i>
@@ -47,5 +47,5 @@ export const Notification = () => {
 				}}
 			/>
 		</div>
-	);
-};
+	)
+}

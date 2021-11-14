@@ -1,0 +1,28 @@
+@import '../variables.sass';
+
+.patient__appointment__tab {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	transition: box-shadow .5s ease-in-out, background-color .5s ease-in-out;
+	.patient__appointment__tab__patient__avatar {
+		width: 30px;
+		height: 30px;
+		font-size: 16px;
+	}
+	.patient__appointment__tab__patient__data {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	.patient__appointment__tab__patient__action {
+		padding: 0;
+	}
+	&:hover {
+		background-color: $backgroun_3;
+		box-shadow: $shadow_background_3;
+	}
+}

@@ -1,60 +1,75 @@
 @import ./variables
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap')
 
 *
     margin: 0
     box-sizing: border-box
 body
-    background-color: $background-color-primary
+    background-color: $background_1
     font-size: 16px
-    color: $color-text-paragraph
+    color: $color_text_paragraph
     overflow-x: hidden
+    font-family: 'Roboto', sans-serif
 
 body::-webkit-scrollbar
     width: 10px
-    background: #AFB6C3
-    border-left: 4px solid #F6F7FA
-    border-right: 4px solid #F6F7FA
+    background: #0C62DA
+    border-left: 4px solid #EFF7FE
+    border-right: 4px solid #EFF7FE
 
 body::-webkit-scrollbar-thumb
-    background: #AFB6C3
+    background: #0C62DA
     border-radius: 20px
-    border-right: 2px solid #F6F7FA
-    border-left: 2px solid #F6F7FA
+    border-right: 2px solid #EFF7FE
+    border-left: 2px solid #EFF7FE
     cursor: pointer
 
 body::-webkit-scrollbar-thumb:hover
-    background: #8A95A8
+    background: #084aa7
 
 body::-webkit-scrollbar-thumb:active
-    background-color: #576275
+    background-color: #094291
 
 body::-webkit-scrollbar-track
     background: transparent
     border-radius: 10px
 
 .container
-    padding: 3em 0 0 6em
-    transition: padding .5s ease-in-out
-.container__open__sidebar
-    padding: 3em 0 0 14em
+    padding: 75px 25px 25px 100px
 
 h1
-    font-size: 24px
-    color: $color-text-h1
+    font-size: 32px
+    color: $color_text_h1
+    letter-spacing: 4px
 h2
-    font-size: 20px
-    color: $color-text-h2
+    font-size: 28px
+    font-weight: 500
+    color: $color_text_h2
 h3
     font-size: 18px
-    color: $color-text-h3
+    font-weight: 400
+    color: $color_text_h3
+
+small
+    color: $color_text_semi_paragraph
+    font-weight: 300
 
 a
-    color: inherit
+    color: $color_text_link
+    font-size: 14px
+    cursor: pointer
+    text-decoration: none
 
 button
     cursor: pointer
 button:focus-visible, a:focus-visible
-    outline: $background-color-icon-hover auto 1px
+    outline: $color_icons_hover auto 1px
+
+.MuiIconButton-root.btn__icon
+    color: $color_icons
+    padding: 0
+    &:hover
+        color: $color_icons_hover
 
 .btn
     display: flex
@@ -70,12 +85,25 @@ button:focus-visible, a:focus-visible
     text-transform: uppercase
     letter-spacing: 3px
     transition: all .3s ease-in-out
+.btn_basic.MuiButton-root
+    display: flex
+    gap: 10px
+    background-color: $background_color_button_basic
+    color: $color_text_button_basic
+    box-shadow: none
+    border-radius: 5px
+    text-transform: capitalize
+    &:hover
+        box-shadow: $box_shadow_button_basic
+        background: $background_color_button_basic_hover
+    &:focus-visible
+        box-shadow: none
+
 .btn__primary
-    background-color: $background-color-button-primary
+    background-color: $background_color_button_basic
     color: $color-text-button-primary
     &:hover
-        background-color: $background-color-button-primary-hover
-        box-shadow: $box-shadow-button-primary
+        box-shadow: $box_shadow_button_primary
     &:focus-visible
         outline: $background-color-button-primary-hover auto 2px
     &:active

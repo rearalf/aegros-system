@@ -45,6 +45,7 @@ module.exports = {
 			'@context': path.resolve(__dirname, 'src/context'),
 			'@hooks': path.resolve(__dirname, 'src/hooks'),
 			'@page': path.resolve(__dirname, 'src/page'),
+			'@utils': path.resolve(__dirname, 'src/utils'),
 		},
 	},
 	devtool: 'cheap-source-map',

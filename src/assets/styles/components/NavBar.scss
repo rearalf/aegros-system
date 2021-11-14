@@ -2,13 +2,15 @@
 
 .header {
 	width: 100%;
-	background-color: $background-color-primary;
+	background-color: $background_1;
 	position: fixed;
 	transition: padding .5s ease-in-out;
 	z-index: 1;
+	height: 50px;
 	.navbar {
 		display: flex;
 		justify-content: space-between;
+		height: 100%;
 		.navbar__center {
 			-webkit-app-region: drag;
 			flex: 1;
@@ -16,29 +18,27 @@
 			align-items: center;
 			justify-content: center;
 			gap: 10px;
-			color: $color-text-paragraph;
-			cursor: pointer;
 		}
 		.navbar__actions {
 			button {
 				background-color: transparent;
 				border: none;
 				height: 100%;
-				padding: 5px;
+				padding: 10px 15px;
 				svg {
 					path {
-						color: $background-color-icon;
+						color: $color_icons;
 					}
 				}
 				&:hover {
 					svg {
 						path {
-							color: $background-color-icon-hover;
+							color: $color_icons_hover;
 						}
 					}
 				}
 				&:focus-visible {
-					outline: $background-color-icon-hover auto 1px;
+					color: $color_icons_hover;
 				}
 				&.hide__btn {
 					display: none;
@@ -46,19 +46,17 @@
 			}
 		}
 	}
-}
-
-.header.close__sidebar {
-	padding-left: 75px;
-}
-.header.open__sidebar {
-	padding-left: 200px;
+	&.close__sidebar {
+		padding-left: 75px;
+	}
+	&.open__sidebar {
+		padding-left: 260px;
+	}
 }
 
 .side__bar {
-	background-color: $background-color-secondary;
+	background-color: $background_2;
 	transition: width .5s ease-in-out;
-	width: 75px;
 	height: 100vh;
 	position: fixed;
 	top: 0;
@@ -67,260 +65,140 @@
 	flex-direction: column;
 	justify-content: space-between;
 	.navbar__brand {
-		padding-top: 40px;
+		margin-top: 30px;
+		margin-bottom: 100px;
+		.navbar__brand__link {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			height: 45px;
+			.image__brand__1 {
+				height: 45px;
+			}
+		}
+	}
+	.navbar__nav {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		gap: 20px;
-		margin-bottom: 80px;
-		position: relative;
-		.navbar__link__brand {
-			align-self: center;
-			.image__brand__1 {
-				width: 40px;
-			}
-			.image__brand__2 {
-				display: none;
-			}
-		}
-		.btn__sidebar {
-			transform: rotate(0);
-			transition: all .5s ease-in-out;
-			background-color: transparent;
-			border: none;
-			padding: 5px;
-			cursor: pointer;
-			position: absolute;
-			top: 10px;
-			right: 10px;
-			svg {
-				line,
-				polyline {
-					color: $background-color-icon;
-				}
-			}
-			&:hover {
-				svg {
-					line,
-					polyline {
-						color: $background-color-icon-hover;
-					}
-				}
-			}
-			&:focus-visible {
-				outline: $background-color-icon-hover auto 1px;
-			}
-		}
-	}
-	.navbar__nav {
-		align-self: center;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 25px;
-		.nav__link {
-			padding: 10px 15px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 10px;
-			text-decoration: none;
-			transition: all .5s ease-in-out;
-			position: relative;
-			.nav__link__text {
-				display: none;
-			}
-			&:hover {
-				background-color: $background-color-button-primary;
-				color: $color-text-button-primary;
-				box-shadow: $box-shadow-button-primary;
-				border-radius: 5px;
-			}
-		}
-	}
-	.user__perfil {
-		width: 100%;
-		height: 85px;
-		display: flex;
-		justify-content: center;
 		align-items: center;
-		position: relative;
-		.image__perfil {
-			svg {
-				background-color: #203e70;
-				border-radius: 50%;
-				width: 44px;
-				height: 44px;
-				path,
-				circle {
-					color: $color-text-button-primary;
-				}
-			}
-		}
-		.user__perfil__info {
-			display: none;
-			.name__perfil {
-				font-size: 14px;
-			}
-			.email__perfil {
-				font-size: 12px;
-				opacity: .7;
-			}
-		}
-		.icon__config {
-			position: absolute;
-			top: -5px;
-			right: 5px;
-			background-color: transparent;
-			border: none;
-			padding: 0;
-			svg {
-				circle {
-					color: $background-color-icon;
-				}
-			}
+		flex: 1;
+		.nav__link {
+			color: $color_text_link;
+			padding: 10px 15px;
+			transition: background .5s ease-in-out, box-shadow .5s ease-in-out;
+			position: relative;
 			&:hover {
-				svg {
-					circle {
-						color: $background-color-icon-hover;
+				background-color: $backgroun_3;
+				box-shadow: $shadow_background_3;
+				color: $color_text_link_hover;
+			}
+		}
+	}
+	.side__bar__footer {
+		display: grid;
+		grid-template-rows: 18px 1fr;
+		gap: 15px;
+		.side__bar__footer__action__side__bar {
+			justify-self: center;
+			color: $color_icons;
+			transition: transform .5s ease-in-out;
+			&:hover {
+				color: $color_icons_hover;
+			}
+		}
+		.side__bar__footer__user {
+			background-color: $backgroun_3;
+			padding: 20px 15px;
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			.side__bar__footer__user__data {
+				.side__bar__footer__user__data__name {
+					font-size: 16px;
+				}
+				.side__bar__footer__user__data__role {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+	&.close__sidebar {
+		width: 75px;
+		.navbar__brand__link {
+			.image__brand__2 {
+				display: none;
+			}
+		}
+		.navbar__nav {
+			.nav__link {
+				.nav__link__text {
+					background-color: $backgroun_3;
+					box-shadow: $shadow_background_3;
+					border-radius: 5px;
+					padding: 10px 15px;
+					position: absolute;
+					display: none;
+					right: -80px;
+					top: 5px;
+				}
+				&:hover {
+					.nav__link__text {
+						display: flex;
 					}
 				}
 			}
-			&:focus-visible {
-				outline: $background-color-icon-hover auto 1px;
-			}
 		}
-		.user__config {
-			position: absolute;
-			display: none;
-			flex-direction: column;
-			gap: 10px;
-			transform: translate(65%, -85%);
-			width: 150px;
-			background-color: $background-color-secondary;
-			padding: 15px;
-			border-radius: 5px;
-			box-shadow: $box-shadow-button-primary;
-			.user__config__link {
-				text-decoration: none;
-				display: flex;
-				gap: 10px;
-				&:hover {
-					color: $background-color-button-primary-hover;
+		.side__bar__footer {
+			.side__bar__footer__user {
+				.side__bar__footer__user__data__logout,
+				.side__bar__footer__user__data {
+					display: none;
 				}
 			}
 		}
-		.icon__config:hover + .user__config {
-			display: flex;
-		}
-		.user__config:hover {
-			display: flex;
-		}
 	}
-}
-
-.side__bar.close__sidebar {
-	.navbar__nav {
-		align-self: center;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 25px;
-		.nav__link {
-			padding: 10px 15px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 10px;
-			text-decoration: none;
-			transition: all .5s ease-in-out;
-			position: relative;
-			.nav__link__text {
-				display: none;
-				opacity: 0;
-			}
-			&:hover {
-				background-color: $background-color-button-primary;
-				color: $color-text-button-primary;
-				box-shadow: $box-shadow-button-primary;
+	&.open__sidebar {
+		width: 260px;
+		.navbar__nav {
+			margin: 0 15px;
+			.nav__link {
+				width: 100%;
 				border-radius: 5px;
-				.nav__link__text {
-					display: flex;
-					position: absolute;
-					right: 0px;
-					transform: translateX(120%);
-					background-color: $background-color-secondary;
-					color: $background-color-button-primary;
-					padding: 10px;
-					box-shadow: $box-shadow-button-primary;
-					border-radius: 5px;
-					font-size: 12px;
-					opacity: 1;
-					transition: opacity .5s ease-in-out;
-				}
+				padding: 10px 20px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
 			}
 		}
-	}
-}
-
-.side__bar.open__sidebar {
-	width: 200px;
-	.navbar__brand {
-		.navbar__link__brand {
-			.image__brand__1 {
-				display: none;
+		.side__bar__footer {
+			.side__bar__footer__action__side__bar {
+				transform: rotate(180deg);
+				justify-self: start;
+				margin: 0 35px;
 			}
-			.image__brand__2 {
-				display: block;
-				width: 80%;
-			}
-		}
-		.btn__sidebar {
-			transform: rotate(180deg);
-		}
-	}
-	.navbar__nav {
-		width: 80%;
-		.nav__link {
-			width: 100%;
-			.nav__link__text {
-				display: block;
-			}
-		}
-	}
-	.user__perfil {
-		gap: 10px;
-		.image__perfil {
-			svg {
-				width: 35px;
-				height: 35px;
-			}
-		}
-		.user__perfil__info {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-		}
-		.user__config {
-			transform: translate(110%, -85%);
 		}
 	}
 }
 
 .header__public {
 	width: 100%;
+	height: 50px;
+	background-color: $background_2;
 	position: fixed;
-	background-color: $background-color-primary;
+	top: 0;
 	.navbar {
+		height: 100%;
 		display: flex;
 		justify-content: space-between;
 		.navbar__brand {
 			align-self: center;
-			padding-left: 10px;
+			padding-left: 25px;
 			.navbar__link__brand {
 				display: flex;
 				.image__brand {
-					width: 20px;
+					height: 30px;
 				}
 			}
 		}
@@ -333,21 +211,21 @@
 				background-color: transparent;
 				border: none;
 				height: 100%;
-				padding: 5px;
+				padding: 10px 15px;
 				svg {
 					path {
-						color: $background-color-icon;
+						color: $color_icons;
 					}
 				}
 				&:hover {
 					svg {
 						path {
-							color: $background-color-icon-hover;
+							color: $color_icons_hover;
 						}
 					}
 				}
 				&:focus-visible {
-					outline: $background-color-icon-hover auto 1px;
+					outline: $color_icons_hover auto 1px;
 				}
 				&.hide__btn {
 					display: none;

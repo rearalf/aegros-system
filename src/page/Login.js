@@ -1,14 +1,16 @@
-import React, { Fragment } from 'react';
-import { NavBarPublic } from '@components/NavBar';
-import imageLogin from '@image/image-login.svg';
-import bigBrandWhite from '@image/big-brand-white.png';
-import { InputEmail, InputPassword } from '@components/Inputs';
-import { useLogin } from '@hooks/useLogin';
-import { Notification } from '@components/Notification';
-import '@styles/page/Login.scss';
+import React, { Fragment } from 'react'
+import { NavBarPublic } from '@components/NavBar'
+import imageLogin from '@image/image-login.svg'
+import bigBrandWhite from '@image/big-brand-white.png'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { useLogin } from '@hooks/useLogin'
+import { Notification } from '@components/Notification'
+import { TextField, Button, IconButton } from '@mui/material'
+import '@styles/page/Login.scss'
 
 export const Login = () => {
-	const { email, password, handleChange, errroEmail, errorPassword, handleLogin } = useLogin();
+	const { formData, handleSubmit, stateForm, changePasswordViewer } = useLogin()
+	const { errroEmail, errorPassword, showPassword } = stateForm
 	return (
 		<Fragment>
 			<NavBarPublic />
@@ -16,27 +18,41 @@ export const Login = () => {
 				<div className="left__side">
 					<h1>Hola!!</h1>
 					<h2>Inicia Sesión</h2>
-					<form className="form__login" onSubmit={handleLogin}>
-						<InputEmail
-							placeholder="correo@caliente.com"
+					<form
+						className="form__login"
+						id="formLogin"
+						ref={formData}
+						onSubmit={handleSubmit}>
+						<TextField
 							id="email"
-							labelText="Correo *"
-							value={email}
-							onChange={handleChange}
-							valid={errroEmail}
+							name="email"
+							label="Correo"
+							type="email"
+							placeholder="correo@caliente.com"
+							error={errroEmail}
+							required
 						/>
-						<InputPassword
-							placeholder="Min 8 caracteres"
-							id="password"
-							labelText="Contraseña"
-							value={password}
-							onChange={handleChange}
-							valid={errorPassword}
-						/>
-						<button className="btn btn__primary" type="submit">
+						<div className="from__login__password">
+							<TextField
+								id="password"
+								name="password"
+								label="Contraseña"
+								type={showPassword ? 'text' : 'password'}
+								error={errorPassword}
+								className="from__login__password_input"
+								required
+							/>
+							<IconButton className="btn__icon" onClick={changePasswordViewer}>
+								{showPassword ? <FiEyeOff /> : <FiEye />}
+							</IconButton>
+						</div>
+						<Button variant="contained" className="btn_basic" type="submit">
 							Iniciar
-						</button>
+						</Button>
 					</form>
+					<div className="footer__form">
+						<a>¿Olvido la contraseña?</a>
+					</div>
 				</div>
 				<div className="right__side">
 					<img src={bigBrandWhite} alt="Brand" className="big__brand__white" />
@@ -45,5 +61,5 @@ export const Login = () => {
 			</main>
 			<Notification />
 		</Fragment>
-	);
-};
+	)
+}

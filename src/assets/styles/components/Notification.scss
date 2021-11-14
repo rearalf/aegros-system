@@ -6,8 +6,7 @@
 	right: -100%;
 	border-radius: 10px;
 	transition: all .5s ease-in-out;
-	box-shadow: $box-shadow;
-	background-color: $background-color;
+	background-color: $notification_background_color;
 	min-width: 350px;
 	max-width: 350px;
 	.notification__content {
@@ -28,11 +27,12 @@
 	}
 	.notification__content__text {
 		.notification__title {
-			color: $color-text-title-notification;
+			color: $notification_color_text_title;
 			font-size: 18px;
+			margin-bottom: 5px;
 		}
 		.notification__subTitle {
-			color: $color-text-paragraph-notification;
+			color: $notification_color_text;
 			font-size: 14px;
 			opacity: 0.6;
 		}
@@ -55,47 +55,55 @@
 		border-bottom-right-radius: 10px;
 	}
 	&.success {
+		box-shadow: 0 6px 12px 0 $shadow_notification_succes;
 		.notification__bar {
-			background-color: $background-succes;
+			background-color: $notification_background_succes;
 		}
+		i.notification__icon,
 		.close__icon {
-			color: $background-succes;
+			color: $notification_background_succes;
 		}
 		.loader__bar__notification {
-			background-color: $background-succes;
+			background-color: $notification_background_succes;
 		}
 	}
 	&.error {
+		box-shadow: 0 6px 12px 0 $shadow_notification_error;
 		.notification__bar {
-			background-color: $background-error;
+			background-color: $notification_background_error;
 		}
+		.notification__icon,
 		.close__icon {
-			color: $background-error;
+			color: $notification_background_error;
 		}
 		.loader__bar__notification {
-			background-color: $background-error;
+			background-color: $notification_background_error;
 		}
 	}
 	&.warning {
+		box-shadow: 0 6px 12px 0 $shadow_notification_warning;
 		.notification__bar {
-			background-color: $background-warning;
+			background-color: $notification_background_warning;
 		}
+		.notification__icon,
 		.close__icon {
-			color: $background-warning;
+			color: $notification_background_warning;
 		}
 		.loader__bar__notification {
-			background-color: $background-warning;
+			background-color: $notification_background_warning;
 		}
 	}
 	&.information {
+		box-shadow: 0 6px 12px 0 $shadow_notification_information;
 		.notification__bar {
-			background-color: $background-information;
+			background-color: $notification_background_information;
 		}
+		.notification__icon,
 		.close__icon {
-			color: $background-information;
+			color: $notification_background_information;
 		}
 		.loader__bar__notification {
-			background-color: $background-information;
+			background-color: $notification_background_information;
 		}
 	}
 }

@@ -3,31 +3,57 @@
 .container.login__container {
 	padding: 0;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: 1fr;
 	height: 100vh;
 	.left__side {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		justify-content: center;
-		padding-left: 50px;
-		padding-right: 6em;
-		gap: 15px;
+		padding: 0 100px;
+
+		margin-top: 15%;
 		h1 {
-			font-size: 32px;
+			margin-bottom: 30px;
+		}
+		h2 {
+			margin-bottom: 75px;
 		}
 		.form__login {
 			width: 100%;
 			display: flex;
 			flex-direction: column;
 			gap: 25px;
+			width: 350px;
+			margin-bottom: 25px;
+			.from__login__password {
+				position: relative;
+				.from__login__password_input {
+					width: 100%;
+				}
+				.btn__icon {
+					position: absolute;
+					right: 15px;
+					transform: translateY(-50%);
+					top: 50%;
+					padding: 0;
+					color: $color_icons;
+					&:hover {
+						color: $color_icons_hover;
+					}
+				}
+			}
+		}
+		.footer__form {
+			display: flex;
+			width: 350px;
+			justify-content: flex-end;
 		}
 	}
 	.right__side {
-		background-color: $background-color-third;
+		background-color: $backgroun_4;
 		width: 100%;
 		height: 100%;
-		display: flex;
+		display: none;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
@@ -39,9 +65,30 @@
 			width: 75%;
 		}
 	}
-	@media screen and (min-width: 1024px) {
+}
+@media screen and (min-width: 1024px) {
+	.container.login__container {
+		grid-template-columns: repeat(2, 1fr);
 		.left__side {
-			padding-right: 10em;
+			margin-top: 25%;
+			padding-left: 75px;
+			padding-right: 50px;
+		}
+		.right__side {
+			display: flex;
+		}
+	}
+}
+
+@media screen and (min-width: 1024px) and (max-height: 668px) {
+	.container.login__container {
+		.right__side {
+			.big__brand__white {
+				width: 50%;
+			}
+			.image__login {
+				width: 50%;
+			}
 		}
 	}
 }

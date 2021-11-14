@@ -24,7 +24,7 @@
 		}
 	}
 	:is(.information__card__user, .information__card__appointment, .previous__appointments) {
-		background-color: $background-color-secondary;
+		background-color: $background_2;
 		padding: 20px;
 		border-radius: 10px;
 	}
@@ -100,15 +100,15 @@
 			left: 45px;
 			height: 350px;
 			width: 2px;
-			background-color: $color-text-title-notification;
+			background-color: $notification_color_text_title;
 		}
 		.previous__appointments__cards {
-			background-color: $background-color-primary;
+			background-color: $background_1;
 			padding: 25px;
 			height: 350px;
 			overflow-y: auto;
 			.card__previous__appointment {
-				background-color: $background-color-secondary;
+				background-color: $background_2;
 				padding: 10px;
 				margin-left: 20px;
 				display: flex;
@@ -124,9 +124,9 @@
 					width: 25px;
 					height: 25px;
 					border-radius: 50%;
-					background-color: $color-text-title-notification;
+					background-color: $notification_color_text_title;
 					&.circle__active {
-						border: 2px solid $color-text-title-notification;
+						border: 2px solid $notification_color_text_title;
 						background-color: $color-text-button-primary;
 					}
 				}
@@ -158,14 +158,14 @@
 			&::-webkit-scrollbar {
 				width: 10px;
 				background: #afb6c3;
-				border-left: 4px solid $background-color-primary;
-				border-right: 4px solid $background-color-primary;
+				border-left: 4px solid $background_1;
+				border-right: 4px solid $background_1;
 			}
 			&::-webkit-scrollbar-thumb {
 				background: #afb6c3;
 				border-radius: 20px;
-				border-right: 2px solid $background-color-primary;
-				border-left: 2px solid $background-color-primary;
+				border-right: 2px solid $background_1;
+				border-left: 2px solid $background_1;
 				cursor: pointer;
 			}
 			&::-webkit-scrollbar-thumb:hover {
