@@ -1,131 +1,87 @@
-import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import notificationContext from '@context/notificationContext';
-
-const regex = new RegExp(
-	/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
-);
-
-const onlyText = new RegExp(/^[A-Z]+$/i);
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ipcRenderer } from 'electron'
+import notificationContext from '@context/notificationContext'
+import { subYears } from 'date-fns'
+import format from 'date-fns/format'
 
 export const useCreatePatient = () => {
-	const history = useHistory();
-	const { setNotification } = useContext(notificationContext);
-	const gender = [
-		{
-			value: 'M',
-			label: 'Hombre',
-		},
-		{
-			value: 'F',
-			label: 'Mujer',
-		},
-		{
-			value: '?',
-			label: 'Otros?',
-		},
-	];
-	const f = new Date();
-	const fechaValidate = `${f.getMonth() + 1}/${f.getDate()}/${f.getFullYear() - 1}`;
+	const navigate = useNavigate()
+	const { setNotification } = useContext(notificationContext)
 	const [ PatientData, setPatientData ] = useState({
-		patientName: '',
-		patientBorn: new Date(fechaValidate),
-		patientAge: '',
-		patientAllergies: '',
-		patientEmail: '',
-		patientGender: '',
-	});
-	const [ errorForm, setErrorForm ] = useState({
-		errorEmail: false,
-	});
+		patient_name: 'asdf',
+		patient_email: 'asdf@asdf.com',
+		patient_gender: 'man',
+		patient_allergies: '',
+		patient_date_birth: subYears(new Date(), 1),
+	})
 
-	const onChangeDate = e => {
-		setPatientData({
-			...PatientData,
-			patientBorn: e,
-		});
-	};
+	const [ validationDate, setValidationDate ] = useState({
+		minDate: subYears(new Date(), 100),
+		maxDate: subYears(new Date(), 1),
+	})
 
 	const onChangeInput = e => {
-		const { name, value } = e.target;
-		if (name === 'patientEmail') validEmail(value);
+		const { name, value } = e.target
 		setPatientData({
 			...PatientData,
 			[name]: value,
-		});
-	};
+		})
+	}
 
-	const onChangeSelect = e => {
-		const { value } = e;
+	const onChangeDate = value =>
 		setPatientData({
 			...PatientData,
-			patientGender: value,
-		});
-	};
+			patient_date_birth: value,
+		})
 
-	const validEmail = email => {
-		regex.test(email)
-			? setErrorForm({
-					...errorForm,
-					errorEmail: false,
-				})
-			: setErrorForm({
-					...errorForm,
-					errorEmail: true,
-				});
-	};
-
-	const handleCreatePatient = e => {
+	const handleCreatePatient = async e => {
 		try {
-			e.preventDefault();
-			if (PatientData.patientName === '') throw 'Dede de agregar el nombre del paciente.';
-			if (PatientData.patientBorn === '') throw 'Debe de agregar la fecha de nacimiento.';
-			if (PatientData.patientEmail === '') throw 'Debe de agregar un correo.';
-			if (errorForm.errorEmail === true) throw 'Debe de agregar un correo valido.';
-			if (PatientData.patientGender === '') throw 'Debe de seleccionar un genero.';
-			history.push('/Dashboard');
+			e.preventDefault()
+			if (PatientData.patient_name === '') throw 'Dede de agregar el nombre del paciente.'
+			if (PatientData.patient_email === '') throw 'Debe de agregar un correo.'
+			if (PatientData.patient_gender === '') throw 'Debe de seleccionar un genero.'
+			if (PatientData.patient_date_birth === '')
+				throw 'Debe de seleccionar un la fecha de nacimiento.'
+			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
+			const { success, patien } = JSON.parse(result)
+			if (!success) {
+				throw 'Ocurrio un error'
+			}
+			console.log(patien)
+			navigate('/Dashboard')
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',
 				subTitleNotification: 'La operación fue un éxito.',
 				typeNotification: 'success',
-			});
+			})
 		} catch (error) {
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
 				subTitleNotification: error,
 				typeNotification: 'error',
-			});
+			})
 		}
-	};
+	}
 
 	const handleCanceled = () => {
-		setPatientData({
-			patientName: '',
-			patientBorn: new Date(fechaValidate),
-			patientAge: '',
-			patientAllergies: '',
-			patientEmail: '',
-			patientGender: '',
-		});
-		history.push('/Dashboard');
+		navigate('/Dashboard')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
 			subTitleNotification: 'Se cancelo la creación del usuario.',
 			typeNotification: 'information',
-		});
-	};
+		})
+	}
 
 	return {
-		PatientData,
-		onChangeDate,
 		onChangeInput,
-		onChangeSelect,
+		onChangeDate,
+		PatientData,
 		handleCreatePatient,
 		handleCanceled,
-		errorEmail: errorForm.errorEmail,
-		gender,
-	};
-};
+		validationDate,
+	}
+}

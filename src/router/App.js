@@ -1,33 +1,29 @@
-import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
-import { NotificationContext } from '../context/notificationContext';
-import { Login } from '@page/Login';
-import { Dashboard } from '@page/Dashboard';
-import { Perfil } from '@page/Perfil';
-import { AppLayout } from '@components/AppLayout';
-import { Appointment } from '@page/Appointment';
-import { AppointmentData } from '@page/AppointmentData';
-import { CreateAppointment } from '@page/CreateAppointment';
-import { CreatePatient } from '@page/CreatePatient';
+import React from 'react'
+import { HashRouter, Route, Routes } from 'react-router-dom'
+import { NotificationContext } from '../context/notificationContext'
+import { Login } from '@page/Login'
+import { Dashboard } from '@page/Dashboard'
+import { Appointment } from '@page/Appointment'
+import { AppointmentData } from '@page/AppointmentData'
+import { CreatePatient } from '../page/CreatePatient'
 
 const App = () => {
 	return (
 		<HashRouter>
 			<NotificationContext>
-				<Switch>
-					<Route path="/" exact component={Login} />
-					<AppLayout>
-						<Route path="/dashboard" exact component={Dashboard} />
-						<Route path="/perfil" exact component={Perfil} />
-						<Route path="/appointment" exact component={Appointment} />
-						<Route path="/appointmentdata" exact component={AppointmentData} />
-						<Route path="/createappointment" exact component={CreateAppointment} />
-						<Route path="/createpatient" exact component={CreatePatient} />
-					</AppLayout>
-				</Switch>
+				<Routes>
+					<Route path="/" exact element={<Login />} />
+					<Route path="/dashboard" exact element={<Dashboard />} />
+					<Route path="/appointment" exact element={<Appointment />} />
+					<Route path="/patient/create-patient" exact element={<CreatePatient />} />
+					<Route
+						path="/appointment/:pattient/:appointment"
+						element={<AppointmentData />}
+					/>
+				</Routes>
 			</NotificationContext>
 		</HashRouter>
-	);
-};
+	)
+}
 
-export default App;
+export default App

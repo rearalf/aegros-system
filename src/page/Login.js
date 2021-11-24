@@ -30,6 +30,7 @@ export const Login = () => {
 							type="email"
 							placeholder="correo@caliente.com"
 							error={errroEmail}
+							value="mario.verde@gmail.com"
 							required
 						/>
 						<div className="from__login__password">
@@ -37,6 +38,7 @@ export const Login = () => {
 								id="password"
 								name="password"
 								label="Contraseña"
+								value="soyLuigi1"
 								type={showPassword ? 'text' : 'password'}
 								error={errorPassword}
 								className="from__login__password_input"

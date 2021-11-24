@@ -71,20 +71,6 @@ button:focus-visible, a:focus-visible
     &:hover
         color: $color_icons_hover
 
-.btn
-    display: flex
-    align-items: center
-    justify-content: center
-    gap: 10px
-    border: none
-    border-radius: 10px
-    width: 100%
-    padding: 16px 32px
-    font-size: 12px
-    font-weight: 700
-    text-transform: uppercase
-    letter-spacing: 3px
-    transition: all .3s ease-in-out
 .btn_basic.MuiButton-root
     display: flex
     gap: 10px
@@ -98,60 +84,63 @@ button:focus-visible, a:focus-visible
         background: $background_color_button_basic_hover
     &:focus-visible
         box-shadow: none
+.btn__success.MuiButton-root
+    display: flex
+    gap: 10px
+    box-shadow: none
+    border-radius: 5px
+    text-transform: capitalize
+    background-color: $background_color_button_success
+    color: $color_text_button_success
+    &:hover
+        box-shadow: $box_shadow_button_success
+        background: $background_color_button_success_hover
+    &:focus-visible
+        outline: $background_color_button_success_focus auto 1px
+        box-shadow: none
 
-.btn__primary
-    background-color: $background_color_button_basic
-    color: $color-text-button-primary
+.btn__error.MuiButton-root
+    display: flex
+    gap: 10px
+    box-shadow: none
+    border-radius: 5px
+    text-transform: capitalize
+    border: 1px solid $border_color_button_error
+    color: $color_text_button_error
     &:hover
-        box-shadow: $box_shadow_button_primary
+        background-color: $background_color_button_error_hover
+        border: 1px solid $border_color_button_error_hover
     &:focus-visible
-        outline: $background-color-button-primary-hover auto 2px
-    &:active
-        background-color: $background-color-button-primary-active
-    &:focus
-        background-color: $background-color-button-primary-focus
-        box-shadow: $box-shadow-button-primary
-.btn__secondary
-    background-color: $background-color-button-secondary
-    color: $color-text-button-secondary
-    &:hover
-        background-color: $background-color-button-secondary-hover
-        box-shadow: $box-shadow-button-secondary
-    &:focus-visible
-        outline: $background-color-button-secondary-hover auto 2px
-    &:active
-        background-color: $background-color-button-secondary-active
-    &:focus
-        background-color: $background-color-button-secondary-focus
-        box-shadow: $box-shadow-button-secondary
-.btn__cancel
-    background-color: $background-color-button-cancel
-    color: $color-text-button-cancel
-    border: 1px solid transparent
-    &:hover
-        border-color: $color-text-button-cancel
-        box-shadow: $box-shadow-button-cancel
-    &:focus-visible
-        outline: $color-text-button-cancel auto 2px
-    &:active
-        border-color: $color-text-button-cancel
-    &:focus
-        border-color: $color-text-button-cancel
-        box-shadow: $box-shadow-button-cancel
-.btn__save
-    background-color: $background-color-button-save
-    color: $color-text-button-save
-    border: 1px solid transparent
-    &:hover
-        background-color: $background-color-button-save-hover
-        box-shadow: $box-shadow-button-save
-    &:focus-visible
-        outline: $background-color-button-save-active auto 2px
-    &:active
-        background-color: $background-color-button-save-active
-    &:focus
-        background-color: $background-color-button-save-focus
-        box-shadow: $box-shadow-button-save
-    svg
-        :is(path, polyline)
-            color: $color-text-button-save
+        box-shadow: none
+        outline: $background_color_button_error_focus auto 1px
+
+/** Inputs **/
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
+    border-color: $border_color_input_hover!important
+.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
+    border-color: $border_color_input_hover!important
+textarea.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root
+    padding: 16.5px 0 16.5px 14px
+textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input
+    padding-right: 14px
+textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input::-webkit-scrollbar
+    width: 10px
+    background: #0C62DA
+    border-left: 4px solid #EFF7FE
+    border-right: 4px solid #EFF7FE
+textarea::-webkit-scrollbar-thumb
+    background: #0C62DA
+    border-radius: 20px
+    border-right: 2px solid #EFF7FE
+    border-left: 2px solid #EFF7FE
+    cursor: pointer
+
+textarea::-webkit-scrollbar-thumb:hover
+    background: #084aa7
+
+textarea::-webkit-scrollbar-thumb:active
+    background-color: #094291
+
+textarea::-webkit-scrollbar-track
+    background: transparent
+    border-radius: 10px

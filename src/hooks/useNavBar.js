@@ -1,39 +1,40 @@
-import { ipcRenderer } from 'electron';
-import { useState } from 'react';
+import { ipcRenderer } from 'electron'
+import { useState } from 'react'
+import { useLocation } from 'react-router'
 
 export const useNavBar = () => {
-	const [ openSideBar, setOpenSideBar ] = useState(false);
+	const [ openSideBar, setOpenSideBar ] = useState(false)
 	const Closed = () => {
-		ipcRenderer.send('closed');
-	};
+		ipcRenderer.send('closed')
+	}
 
 	const Minimized = () => {
-		ipcRenderer.send('minimized');
-	};
+		ipcRenderer.send('minimized')
+	}
 	const Maximized = () => {
-		ipcRenderer.send('maximized');
-	};
+		ipcRenderer.send('maximized')
+	}
 
 	ipcRenderer.on('isMaximized', () => {
-		ChangeMaxRestore(true);
-	});
+		ChangeMaxRestore(true)
+	})
 	ipcRenderer.on('isRestore', () => {
-		ChangeMaxRestore(false);
-	});
+		ChangeMaxRestore(false)
+	})
 
 	const ChangeMaxRestore = isMaximized => {
-		const btnResotre = document.getElementById('restore');
-		const btnMaximize = document.getElementById('maximize');
+		const btnResotre = document.getElementById('restore')
+		const btnMaximize = document.getElementById('maximize')
 
 		if (isMaximized) {
-			btnMaximize.classList.add('hide__btn');
-			btnResotre.classList.remove('hide__btn');
+			btnMaximize.classList.add('hide__btn')
+			btnResotre.classList.remove('hide__btn')
 		}
 		else {
-			btnMaximize.classList.remove('hide__btn');
-			btnResotre.classList.add('hide__btn');
+			btnMaximize.classList.remove('hide__btn')
+			btnResotre.classList.add('hide__btn')
 		}
-	};
+	}
 
 	const meses = new Array(
 		'Enero',
@@ -48,11 +49,11 @@ export const useNavBar = () => {
 		'Octubre',
 		'Noviembre',
 		'Diciembre',
-	);
-	const f = new Date();
-	const date = f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear();
+	)
+	const f = new Date()
+	const date = f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear()
 
-	const changeValueSidebar = () => setOpenSideBar(!openSideBar);
+	const changeValueSidebar = () => setOpenSideBar(!openSideBar)
 
 	return {
 		Closed,
@@ -61,5 +62,24 @@ export const useNavBar = () => {
 		openSideBar,
 		changeValueSidebar,
 		date,
-	};
-};
+	}
+}
+
+export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
+	const { pathname } = useLocation()
+	const changeValueSidebarOnBluer = () => {
+		openSideBar ? changeValueSidebar() : null
+	}
+	const changeValueSidebarOnFocus = () => {
+		!openSideBar ? changeValueSidebar() : null
+	}
+
+	const stateLinkDashboard = pathname === '/dashboard' ? 'nav__link__active' : null
+	const stateLinkAppointment = pathname === '/appointment' ? 'nav__link__active' : null
+	return {
+		changeValueSidebarOnFocus,
+		changeValueSidebarOnBluer,
+		stateLinkDashboard,
+		stateLinkAppointment,
+	}
+}

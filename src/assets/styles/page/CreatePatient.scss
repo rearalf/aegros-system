@@ -1,35 +1,58 @@
+@import '../variables.sass';
+
 .create__patient {
-	margin-right: 2em;
-	margin-bottom: 2em;
-	h1 {
-		margin-bottom: 50px;
+	.create__patient__header {
+		.create__patient__header__title {
+			margin-bottom: 50px;
+		}
 	}
-	.create__patient__form {
+	.create__patient__content {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 50px;
-		.input__form__group {
+		justify-content: center;
+		gap: 30px;
+		.create__patient__form {
+			padding: 25px;
+			background-color: $background_2;
+			box-shadow: $shadow_background_3;
+			border-radius: 5px;
 			display: flex;
 			flex-direction: column;
-			align-items: center;
 			gap: 25px;
-		}
-		.input__group__radio {
-			label {
-				margin-bottom: 10px;
-				display: inline-block;
-			}
-			.radio__group {
+			.create__patient__form__inputs {
 				display: flex;
+				flex-direction: column;
+				gap: 25px;
+				.create__patient__form__inputs__input {
+					min-width: 350px;
+				}
+			}
+			.btn__group {
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				gap: 25px;
 			}
 		}
-		.btn__group {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 25px;
+	}
+
+	@media screen and (min-width: 1024px) {
+		.create__patient__content {
+			.create__patient__form {
+				.create__patient__form__inputs {
+					display: grid;
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+		}
+	}
+	@media screen and (min-width: 1440px) {
+		.create__patient__content {
+			.create__patient__form {
+				.create__patient__form__inputs {
+					display: grid;
+					grid-template-columns: repeat(3, 1fr);
+				}
+			}
 		}
 	}
 }

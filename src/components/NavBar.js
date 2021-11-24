@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo64x64 from '@image/icons/logo64x64.png'
 import brand_nav from '@image/brand_nav.png'
 import aegros from '@image/aegros.png'
-import { useNavBar } from '@hooks/useNavBar'
+import { useNavBar, useSideBar } from '@hooks/useNavBar'
 import { FiChevronRight, FiCalendar, FiHome, FiLogOut } from 'react-icons/fi'
 import {
 	VscChromeMinimize,
@@ -51,12 +51,12 @@ export const NavBar = ({ openSideBar }) => {
 }
 
 export const SideBar = ({ openSideBar, changeValueSidebar }) => {
-	const changeValueSidebarOnBluer = () => {
-		openSideBar ? changeValueSidebar() : null
-	}
-	const changeValueSidebarOnFocus = () => {
-		!openSideBar ? changeValueSidebar() : null
-	}
+	const {
+		changeValueSidebarOnBluer,
+		changeValueSidebarOnFocus,
+		stateLinkDashboard,
+		stateLinkAppointment,
+	} = useSideBar({ openSideBar, changeValueSidebar })
 	return (
 		<div
 			className={`side__bar ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}
@@ -69,13 +69,13 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 				</Link>
 			</div>
 			<div className="navbar__nav">
-				<Link className="nav__link" to="/dashboard">
+				<Link className={`nav__link ${stateLinkDashboard}`} to="/dashboard">
 					<i className="nav__link__icon">
 						<FiHome size={18} />
 					</i>
 					<span className="nav__link__text">Home</span>
 				</Link>
-				<Link className="nav__link" to="/appointment">
+				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointment">
 					<i className="nav__link__icon">
 						<FiCalendar size={18} />
 					</i>

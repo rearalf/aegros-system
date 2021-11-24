@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+/* import { useHistory } from 'react-router-dom'; */
 import notificationContext from '@context/notificationContext';
 
 const patientsList = [
@@ -21,7 +21,7 @@ const patientsList = [
 	},
 ];
 export const useFunctionsPage = () => {
-	const history = useHistory();
+	/* const history = useHistory(); */
 	const { setNotification } = useContext(notificationContext);
 	const IssueTextPlaceHolder = `- Lorem ipsum dolor sit amet, consectetur adipiscing.
 - Lorem ipsum dolor sit amet.
@@ -88,7 +88,7 @@ export const useFunctionsPage = () => {
 			if (formCreateAppointment.issue === '')
 				throw 'Debe de agregar el asunto de la consulta';
 			if (formCreateAppointment.idPatient === '') throw 'Debe de buscar el paciente';
-			history.push('/Dashboard');
+			/* history.push('/Dashboard'); */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',
@@ -112,7 +112,7 @@ export const useFunctionsPage = () => {
 			idPatient: '',
 			patientName: '',
 		});
-		history.push('/Dashboard');
+		/* history.push('/Dashboard'); */
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',

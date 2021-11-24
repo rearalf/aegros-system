@@ -1,5 +1,6 @@
-import React from 'react';
+import React from 'react'
+import { AppLayout } from '@components/AppLayout'
 
 export const Appointment = () => {
-	return <div>Citas</div>;
-};
+	return <AppLayout>Citas</AppLayout>
+}

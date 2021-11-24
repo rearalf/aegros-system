@@ -89,11 +89,16 @@
 			padding: 10px 15px;
 			transition: background .5s ease-in-out, box-shadow .5s ease-in-out;
 			position: relative;
+			border-radius: 5px;
 			&:hover {
 				background-color: $backgroun_3;
 				box-shadow: $shadow_background_3;
 				color: $color_text_link_hover;
 			}
+		}
+		.nav__link__active {
+			color: $color_text_link_hover;
+			background-color: $backgroun_3;
 		}
 	}
 	.side__bar__footer {

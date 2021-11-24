@@ -2,11 +2,13 @@ import React from 'react'
 import { FiExternalLink, FiUserPlus, FiMoreVertical, FiChevronRight } from 'react-icons/fi'
 import { Avatar, Button, IconButton, Tooltip } from '@mui/material'
 import PatientAppointmentTab from '@components/PatientAppointmentTab'
+import { AppLayout } from '@components/AppLayout'
 import '@styles/page/Dashboard.scss'
+import { Link } from 'react-router-dom'
 
 export const Dashboard = () => {
 	return (
-		<div className="dashboard">
+		<AppLayout ClassName="dashboard">
 			<header className="dashboard__header">
 				<article>
 					<h1 className="dashboard__header__title">Descrición General</h1>
@@ -16,9 +18,11 @@ export const Dashboard = () => {
 					<Button variant="contained" className="btn_basic">
 						<FiExternalLink size={18} /> Crear cita
 					</Button>
-					<Button variant="contained" className="btn_basic">
-						<FiUserPlus size={18} /> Nuevo paciente
-					</Button>
+					<Link to="/patient/create-patient">
+						<Button variant="contained" className="btn_basic">
+							<FiUserPlus size={18} /> Nuevo paciente
+						</Button>
+					</Link>
 				</div>
 			</header>
 			<section className="dashboard__content">
@@ -59,6 +63,6 @@ export const Dashboard = () => {
 					</div>
 				</div>
 			</section>
-		</div>
+		</AppLayout>
 	)
 }

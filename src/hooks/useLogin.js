@@ -1,10 +1,11 @@
 import { useContext, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import notificationContext from '@context/notificationContext'
 import initialState from '../../initialState'
 
+
 export const useLogin = () => {
-	const history = useHistory()
+	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 
 	const formData = useRef(null)
@@ -23,7 +24,7 @@ export const useLogin = () => {
 		const result = user.find(user => user.user_email === email)
 		if (result !== undefined) {
 			if (result.user_password === password) {
-				history.push('/Dashboard')
+				navigate('/Dashboard')
 				localStorage.setItem('user', JSON.stringify(result))
 				setNotification({
 					isOpenNotification: true,
