@@ -1,10 +1,10 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logo64x64 from '@image/icons/logo64x64.png'
 import brand_nav from '@image/brand_nav.png'
 import aegros from '@image/aegros.png'
 import { useNavBar, useSideBar } from '@hooks/useNavBar'
-import { FiChevronRight, FiCalendar, FiHome, FiLogOut } from 'react-icons/fi'
+import { FiChevronRight, FiCalendar, FiHome, FiLogOut, FiUsers, FiUser } from 'react-icons/fi'
 import {
 	VscChromeMinimize,
 	VscChromeClose,
@@ -56,6 +56,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 		changeValueSidebarOnFocus,
 		stateLinkDashboard,
 		stateLinkAppointment,
+		stateLinkPatient,
 	} = useSideBar({ openSideBar, changeValueSidebar })
 	return (
 		<div
@@ -80,6 +81,18 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 						<FiCalendar size={18} />
 					</i>
 					<span className="nav__link__text">Citas</span>
+				</Link>
+				<Link className={`nav__link ${stateLinkPatient}`} to="/patient">
+					<i className="nav__link__icon">
+						<FiUsers size={18} />
+					</i>
+					<span className="nav__link__text">Pacientes</span>
+				</Link>
+				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointment">
+					<i className="nav__link__icon">
+						<FiUser size={18} />
+					</i>
+					<span className="nav__link__text">User</span>
 				</Link>
 			</div>
 			<div className="side__bar__footer">

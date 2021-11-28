@@ -86,19 +86,20 @@
 		flex: 1;
 		.nav__link {
 			color: $color_text_link;
-			padding: 10px 15px;
 			transition: background .5s ease-in-out, box-shadow .5s ease-in-out;
+			display: flex;
 			position: relative;
+			padding: 10px 15px;
 			border-radius: 5px;
 			&:hover {
-				background-color: $backgroun_3;
+				background-color: $background_3;
 				box-shadow: $shadow_background_3;
 				color: $color_text_link_hover;
 			}
 		}
 		.nav__link__active {
 			color: $color_text_link_hover;
-			background-color: $backgroun_3;
+			background-color: $background_3;
 		}
 	}
 	.side__bar__footer {
@@ -114,7 +115,7 @@
 			}
 		}
 		.side__bar__footer__user {
-			background-color: $backgroun_3;
+			background-color: $background_3;
 			padding: 20px 15px;
 			display: flex;
 			align-items: center;
@@ -139,13 +140,14 @@
 		.navbar__nav {
 			.nav__link {
 				.nav__link__text {
-					background-color: $backgroun_3;
+					background-color: $background_3;
 					box-shadow: $shadow_background_3;
 					border-radius: 5px;
 					padding: 10px 15px;
 					position: absolute;
 					display: none;
-					right: -80px;
+					right: -40%;
+					transform: translateX(100%);
 					top: 5px;
 				}
 				&:hover {
@@ -172,7 +174,6 @@
 				width: 100%;
 				border-radius: 5px;
 				padding: 10px 20px;
-				display: flex;
 				align-items: center;
 				gap: 10px;
 			}

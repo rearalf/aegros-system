@@ -2,18 +2,17 @@ import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
-import { subYears } from 'date-fns'
-import format from 'date-fns/format'
+import { format, subYears } from 'date-fns'
 
 export const useCreatePatient = () => {
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const [ PatientData, setPatientData ] = useState({
-		patient_name: 'asdf',
-		patient_email: 'asdf@asdf.com',
+		patient_name: 'Ricardo	Ernesto Alfaro Recinos',
+		patient_email: 'ricardo@ricardo.com',
 		patient_gender: 'man',
 		patient_allergies: '',
-		patient_date_birth: subYears(new Date(), 1),
+		patient_date_birth: format(subYears(new Date(), 1), 'MM/dd/yyyy'),
 	})
 
 	const [ validationDate, setValidationDate ] = useState({
@@ -32,7 +31,7 @@ export const useCreatePatient = () => {
 	const onChangeDate = value =>
 		setPatientData({
 			...PatientData,
-			patient_date_birth: value,
+			patient_date_birth: format(value, 'MM/dd/yyyy'),
 		})
 
 	const handleCreatePatient = async e => {
@@ -49,7 +48,7 @@ export const useCreatePatient = () => {
 				throw 'Ocurrio un error'
 			}
 			console.log(patien)
-			navigate('/Dashboard')
+			navigate('/patient')
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',
@@ -67,7 +66,7 @@ export const useCreatePatient = () => {
 	}
 
 	const handleCanceled = () => {
-		navigate('/Dashboard')
+		navigate('/patient')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',

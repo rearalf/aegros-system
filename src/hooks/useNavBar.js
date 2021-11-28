@@ -67,6 +67,8 @@ export const useNavBar = () => {
 
 export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 	const { pathname } = useLocation()
+	const path = pathname.split('/')
+
 	const changeValueSidebarOnBluer = () => {
 		openSideBar ? changeValueSidebar() : null
 	}
@@ -74,12 +76,15 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		!openSideBar ? changeValueSidebar() : null
 	}
 
-	const stateLinkDashboard = pathname === '/dashboard' ? 'nav__link__active' : null
-	const stateLinkAppointment = pathname === '/appointment' ? 'nav__link__active' : null
+	const stateLinkDashboard = path[1] === 'dashboard' ? 'nav__link__active' : null
+	const stateLinkAppointment = path[1] === 'appointment' ? 'nav__link__active' : null
+	const stateLinkPatient = path[1] === 'patient' ? 'nav__link__active' : null
+
 	return {
 		changeValueSidebarOnFocus,
 		changeValueSidebarOnBluer,
 		stateLinkDashboard,
 		stateLinkAppointment,
+		stateLinkPatient,
 	}
 }

@@ -2,10 +2,19 @@ const Patient = require('../models/patientModels')
 
 const getAllPatients = async (event, args) => {
 	try {
-		const patient = await Patient.find()
-		return patient
+		const patients = await Patient.find().lean()
+		event.returnValue = {
+			success: true,
+			patients: JSON.stringify(patients),
+		}
 	} catch (err) {
 		console.log(err)
+		event.returnValue = {
+			success: false,
+			error_message: err.message,
+			error_code: err.code,
+			error: err,
+		}
 	}
 }
 

@@ -83,7 +83,7 @@ function createWindow(){
 		}
 	})
 
-	ipcMain.handle('get-all-patients', getAllPatients)
+	ipcMain.on('get-all-patients-main', getAllPatients)
 	ipcMain.on('create-patient-main', createPatient)
 	ipcMain.on('test-main', async (event, args) => {
 		console.log(args)

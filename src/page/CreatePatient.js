@@ -107,7 +107,7 @@ export const CreatePatient = () => {
 							color="error"
 							className="btn__error"
 							onClick={handleCanceled}>
-							<FiXCircle size={18} /> Error
+							<FiXCircle size={18} /> Cancelar
 						</Button>
 					</div>
 				</form>

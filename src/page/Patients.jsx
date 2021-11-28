@@ -1,0 +1,84 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { AppLayout } from '@components/AppLayout'
+import { usePatient } from '@hooks/usePatient'
+import { FiActivity, FiUserPlus } from 'react-icons/fi'
+import { format, formatDistanceToNow } from 'date-fns'
+import {
+	Button,
+	IconButton,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Tooltip,
+} from '@mui/material'
+import '@styles/page/Patients.scss'
+
+export const Patients = () => {
+	const { patients, loading } = usePatient()
+
+	const TableBodyPatient = (patients = []) => {
+		return patients.map(patient => {
+			const { _id, patient_name, patient_date_birth, patient_gender, patient_email } = patient
+			const formatDate = format(new Date(patient_date_birth), 'dd - MMM - yyyy')
+			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
+			const patient_age = resultAge.split(' ')
+			return (
+				<TableRow key={_id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+					<TableCell>{patient_name}</TableCell>
+					<TableCell align="center">{formatDate}</TableCell>
+					<TableCell align="center">{patient_age[1]}</TableCell>
+					<TableCell align="center">
+						{patient_gender === 'man' ? 'Hombre' : 'Mujer'}
+					</TableCell>
+					<TableCell align="center">{patient_email}</TableCell>
+					<TableCell align="center">
+						<Tooltip title="Ver más">
+							<IconButton className="btn__icon bnt__edit">
+								<FiActivity size={18} />
+							</IconButton>
+						</Tooltip>
+					</TableCell>
+				</TableRow>
+			)
+		})
+	}
+
+	return (
+		<AppLayout ClassName="Patients">
+			<header className="patients__header">
+				<h1>Pacientes</h1>
+				<Link to="/patient/create-patient">
+					<Button variant="contained" className="btn_basic">
+						<FiUserPlus size={18} /> Nuevo paciente
+					</Button>
+				</Link>
+			</header>
+			{loading ? patients.length ? (
+				<TableContainer className="table__patients" component={Paper}>
+					<Table sx={{ minWidth: 1024 }} aria-label="simple table">
+						<TableHead>
+							<TableRow>
+								<TableCell>Nombre</TableCell>
+								<TableCell align="center">Fecha de nacimiento</TableCell>
+								<TableCell align="center">Edad</TableCell>
+								<TableCell align="center">Sexo</TableCell>
+								<TableCell align="center">Correo</TableCell>
+								<TableCell align="center">Acciones</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>{TableBodyPatient(patients)}</TableBody>
+					</Table>
+				</TableContainer>
+			) : (
+				<h3>No hay pacientes</h3>
+			) : (
+				<p>Cargando</p>
+			)}
+		</AppLayout>
+	)
+}
