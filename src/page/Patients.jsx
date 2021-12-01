@@ -23,7 +23,13 @@ export const Patients = () => {
 
 	const TableBodyPatient = (patients = []) => {
 		return patients.map(patient => {
-			const { _id, patient_name, patient_date_birth, patient_gender, patient_email } = patient
+			const {
+				_id,
+				patient_name,
+				patient_date_birth,
+				patient_email,
+				patient_phone_number,
+			} = patient
 			const formatDate = format(new Date(patient_date_birth), 'dd - MMM - yyyy')
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 			const patient_age = resultAge.split(' ')
@@ -32,10 +38,8 @@ export const Patients = () => {
 					<TableCell>{patient_name}</TableCell>
 					<TableCell align="center">{formatDate}</TableCell>
 					<TableCell align="center">{patient_age[1]}</TableCell>
-					<TableCell align="center">
-						{patient_gender === 'man' ? 'Hombre' : 'Mujer'}
-					</TableCell>
 					<TableCell align="center">{patient_email}</TableCell>
+					<TableCell align="center">{patient_phone_number}</TableCell>
 					<TableCell align="center">
 						<Tooltip title="Ver más">
 							<IconButton className="btn__icon bnt__edit">
@@ -66,8 +70,8 @@ export const Patients = () => {
 								<TableCell>Nombre</TableCell>
 								<TableCell align="center">Fecha de nacimiento</TableCell>
 								<TableCell align="center">Edad</TableCell>
-								<TableCell align="center">Sexo</TableCell>
 								<TableCell align="center">Correo</TableCell>
+								<TableCell align="center">Teléfono</TableCell>
 								<TableCell align="center">Acciones</TableCell>
 							</TableRow>
 						</TableHead>

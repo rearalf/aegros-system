@@ -7,51 +7,62 @@
 		}
 	}
 	.create__patient__content {
-		display: flex;
-		justify-content: center;
-		gap: 30px;
-		.create__patient__form {
+		display: grid;
+		grid-template-rows: repeat(3, auto);
+		justify-items: center;
+		gap: 50px;
+		.create__patient__form__secondary__information,
+		.create__patient__form__main__information {
 			padding: 25px;
+			border-radius: 5px;
 			background-color: $background_2;
 			box-shadow: $shadow_background_3;
-			border-radius: 5px;
 			display: flex;
 			flex-direction: column;
 			gap: 25px;
-			.create__patient__form__inputs {
-				display: flex;
-				flex-direction: column;
-				gap: 25px;
-				.create__patient__form__inputs__input {
-					min-width: 350px;
+			.css-1u3bzj6-MuiFormControl-root-MuiTextField-root,
+			.create__patient__form__inputs__input {
+				min-width: 350px;
+				.input__adorment {
+					gap: 10px;
+					i {
+						color: $color__input__error;
+					}
+				}
+				.MuiSelect-root {
+					.input__adorment {
+						gap: 10px;
+						margin-right: 25px;
+						i {
+							color: $color__input__error;
+						}
+					}
 				}
 			}
-			.btn__group {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				gap: 25px;
-			}
+		}
+		.btn__group {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 25px;
 		}
 	}
 
 	@media screen and (min-width: 1024px) {
 		.create__patient__content {
-			.create__patient__form {
-				.create__patient__form__inputs {
-					display: grid;
-					grid-template-columns: repeat(2, 1fr);
-				}
+			.create__patient__form__secondary__information,
+			.create__patient__form__main__information {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
 			}
 		}
 	}
 	@media screen and (min-width: 1440px) {
 		.create__patient__content {
-			.create__patient__form {
-				.create__patient__form__inputs {
-					display: grid;
-					grid-template-columns: repeat(3, 1fr);
-				}
+			.create__patient__form__secondary__information,
+			.create__patient__form__main__information {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
 			}
 		}
 	}

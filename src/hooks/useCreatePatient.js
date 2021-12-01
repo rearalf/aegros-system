@@ -3,63 +3,195 @@ import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
+import { validateEmails } from '../utils/utils'
 
 export const useCreatePatient = () => {
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
+	/* States */
 	const [ PatientData, setPatientData ] = useState({
-		patient_name: 'Ricardo	Ernesto Alfaro Recinos',
+		patient_name: 'Ricardo Ernesto Alfaro Recinos',
 		patient_email: 'ricardo@ricardo.com',
 		patient_gender: 'man',
 		patient_allergies: '',
 		patient_date_birth: format(subYears(new Date(), 1), 'MM/dd/yyyy'),
+		patient_phone_number: '7035-3517',
+		patient_weight: '',
+		patient_height: '',
 	})
-
-	const [ validationDate, setValidationDate ] = useState({
+	const [ validationData, setValidationData ] = useState({
 		minDate: subYears(new Date(), 100),
 		maxDate: subYears(new Date(), 1),
+		error_name: false,
+		error_email: false,
+		error_gender: false,
+		error_allgergies: false,
+		error_date_birth: false,
+		error_phone_number: false,
+		error_weight: false,
+		error_height: false,
 	})
 
+	/* Changes for input */
 	const onChangeInput = e => {
 		const { name, value } = e.target
+		/* For inputs weight and height */
+		if (e.target.type === 'number') {
+			validateNumbers(value, name)
+			setPatientData({
+				...PatientData,
+				[name]: value,
+			})
+			return
+		}
+		/* For validation inputs */
+		const names = name.split('_')
+		if (value.length === 0) {
+			errorMessageInputs(`error_${names[1]}`, true)
+		}
+		else {
+			errorMessageInputs(`error_${names[1]}`, false)
+		}
+		/* Validate for email */
+		if (name === 'patient_email') {
+			const emailValid = validateEmails(value)
+			if (!emailValid) {
+				setNotification({
+					isOpenNotification: true,
+					titleNotification: 'Error',
+					subTitleNotification: 'Email no valido',
+					typeNotification: 'error',
+				})
+				errorMessageInputs('error_email', true)
+			}
+		}
+		/* Change state */
 		setPatientData({
 			...PatientData,
 			[name]: value,
 		})
+		return
 	}
 
-	const onChangeDate = value =>
+	/* Validation numbers for weight and height */
+	const validateNumbers = (number, name) => {
+		if (number <= 0) {
+			if (name === 'patient_weight') errorMessageInputs('error_weight', true)
+			if (name === 'patient_height') errorMessageInputs('error_height', true)
+			return false
+		}
+		else {
+			if (name === 'patient_weight') errorMessageInputs('error_weight', false)
+			if (name === 'patient_height') errorMessageInputs('error_height', false)
+		}
+		return true
+	}
+
+	/* Changes for date */
+	const onChangeDate = value => {
+		try {
+			setPatientData({
+				...PatientData,
+				patient_date_birth: format(value, 'MM/dd/yyyy'),
+			})
+		} catch (error) {
+			console.log(error)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: 'Fecha no valida',
+				typeNotification: 'error',
+			})
+			errorMessageInputs('error_date_birth', true)
+		}
+	}
+
+	/* Changes for Phone number */
+	const onChangePhone = value => {
+		value.length === 0
+			? errorMessageInputs('error_phone_number', true)
+			: errorMessageInputs('error_phone_number', false)
 		setPatientData({
 			...PatientData,
-			patient_date_birth: format(value, 'MM/dd/yyyy'),
+			patient_phone_number: value,
+		})
+	}
+
+	/* input validation for error message */
+	const errorMessageInputs = (name, state) =>
+		setValidationData({
+			...validationData,
+			[name]: state,
 		})
 
 	const handleCreatePatient = async e => {
 		try {
 			e.preventDefault()
-			if (PatientData.patient_name === '') throw 'Dede de agregar el nombre del paciente.'
-			if (PatientData.patient_email === '') throw 'Debe de agregar un correo.'
-			if (PatientData.patient_gender === '') throw 'Debe de seleccionar un genero.'
+			/* Validation */
+			if (PatientData.patient_name === '')
+				throw {
+					name: 'error_name',
+					message: 'Dede de agregar el nombre del paciente.',
+				}
+			if (PatientData.patient_email === '')
+				throw {
+					name: 'error_email',
+					message: 'Debe de agregar un correo.',
+				}
+			if (PatientData.patient_gender === '')
+				throw {
+					name: 'error_gender',
+					message: 'Debe de seleccionar un genero.',
+				}
+			if (PatientData.patient_phone_number === '')
+				throw {
+					name: 'error_phone_number',
+					message: 'Debe de agregar un número de teléfono.',
+				}
 			if (PatientData.patient_date_birth === '')
-				throw 'Debe de seleccionar un la fecha de nacimiento.'
+				throw {
+					name: 'error_date_birth',
+					message: 'Debe de seleccionar un la fecha de nacimiento.',
+				}
+
 			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
 			const { success, patien } = JSON.parse(result)
 			if (!success) {
-				throw 'Ocurrio un error'
+				throw {
+					message: 'Ocurrio un error',
+				}
 			}
 			console.log(patien)
 			navigate('/patient')
+
+			/* Notification */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',
 				subTitleNotification: 'La operación fue un éxito.',
 				typeNotification: 'success',
 			})
+
+			setValidationData({
+				validationData,
+				error_name: false,
+				error_email: false,
+				error_gender: false,
+				error_allgergies: false,
+				error_date_birth: false,
+				error_phone_number: false,
+				error_weight: false,
+				error_height: false,
+			})
 		} catch (error) {
+			console.log(error)
+			/* Function for show error in inputs */
+			errorMessageInputs(error.name, true)
+			/* Notification */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
-				subTitleNotification: error,
+				subTitleNotification: error.message,
 				typeNotification: 'error',
 			})
 		}
@@ -78,9 +210,10 @@ export const useCreatePatient = () => {
 	return {
 		onChangeInput,
 		onChangeDate,
+		onChangePhone,
 		PatientData,
 		handleCreatePatient,
 		handleCanceled,
-		validationDate,
+		validationData,
 	}
 }
