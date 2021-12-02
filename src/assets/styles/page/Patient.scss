@@ -1,0 +1,121 @@
+@import '../variables.sass';
+
+.Patient {
+	.patient__section {
+		display: grid;
+		justify-content: space-between;
+		gap: 50px;
+		grid-template-columns: repeat(1, 1fr);
+		:is(.patient__section__personal__information__data, .patient__section__personal__information__allergies, .patient__section__apointment) {
+			border-radius: 5px;
+			padding: 25px;
+			background-color: $background_2;
+			box-shadow: $shadow_background_3;
+		}
+		.patient__section__personal__information {
+			display: flex;
+			flex-direction: column;
+			gap: 25px;
+			.patient__section__personal__information__data {
+				display: flex;
+				flex-direction: column;
+				gap: 25px;
+				position: relative;
+				.patient__section__personal__information__data__header {
+					display: flex;
+					gap: 15px;
+					.patient__section__personal__information__data__header__avatar {
+						width: 75px;
+						height: 75px;
+						font-size: 30px;
+					}
+					.patient__section__personal__information__data__header__data {
+						display: flex;
+						flex-direction: column;
+						gap: 5px;
+					}
+				}
+				.patient__section__personal__information__data__header__extra {
+					display: grid;
+					grid-template-columns: repeat(2, 1fr);
+					justify-content: space-between;
+					.patient__section__personal__information__data__header__extra__contacts,
+					.patient__section__personal__information__data__header__extra__information {
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+						.patient__section__personal__information__data__header__extra__contacts__contact,
+						.patient__section__personal__information__data__header__extra__information__height {
+							display: flex;
+							gap: 10px;
+							align-items: center;
+						}
+					}
+				}
+				.patient__section__personal__information__data__actions {
+					position: absolute;
+					right: 20px;
+					bottom: 15px;
+					display: flex;
+					gap: 15px;
+					.btn__delete__patient {
+						&:hover {
+							color: $border_color_button_error_hover;
+						}
+					}
+				}
+			}
+			.patient__section__personal__information__allergies {
+				display: flex;
+				flex-direction: column;
+				gap: 25px;
+				.patient__section__personal__information__allergies__input {
+					width: 100%;
+					.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+						height: 150px;
+						padding-right: 5px;
+						textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
+							height: 100% !important;
+						}
+					}
+				}
+				.patient__section__personal__information__allergies__actions {
+					display: flex;
+					justify-content: flex-end;
+					gap: 10px;
+					.cancel__icon__action {
+						color: $color_text_button_error;
+						&:hover {
+							color: $border_color_button_error_hover;
+						}
+					}
+				}
+			}
+		}
+		.patient__section__apointment {
+			.patient__section__apointment__header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+		}
+	}
+	@media screen and (min-width: 1024px) {
+		.patient__section {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media only screen and (max-width: 1550px) {
+		.patient__section {
+			.patient__section__personal__information
+				.patient__section__personal__information__data
+				.patient__section__personal__information__data__header
+				.patient__section__personal__information__data__header__data
+				.patient__section__personal__information__data__header__data__title {
+				font-size: 30px;
+				letter-spacing: 0;
+			}
+		}
+	}
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { AppLayout } from '@components/AppLayout'
-import { usePatient } from '@hooks/usePatient'
+import { usePatients } from '@hooks/usePatients'
 import { FiActivity, FiUserPlus } from 'react-icons/fi'
 import { format, formatDistanceToNow } from 'date-fns'
 import {
@@ -19,7 +19,7 @@ import {
 import '@styles/page/Patients.scss'
 
 export const Patients = () => {
-	const { patients, loading } = usePatient()
+	const { patients, loading } = usePatients()
 
 	const TableBodyPatient = (patients = []) => {
 		return patients.map(patient => {
@@ -42,9 +42,11 @@ export const Patients = () => {
 					<TableCell align="center">{patient_phone_number}</TableCell>
 					<TableCell align="center">
 						<Tooltip title="Ver más">
-							<IconButton className="btn__icon bnt__edit">
-								<FiActivity size={18} />
-							</IconButton>
+							<Link to={`/patients/patient/${_id}`}>
+								<IconButton className="btn__icon bnt__edit">
+									<FiActivity size={18} />
+								</IconButton>
+							</Link>
 						</Tooltip>
 					</TableCell>
 				</TableRow>
@@ -56,7 +58,7 @@ export const Patients = () => {
 		<AppLayout ClassName="Patients">
 			<header className="patients__header">
 				<h1>Pacientes</h1>
-				<Link to="/patient/create-patient">
+				<Link to="/patients/create-patient">
 					<Button variant="contained" className="btn_basic">
 						<FiUserPlus size={18} /> Nuevo paciente
 					</Button>

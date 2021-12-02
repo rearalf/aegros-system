@@ -18,7 +18,7 @@ export const Dashboard = () => {
 					<Button variant="contained" className="btn_basic">
 						<FiExternalLink size={18} /> Crear cita
 					</Button>
-					<Link to="/patient/create-patient">
+					<Link to="/patients/create-patient">
 						<Button variant="contained" className="btn_basic">
 							<FiUserPlus size={18} /> Nuevo paciente
 						</Button>

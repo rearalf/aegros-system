@@ -78,7 +78,7 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 
 	const stateLinkDashboard = path[1] === 'dashboard' ? 'nav__link__active' : null
 	const stateLinkAppointment = path[1] === 'appointment' ? 'nav__link__active' : null
-	const stateLinkPatient = path[1] === 'patient' ? 'nav__link__active' : null
+	const stateLinkPatient = path[1] === 'patients' ? 'nav__link__active' : null
 
 	return {
 		changeValueSidebarOnFocus,

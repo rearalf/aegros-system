@@ -93,12 +93,7 @@ export const CreatePatient = () => {
 							minDate={minDate}
 							toolbarPlaceholder="Mes/Día/Año"
 							renderInput={params => (
-								<TextField
-									{...params}
-									error={error_date_birth}
-
-									required
-								/>
+								<TextField {...params} error={error_date_birth} required />
 							)}
 						/>
 					</LocalizationProvider>
@@ -200,7 +195,7 @@ export const CreatePatient = () => {
 						color="success"
 						className="btn__success"
 						onClick={handleCreatePatient}>
-						<FiSave size={18} /> Success
+						<FiSave size={18} /> Guardar
 					</Button>
 					<Button
 						variant="outlined"

@@ -82,7 +82,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 					</i>
 					<span className="nav__link__text">Citas</span>
 				</Link>
-				<Link className={`nav__link ${stateLinkPatient}`} to="/patient">
+				<Link className={`nav__link ${stateLinkPatient}`} to="/patients">
 					<i className="nav__link__icon">
 						<FiUsers size={18} />
 					</i>

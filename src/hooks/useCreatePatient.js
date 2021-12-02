@@ -10,12 +10,12 @@ export const useCreatePatient = () => {
 	const { setNotification } = useContext(notificationContext)
 	/* States */
 	const [ PatientData, setPatientData ] = useState({
-		patient_name: 'Ricardo Ernesto Alfaro Recinos',
-		patient_email: 'ricardo@ricardo.com',
-		patient_gender: 'man',
+		patient_name: '',
+		patient_email: '',
+		patient_gender: '',
 		patient_allergies: '',
 		patient_date_birth: format(subYears(new Date(), 1), 'MM/dd/yyyy'),
-		patient_phone_number: '7035-3517',
+		patient_phone_number: '',
 		patient_weight: '',
 		patient_height: '',
 	})
@@ -94,6 +94,7 @@ export const useCreatePatient = () => {
 				...PatientData,
 				patient_date_birth: format(value, 'MM/dd/yyyy'),
 			})
+			errorMessageInputs('error_date_birth', false)
 		} catch (error) {
 			console.log(error)
 			setNotification({
@@ -155,14 +156,14 @@ export const useCreatePatient = () => {
 				}
 
 			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
-			const { success, patien } = JSON.parse(result)
+			const { success, patien } = result
 			if (!success) {
 				throw {
 					message: 'Ocurrio un error',
 				}
 			}
 			console.log(patien)
-			navigate('/patient')
+			navigate('/patients')
 
 			/* Notification */
 			setNotification({
@@ -198,7 +199,7 @@ export const useCreatePatient = () => {
 	}
 
 	const handleCanceled = () => {
-		navigate('/patient')
+		navigate('/patients')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
