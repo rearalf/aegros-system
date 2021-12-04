@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { AppLayout } from '@components/AppLayout'
-import { usePatients } from '@hooks/usePatients'
 import { FiActivity, FiUserPlus } from 'react-icons/fi'
 import { format, formatDistanceToNow } from 'date-fns'
+import { AppLayout } from '@components/AppLayout'
+import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
+import { usePatients } from '@hooks/usePatients'
 import {
 	Button,
 	IconButton,
@@ -56,6 +57,14 @@ export const Patients = () => {
 
 	return (
 		<AppLayout ClassName="Patients">
+			<BreadCrumbsComponent
+				links={[
+					{
+						link_name: 'Pacientes',
+						link_to: '/patients',
+					},
+				]}
+			/>
 			<header className="patients__header">
 				<h1>Pacientes</h1>
 				<Link to="/patients/create-patient">

@@ -199,7 +199,7 @@ export const useCreatePatient = () => {
 	}
 
 	const handleCanceled = () => {
-		navigate('/patients')
+		navigate(-1)
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',

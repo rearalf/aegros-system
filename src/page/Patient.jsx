@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { Button, TextField, IconButton, Tooltip } from '@mui/material'
 import { usePatient } from '@hooks/usePatient'
 import { AppLayout } from '@components/AppLayout'
+import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AvatarComponent } from '@components/AvatarComponent'
 import { FiPhone, FiMail, FiCalendar, FiEdit, FiSave, FiXCircle, FiTrash } from 'react-icons/fi'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
@@ -35,6 +36,18 @@ export const Patient = () => {
 	const titleTooltip = state_input_allergies ? 'Activar edición' : 'Desactivar edición'
 	return (
 		<AppLayout ClassName="Patient">
+			<BreadCrumbsComponent
+				links={[
+					{
+						link_name: 'Pacientes',
+						link_to: '/patients',
+					},
+					{
+						link_name: patient_name === '' ? 'Paciente' : patient_name,
+						link_to: `/patients/patient/${params.id}`,
+					},
+				]}
+			/>
 			{loading ? (
 				<h1>Cargando</h1>
 			) : (

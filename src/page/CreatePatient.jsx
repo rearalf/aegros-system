@@ -3,6 +3,7 @@ import { useCreatePatient } from '@hooks/useCreatePatient'
 import { AppLayout } from '@components/AppLayout'
 import { FiAlertCircle, FiSave, FiXCircle } from 'react-icons/fi'
 import { Button, InputAdornment, MenuItem, TextField } from '@mui/material'
+import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DatePicker from '@mui/lab/DatePicker'
@@ -42,6 +43,18 @@ export const CreatePatient = () => {
 	} = validationData
 	return (
 		<AppLayout ClassName="create__patient">
+			<BreadCrumbsComponent
+				links={[
+					{
+						link_name: 'Pacientes',
+						link_to: '/patients',
+					},
+					{
+						link_name: 'Crear paciente',
+						link_to: '/patients/create-patient',
+					},
+				]}
+			/>
 			<header className="create__patient__header">
 				<h1 className="create__patient__header__title">Crear paciente</h1>
 			</header>

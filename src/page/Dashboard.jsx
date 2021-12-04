@@ -3,12 +3,21 @@ import { FiExternalLink, FiUserPlus, FiMoreVertical, FiChevronRight } from 'reac
 import { Avatar, Button, IconButton, Tooltip } from '@mui/material'
 import PatientAppointmentTab from '@components/PatientAppointmentTab'
 import { AppLayout } from '@components/AppLayout'
-import '@styles/page/Dashboard.scss'
+import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { Link } from 'react-router-dom'
+import '@styles/page/Dashboard.scss'
 
 export const Dashboard = () => {
 	return (
 		<AppLayout ClassName="dashboard">
+			<BreadCrumbsComponent
+				links={[
+					{
+						link_name: 'Inicio',
+						link_to: '/dashboard',
+					},
+				]}
+			/>
 			<header className="dashboard__header">
 				<article>
 					<h1 className="dashboard__header__title">Descrición General</h1>
