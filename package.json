@@ -3,13 +3,13 @@
 	"version": "1.0.0",
 	"description": "Aegros system helps you manage your clients' appointments",
 	"private": false,
-	"main": "app/index.js",
+	"main": "./app/index.js",
 	"scripts": {
 		"prod": "cross-env NODE_ENV=production webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
 		"start": "cross-env NODE_ENV=development webpack serve --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
 		"build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --mode production",
 		"package": "npm run build",
-		"postpackage": "electron-packager ./ --out=./builds"
+		"postpackage": "electron-builder --windows"
 	},
 	"repository": {
 		"type": "git",
@@ -54,8 +54,8 @@
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.2.0",
 		"electron": "^13.2.1",
+		"electron-builder": "^22.14.5",
 		"electron-devtools-installer": "^3.2.0",
-		"electron-packager": "^15.3.0",
 		"file-loader": "^6.2.0",
 		"html-webpack-plugin": "^5.3.2",
 		"sass": "^1.38.0",

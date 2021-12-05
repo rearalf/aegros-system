@@ -17,9 +17,9 @@ if (process.env.NODE_ENV !== undefined && process.env.NODE_ENV === 'development'
 }
 
 const icons = {
-	darwin: '../src/assets/image/icons/logo16x16.png',
-	linux: '../src/assets/image/icons/logo64x64.png',
-	win32: '../src/assets/image/icons/logo64x64.png',
+	darwin: './icons/logo16x16.png',
+	linux: './icons/logo64x64.png',
+	win32: './icons/logo64x64.png',
 }
 
 function createWindow(){

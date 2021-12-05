@@ -1,0 +1,15 @@
+{
+	"appId": "com.thatisuday.aegros-system",
+	"productName": "Aegros system",
+	"copyright": "Copyright © year ${author}",
+	"directories": {
+		"app": ".",
+		"output": "builds",
+		"buildResources": "build-res"
+	},
+	"files": [ "package.json", "app/**/*", "node_modules" ],
+	"win": {
+		"target": "nsis",
+		"icon": "app/icons/icon.ico"
+	}
+}
