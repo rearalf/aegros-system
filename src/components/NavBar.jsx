@@ -76,7 +76,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 					</i>
 					<span className="nav__link__text">Home</span>
 				</Link>
-				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointment">
+				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointments">
 					<i className="nav__link__icon">
 						<FiCalendar size={18} />
 					</i>
@@ -88,7 +88,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 					</i>
 					<span className="nav__link__text">Pacientes</span>
 				</Link>
-				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointment">
+				<Link className={`nav__link ${stateLinkAppointment}`} to="/appointments">
 					<i className="nav__link__icon">
 						<FiUser size={18} />
 					</i>

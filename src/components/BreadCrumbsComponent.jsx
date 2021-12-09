@@ -13,7 +13,10 @@ export const BreadCrumbsComponent = ({
 	],
 }) => {
 	return (
-		<Breadcrumbs aria-label="breadcrumb" separator={<FiChevronRight size={18} />}>
+		<Breadcrumbs
+			aria-label="breadcrumb"
+			id="breadCrumbs"
+			separator={<FiChevronRight size={18} />}>
 			{links.map(({ link_name, link_to }) => (
 				<Link to={link_to} key={link_to}>
 					{link_name}

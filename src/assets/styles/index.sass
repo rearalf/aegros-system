@@ -71,6 +71,15 @@ button:focus-visible, a:focus-visible
     &:hover
         color: $color_icons_hover
 
+.MuiIconButton-root.btn__icon__basic
+    background-color: $background_color_button_basic
+    color: $color_text_button_basic
+    padding: 10px
+    border-radius: 5px
+    &:hover
+        box-shadow: $box_shadow_button_basic
+        background: $background_color_button_basic_hover
+
 .btn_basic.MuiButton-root
     display: flex
     gap: 10px
@@ -115,20 +124,16 @@ button:focus-visible, a:focus-visible
         outline: $background_color_button_error_focus auto 1px
 
 /** Inputs **/
-.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
-.css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
+.MuiFormControl-root .MuiOutlinedInput-input[type=text]
+    text-transform: capitalize
+.MuiFormControl-root:hover .MuiOutlinedInput-notchedOutline
     border-color: $border_color_input_hover!important
-.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root.Mui-disabled:hover .MuiOutlinedInput-notchedOutline
-    border-color: $border_color_disabled !important
 
-.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
-    border-color: $border_color_input_hover!important
-textarea.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root
+textarea
     padding: 16.5px 0 16.5px 14px
-textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input
+textarea
     padding-right: 14px
-textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input::-webkit-scrollbar
+textarea::-webkit-scrollbar
     width: 10px
     background: #0C62DA
     border-left: 4px solid #EFF7FE
@@ -149,3 +154,63 @@ textarea::-webkit-scrollbar-thumb:active
 textarea::-webkit-scrollbar-track
     background: transparent
     border-radius: 10px
+
+/** Table **/
+.table__basic.MuiTableContainer-root
+    border-radius: 5px
+    transition: box-shadow .5s ease-in-out
+    box-shadow: $shadow_background_3
+    overflow-y: hidden
+    .MuiTableHead-root
+        background-color: $background_1
+        transition: box-shadow .5s ease-in-out
+        margin-bottom: 5px
+        &:hover
+            box-shadow: $shadow_background_3
+    .MuiTableCell-head
+        color: $color_text_h3
+        font-weight: 500
+        border: none
+    .MuiTableBody-root tr
+        transition: background-color .5s ease-in-out
+        td
+            border-bottom: 2px solid $line_color
+            color: $color_text_paragraph_secondary
+        &:hover
+            background-color: rgba($color: #000000, $alpha: 0.03)
+.table__basic.MuiTableContainer-root::-webkit-scrollbar
+    height: 15px
+    background: #0C62DA
+    border-top: 6px solid #EFF7FE
+    border-bottom: 6px solid #EFF7FE
+
+.table__basic.MuiTableContainer-root::-webkit-scrollbar-thumb
+    background: #0C62DA
+    border-radius: 20px
+    border-bottom: 2px solid #EFF7FE
+    border-top: 2px solid #EFF7FE
+    cursor: pointer
+
+.table__basic.MuiTableContainer-root::-webkit-scrollbar-thumb:hover
+    background: #084aa7
+
+.table__basic.MuiTableContainer-root::-webkit-scrollbar-thumb:active
+    background-color: #094291
+
+.table__basic.MuiTableContainer-root::-webkit-scrollbar-track
+    background: transparent
+    border-radius: 10px
+
+/** Pagination **/
+.MuiPagination-root
+    display: flex
+    justify-content: center
+    margin: 25px 0
+    .MuiPagination-ul .MuiButtonBase-root
+        border-color: $background_color_button_basic
+        transition: box-shadow .5s ease-in-out
+        color: $color_text_h3
+        &:hover
+            box-shadow: $box_shadow_button_basic
+        &.Mui-selected
+            background-color: rgba($color: $background_color_button_basic, $alpha: 0.2)

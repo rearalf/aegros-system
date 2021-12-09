@@ -7,32 +7,55 @@
 		align-items: center;
 		margin-bottom: 25px;
 	}
-	.table__patients {
+	.patients__params {
+		margin-bottom: 25px;
+		background-color: $background_2;
+		padding: 25px;
 		border-radius: 5px;
-		transition: box-shadow .5s ease-in-out;
-		box-shadow: none;
 		box-shadow: $shadow_background_3;
-		.MuiTableHead-root {
-			background-color: $background_1;
-			transition: box-shadow .5s ease-in-out;
-			margin-bottom: 5px;
-			&:hover {
-				box-shadow: $shadow_background_3;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 15px;
+		.patients__search {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			.btn__icon__basic {
+				padding: 18px;
+			}
+			.patients__search__form {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				transition: all .2s ease-in-out;
+				width: 0;
+				opacity: 0;
+				visibility: hidden;
+				.patients__search__input {
+					width: 350px;
+					.MuiOutlinedInput-root {
+						padding-right: 0;
+						.MuiOutlinedInput-input {
+							padding-left: 15px;
+							padding-right: 15px;
+						}
+						.btn__icon {
+							padding: 18px 15px;
+						}
+					}
+				}
+				&.patients__search__form__show {
+					width: 475px;
+					opacity: 1;
+					visibility: visible;
+				}
 			}
 		}
-		.MuiTableCell-head {
-			color: $color_text_h3;
-			font-weight: 500;
-			border: none;
-		}
-		.MuiTableBody-root tr {
-			transition: background-color .5s ease-in-out;
-			td {
-				border-bottom: 2px solid $line_color;
-			}
-			&:hover {
-				background-color: rgba($color: #000000, $alpha: 0.03);
-			}
+		.patients__params__sort {
+			display: flex;
+			gap: 15px;
 		}
 	}
 }

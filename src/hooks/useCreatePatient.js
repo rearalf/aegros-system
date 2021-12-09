@@ -158,11 +158,12 @@ export const useCreatePatient = () => {
 			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
 			const { success, patien } = result
 			if (!success) {
+				console.log(result)
 				throw {
 					message: 'Ocurrio un error',
 				}
 			}
-			console.log(patien)
+			console.log(JSON.parse(patien))
 			navigate('/patients')
 
 			/* Notification */

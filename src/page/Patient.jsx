@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Button, TextField, IconButton, Tooltip } from '@mui/material'
 import { usePatient } from '@hooks/usePatient'
 import { AppLayout } from '@components/AppLayout'
@@ -11,6 +12,7 @@ import '@styles/page/Patient.scss'
 
 export const Patient = () => {
 	const params = useParams()
+	const { id } = params
 	const {
 		patient,
 		loading,
@@ -20,7 +22,7 @@ export const Patient = () => {
 		cancelChangeAllergies,
 		saveInputAllergies,
 	} = usePatient({
-		id: params.id,
+		id,
 	})
 	const { state_input_allergies, input_allergies, state_button_allergies } = inputAllergies
 	const {
@@ -157,9 +159,11 @@ export const Patient = () => {
 					<section className="patient__section__apointment">
 						<div className="patient__section__apointment__header">
 							<h2>Citas</h2>
-							<Button variant="contained" className="btn_basic">
-								<FiCalendar size={18} /> Crear cita
-							</Button>
+							<Link to={`/appointments/creat-appointment/${id}/${patient_name}`}>
+								<Button variant="contained" className="btn_basic">
+									<FiCalendar size={18} /> Crear cita
+								</Button>
+							</Link>
 						</div>
 					</section>
 				</section>

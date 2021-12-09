@@ -3,8 +3,8 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import { NotificationContext } from '../context/notificationContext'
 import { Login } from '@page/Login'
 import { Dashboard } from '@page/Dashboard'
-import { Appointment } from '@page/Appointment'
-import { AppointmentData } from '@page/AppointmentData'
+import { Appointments } from '@page/Appointments'
+import { CreateAppointment } from '@page/CreateAppointment'
 import { CreatePatient } from '@page/CreatePatient'
 import { Patients } from '@page/Patients'
 import { Patient } from '@page/Patient'
@@ -19,11 +19,10 @@ const App = () => {
 					<Route path="/patients" exact element={<Patients />} />
 					<Route path="/patients/create-patient" exact element={<CreatePatient />} />
 					<Route path="/patients/patient/:id" exact element={<Patient />} />
-					<Route path="/appointment" exact element={<Appointment />} />
-					<Route
-						path="/appointment/:pattient/:appointment"
-						element={<AppointmentData />}
-					/>
+					<Route path="/appointments" exact element={<Appointments />} />
+					<Route path="/appointments/creat-appointment/" element={<CreateAppointment />}>
+						<Route path=":id_patient/:patient_name" element={null} />
+					</Route>
 				</Routes>
 			</NotificationContext>
 		</HashRouter>

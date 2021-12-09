@@ -1,11 +1,13 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
+const { getAllappointments, createAppointment } = require('./controllers/appointment.controllers')
 const {
 	getAllPatients,
 	createPatient,
 	getPatient,
 	modifyAllergy,
+	findPatientByName,
 } = require('./controllers/patient.controllers')
 
 let mainWindow
@@ -88,10 +90,17 @@ function createWindow(){
 		}
 	})
 
+	/* Actions Patients */
 	ipcMain.on('get-all-patients-main', getAllPatients)
 	ipcMain.on('get-patient-main', getPatient)
 	ipcMain.on('create-patient-main', createPatient)
 	ipcMain.on('modify-patient-allergy-main', modifyAllergy)
+	ipcMain.on('find-patient-by-name-main', findPatientByName)
+
+	/* Actions Appointment */
+	ipcMain.on('get-all-appointment-main', getAllappointments)
+	ipcMain.on('create-appointment-main', createAppointment)
+
 	ipcMain.on('test-main', async (event, args) => {
 		console.log(args)
 		event.reply('test-render', {

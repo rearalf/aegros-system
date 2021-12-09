@@ -1,30 +1,22 @@
 @import '../variables.sass';
 
-.create__appointment {
-	margin-right: 2em;
-	margin-bottom: 2em;
-	.create__appontment__header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 25px;
-		.btn__action {
-			padding: 12px 32px;
-		}
+.CreateAppointment {
+	.create__appointment__header {
+		margin-bottom: 50px;
 	}
-	.forms__create__appointment {
-		display: flex;
-		justify-content: center;
-		.form__create__appointment {
+	.create__appointment__content {
+		display: grid;
+		grid-template-rows: repeat(3, auto);
+		justify-items: center;
+		gap: 50px;
+		.create__appointment__content__form {
+			padding: 25px;
+			border-radius: 5px;
+			background-color: $background_2;
+			box-shadow: $shadow_background_3;
 			display: flex;
 			flex-direction: column;
 			gap: 25px;
-			.btn__group {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				gap: 25px;
-			}
 		}
 	}
 }
