@@ -5,6 +5,7 @@ import { format, formatDistanceToNow } from 'date-fns'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
 import { usePatients } from '@hooks/usePatients'
+import { Loading } from '../components/Loading'
 import {
 	Button,
 	Checkbox,
@@ -216,9 +217,9 @@ export const Patients = () => {
 			) : (
 				<h3>No hay pacientes</h3>
 			) : (
-				<p>Cargando</p>
+				<Loading />
 			) : (
-				<p>Cargando</p>
+				<Loading />
 			)}
 
 			{validaPagination ? (

@@ -174,13 +174,13 @@ export const usePatients = () => {
 		setLoading(!loading)
 		setTimeout(() => {
 			getPateints()
-		}, 1000)
+		}, 2000)
 	}, [])
 	useEffect(
 		() => {
 			setTimeout(() => {
 				getPateints()
-			}, 1000)
+			}, 2000)
 		},
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)
