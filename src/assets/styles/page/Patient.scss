@@ -33,6 +33,9 @@
 						display: flex;
 						flex-direction: column;
 						gap: 5px;
+						.patient__section__personal__information__data__header__data__title {
+							text-transform: capitalize;
+						}
 					}
 				}
 				.patient__section__personal__information__data__header__extra {
@@ -71,10 +74,10 @@
 				gap: 25px;
 				.patient__section__personal__information__allergies__input {
 					width: 100%;
-					.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+					.MuiOutlinedInput-root {
 						height: 150px;
 						padding-right: 5px;
-						textarea.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
+						textarea {
 							height: 100% !important;
 						}
 					}

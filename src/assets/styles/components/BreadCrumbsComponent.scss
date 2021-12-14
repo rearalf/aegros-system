@@ -2,6 +2,7 @@
 
 .MuiBreadcrumbs-root#breadCrumbs {
 	margin-bottom: 25px;
+	text-transform: capitalize;
 	a:hover {
 		color: $color_text_link_hover;
 	}

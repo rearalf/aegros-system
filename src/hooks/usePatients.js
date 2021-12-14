@@ -31,10 +31,6 @@ export const usePatients = () => {
 			const { patients, totalPage, totalPatients, currentPage } = result
 			const resultPatients = JSON.parse(patients)
 			setPatients([])
-			console.log({
-				result,
-				resultPatients,
-			})
 			resultPatients.map(patient => {
 				setPatients(patients => patients.concat(patient))
 			})
@@ -99,7 +95,7 @@ export const usePatients = () => {
 					title: 'Información',
 				}
 			}
-			const result = await ipcRenderer.sendSync('get-all-patients-main', {
+			const result = await ipcRenderer.sendSync('find-patients-by-name-main', {
 				limit: pagesAndLimit.limit,
 				currentPage: pagesAndLimit.currentPage,
 				patient_name,
@@ -111,7 +107,6 @@ export const usePatients = () => {
 				}
 			}
 			const resultPatients = JSON.parse(result.patients)
-			console.log(resultPatients)
 			if (resultPatients.length > 0) {
 				setPatients([])
 				resultPatients.map(patient => {
@@ -174,13 +169,13 @@ export const usePatients = () => {
 		setLoading(!loading)
 		setTimeout(() => {
 			getPateints()
-		}, 2000)
+		}, 1000)
 	}, [])
 	useEffect(
 		() => {
 			setTimeout(() => {
 				getPateints()
-			}, 2000)
+			}, 1000)
 		},
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)

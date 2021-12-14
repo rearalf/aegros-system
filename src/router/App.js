@@ -17,12 +17,16 @@ const App = () => {
 					<Route path="/" exact element={<Login />} />
 					<Route path="/dashboard" exact element={<Dashboard />} />
 					<Route path="/patients" exact element={<Patients />} />
-					<Route path="/patients/create-patient" exact element={<CreatePatient />} />
+					{/* <Route path="/patients/create-patient" element={<CreatePatient />} /> */}
+					<Route path="patients/create-patient" element={<CreatePatient />}>
+						<Route path=":id_patient" element={null} />
+					</Route>
 					<Route path="/patients/patient/:id" exact element={<Patient />} />
 					<Route path="/appointments" exact element={<Appointments />} />
 					<Route path="/appointments/creat-appointment/" element={<CreateAppointment />}>
 						<Route path=":id_patient/:patient_name" element={null} />
 					</Route>
+					<Route path="*" element={<Dashboard />} />
 				</Routes>
 			</NotificationContext>
 		</HashRouter>

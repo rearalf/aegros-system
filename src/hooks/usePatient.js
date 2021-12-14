@@ -29,7 +29,8 @@ export const usePatient = ({ id }) => {
 			}
 
 			/* Separating data */
-			const { patient } = result
+			const { patient_result } = result
+			const patient = JSON.parse(patient_result)
 			const { patient_date_birth, patient_name, patient_allergies } = patient
 
 			/* Calculate age */
@@ -44,19 +45,14 @@ export const usePatient = ({ id }) => {
 					: shorten_name_split.length === 3
 						? `${shorten_name_split[0]} ${shorten_name_split[2]}`
 						: `${shorten_name_split[0]} ${shorten_name_split[1]}`
-
-			setPatient({
-				...patient,
-				patient,
-				patient_age,
-				shorten_name,
-			})
+			patient.patient_age = patient_age
+			patient.shorten_name = shorten_name
+			setPatient(patient)
 			setInputAllergies({
 				...inputAllergies,
 				input_allergies: patient_allergies,
 			})
 			setLoading(false)
-			console.log(patient)
 		} catch (error) {
 			navigate(-1)
 			setLoading(false)
@@ -72,7 +68,9 @@ export const usePatient = ({ id }) => {
 	useEffect(
 		() => {
 			setLoading(true)
-			getPatient()
+			setTimeout(() => {
+				getPatient()
+			}, 1000)
 		},
 		[ id ],
 	)

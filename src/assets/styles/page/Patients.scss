@@ -58,4 +58,16 @@
 			gap: 15px;
 		}
 	}
+	.patients__total {
+		display: flex;
+		justify-content: flex-end;
+		margin: 25px 0;
+	}
+	.table__basic.table__patients.MuiTableContainer-root
+		.MuiTable-root
+		.MuiTableBody-root
+		tr
+		td:first-child {
+		text-transform: capitalize;
+	}
 }

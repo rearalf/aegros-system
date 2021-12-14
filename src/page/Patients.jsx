@@ -5,7 +5,7 @@ import { format, formatDistanceToNow } from 'date-fns'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
 import { usePatients } from '@hooks/usePatients'
-import { Loading } from '../components/Loading'
+import { Loading } from '@components/Loading'
 import {
 	Button,
 	Checkbox,
@@ -41,7 +41,7 @@ export const Patients = () => {
 		handleChangeSortBy,
 	} = usePatients()
 	const { patient_name, show_patient_form, patients_search } = patientSearch
-	const { currentPage, limit, totalPage, sortBy, asc, loadingSort } = pagesAndLimit
+	const { currentPage, limit, totalPage, sortBy, asc, loadingSort, totalPatients } = pagesAndLimit
 
 	const validaPagination =
 		loading && loadingSort && patients.length && totalPage > 1 && !patients_search.length > 0
@@ -221,7 +221,13 @@ export const Patients = () => {
 			) : (
 				<Loading />
 			)}
-
+			{loading &&
+			loadingSort &&
+			patients.length && (
+				<div className="patients__total">
+					<p>Total de pacientes: {totalPatients}</p>
+				</div>
+			)}
 			{validaPagination ? (
 				<Pagination
 					variant="outlined"

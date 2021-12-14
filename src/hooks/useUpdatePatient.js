@@ -1,11 +1,11 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
 import { validateEmails } from '../utils/utils'
 
-export const useCreatePatient = () => {
+const useUpdatePatient = ({ id }) => {
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
@@ -152,27 +152,29 @@ export const useCreatePatient = () => {
 					message: 'Debe de seleccionar un la fecha de nacimiento.',
 				}
 
-			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
-			const { success, patien } = result
-			if (!success) {
+			const result = await ipcRenderer.sendSync('update-patient-main', {
+				id,
+				updates: PatientData,
+			})
+			if (!result.success) {
 				console.log(result)
 				throw {
 					message: 'Ocurrio un error',
 				}
 			}
-			console.log(JSON.parse(patien))
-			navigate('/patients')
+			const patient = JSON.parse(result.patient)
+			navigate(`/patients/patient/${id}`)
 
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Success',
-				subTitleNotification: 'La operación fue un éxito.',
+				subTitleNotification: `Datos de ${patient.patient_name} actualizados.`,
 				typeNotification: 'success',
 			})
 
 			setValidationData({
-				validationData,
+				...validationData,
 				error_name: false,
 				error_email: false,
 				error_gender: false,
@@ -206,14 +208,66 @@ export const useCreatePatient = () => {
 		})
 	}
 
+	const getPatientData = async () => {
+		try {
+			const result = await ipcRenderer.sendSync('get-patient-main', { id })
+			/* result validation */
+			if (!result.success) {
+				console.log(result)
+				throw {
+					message: 'Ocurrio un problema.',
+				}
+			}
+			/* Separating data */
+			const { patient_result } = result
+			const patient = JSON.parse(patient_result)
+			const date_birth = patient.patient_date_birth
+			/* Insert Data Patient */
+			setPatientData({
+				...PatientData,
+				patient_name: patient.patient_name,
+				patient_email: patient.patient_email,
+				patient_gender: patient.patient_gender,
+				patient_phone_number: patient.patient_phone_number,
+				patient_allergies: patient.patient_allergies ? patient.patient_allergies : '',
+				patient_date_birth: format(new Date(date_birth), 'MM/dd/yyyy'),
+				patient_weight: patient.patient_weight ? patient.patient_weight : '',
+				patient_height: patient.patient_height ? patient.patient_height : '',
+			})
+			setLoading(false)
+		} catch (error) {
+			navigate(-1)
+			console.log(error)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: error.message,
+				typeNotification: 'error',
+			})
+		}
+	}
+
+	useEffect(
+		() => {
+			setLoading(true)
+			setTimeout(() => {
+				getPatientData()
+			}, 1000)
+		},
+		[ id ],
+	)
+
 	return {
+		PatientData,
+		validationData,
 		onChangeInput,
+		validateNumbers,
 		onChangeDate,
 		onChangePhone,
-		PatientData,
 		handleCreatePatient,
 		handleCanceled,
-		validationData,
 		loading,
 	}
 }
+
+export default useUpdatePatient

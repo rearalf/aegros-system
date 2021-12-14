@@ -8,6 +8,7 @@ import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AvatarComponent } from '@components/AvatarComponent'
 import { FiPhone, FiMail, FiCalendar, FiEdit, FiSave, FiXCircle, FiTrash } from 'react-icons/fi'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
+import { Loading } from '@components/Loading'
 import '@styles/page/Patient.scss'
 
 export const Patient = () => {
@@ -33,9 +34,11 @@ export const Patient = () => {
 		patient_email,
 		patient_height,
 		patient_weight,
+		_id,
 	} = patient
 
 	const titleTooltip = state_input_allergies ? 'Activar edición' : 'Desactivar edición'
+
 	return (
 		<AppLayout ClassName="Patient">
 			<BreadCrumbsComponent
@@ -51,7 +54,7 @@ export const Patient = () => {
 				]}
 			/>
 			{loading ? (
-				<h1>Cargando</h1>
+				<Loading />
 			) : (
 				<section className="patient__section">
 					<section className="patient__section__personal__information">
@@ -96,13 +99,15 @@ export const Patient = () => {
 								</div>
 							</div>
 							<div className="patient__section__personal__information__data__actions">
-								<Tooltip title="Editar datos">
-									<Button
-										variant="contained"
-										className="btn_basic btn__edit__patient">
-										<FiEdit size={18} />
-									</Button>
-								</Tooltip>
+								<Link to={`/patients/create-patient/${_id}`}>
+									<Tooltip title="Editar datos">
+										<Button
+											variant="contained"
+											className="btn_basic btn__edit__patient">
+											<FiEdit size={18} />
+										</Button>
+									</Tooltip>
+								</Link>
 								<Tooltip title="Eliminar paciente">
 									<IconButton className="btn__icon btn__delete__patient">
 										<FiTrash size={18} />

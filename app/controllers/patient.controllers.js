@@ -78,10 +78,9 @@ const createPatient = async (event, args) => {
 const getPatient = async (event, args) => {
 	try {
 		const patient = await Patient.findById(args.id).lean().exec()
-		console.log(patient)
 		event.returnValue = {
 			success: true,
-			patient,
+			patient_result: JSON.stringify(patient),
 		}
 	} catch (err) {
 		console.log(err)
@@ -115,17 +114,15 @@ const modifyAllergy = async (event, args) => {
 	}
 }
 
-const findPatientByName = async (event, args) => {
+const UpdatePatient = async (event, args) => {
 	try {
-		const { patient_name } = args
-		const patients = await Patient.find({
-			patient_name: {
-				$regex: '.*' + patient_name + '*.',
-			},
-		}).exec()
+		const { id, updates } = args
+		const patient = await Patient.findOneAndUpdate({ id }, updates, {
+			returnOriginal: false,
+		})
 		event.returnValue = {
 			success: true,
-			patients: JSON.stringify(patients),
+			patient: JSON.stringify(patient),
 		}
 	} catch (err) {
 		console.log(err)
@@ -143,5 +140,5 @@ module.exports = {
 	createPatient,
 	getPatient,
 	modifyAllergy,
-	findPatientByName,
+	UpdatePatient,
 }
