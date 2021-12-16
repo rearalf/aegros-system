@@ -3,10 +3,12 @@ import { ipcRenderer } from 'electron'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router'
 import notificationContext from '@context/notificationContext'
+import dialogContext from '@context/dialogContext'
 
 export const usePatient = ({ id }) => {
 	const navigate = useNavigate()
 	/* Context */
+	const { dialog, setDialog } = useContext(dialogContext)
 	const { setNotification } = useContext(notificationContext)
 	/* State */
 	const [ patient, setPatient ] = useState({})
@@ -129,7 +131,7 @@ export const usePatient = ({ id }) => {
 			/* Notification State */
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Success',
+				titleNotification: 'Operación exitosa.',
 				subTitleNotification: 'Datos de alergias actualizados.',
 				typeNotification: 'success',
 			})
@@ -150,6 +152,23 @@ export const usePatient = ({ id }) => {
 		}
 	}
 
+	const handleDeletePatient = () => {
+		setDialog({
+			...dialog,
+			isOpenDialog: true,
+			titleDialog: 'Advertencia',
+			textDialog:
+				'Seguro que desea eleiminar este usuario? Si aceptar no podra recuperar los datos.',
+			typeDialog: 'warning',
+			textButtonDialogAgree: 'No eliminar',
+			textButtonDialogDisagree: 'Eliminar',
+			handleAgreeDialog: () => {},
+			handleDisagreeDialog: () => {
+				console.log('object')
+			},
+		})
+	}
+
 	return {
 		patient,
 		loading,
@@ -158,5 +177,6 @@ export const usePatient = ({ id }) => {
 		changeInputeAllergies,
 		cancelChangeAllergies,
 		saveInputAllergies,
+		handleDeletePatient,
 	}
 }

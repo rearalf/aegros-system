@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { useNavBar } from '@hooks/useNavBar'
 import { NavBar, SideBar } from './NavBar'
 import { Notification } from './Notification'
+import { DialogComponent } from './DialogComponent'
 
 export const AppLayout = ({ children, ClassName = '' }) => {
 	const { openSideBar, changeValueSidebar } = useNavBar()
@@ -13,6 +14,7 @@ export const AppLayout = ({ children, ClassName = '' }) => {
 				{children}
 			</main>
 			<Notification />
+			<DialogComponent />
 		</Fragment>
 	)
 }

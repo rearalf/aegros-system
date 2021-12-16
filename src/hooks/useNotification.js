@@ -22,7 +22,7 @@ export const useNotification = () => {
 	useEffect(
 		() => {
 			if (isOpenNotification) {
-				if (currentCount === 110) {
+				if (currentCount === 100) {
 					changeValueIsOpen();
 					return;
 				}

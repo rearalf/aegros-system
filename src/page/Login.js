@@ -5,6 +5,7 @@ import bigBrandWhite from '@image/big-brand-white.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { useLogin } from '@hooks/useLogin'
 import { Notification } from '@components/Notification'
+import { DialogComponent } from '@components/DialogComponent'
 import { TextField, Button, IconButton } from '@mui/material'
 import '@styles/page/Login.scss'
 
@@ -62,6 +63,7 @@ export const Login = () => {
 				</div>
 			</main>
 			<Notification />
+			<DialogComponent />
 		</Fragment>
 	)
 }

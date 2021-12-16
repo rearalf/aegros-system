@@ -5,16 +5,15 @@
 	top: 3em;
 	right: -100%;
 	border-radius: 10px;
-	transition: all .5s ease-in-out;
-	background-color: $notification_background_color;
+	transition: right 0.5s cubic-bezier(0.18, 0.89, 0.51, 1.16);
 	min-width: 350px;
-	max-width: 350px;
+	background-color: $notification_background_color;
 	.notification__content {
-		display: grid;
+		display: flex;
 		align-items: center;
-		grid-template-columns: 5px 25px auto 25px;
-		grid-gap: 10px;
-		padding: 10px;
+		justify-content: space-between;
+		gap: 15px;
+		padding: 15px;
 	}
 	.notification__bar {
 		height: 40px;
@@ -37,8 +36,20 @@
 			opacity: 0.6;
 		}
 	}
-	.close__icon {
+	.notification__progress__bar__button__icon {
 		cursor: pointer;
+		display: flex;
+		position: relative;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.MuiCircularProgress-root {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
 		&:hover {
 			opacity: .6;
 		}
@@ -63,8 +74,11 @@
 		.close__icon {
 			color: $notification_background_succes;
 		}
-		.loader__bar__notification {
-			background-color: $notification_background_succes;
+		.notification__progress__bar__button__icon {
+			color: $notification_background_succes;
+			.MuiCircularProgress-root {
+				color: $notification_background_succes;
+			}
 		}
 	}
 	&.error {
@@ -76,8 +90,11 @@
 		.close__icon {
 			color: $notification_background_error;
 		}
-		.loader__bar__notification {
-			background-color: $notification_background_error;
+		.notification__progress__bar__button__icon {
+			color: $notification_background_error;
+			.MuiCircularProgress-root {
+				color: $notification_background_error;
+			}
 		}
 	}
 	&.warning {
@@ -89,8 +106,11 @@
 		.close__icon {
 			color: $notification_background_warning;
 		}
-		.loader__bar__notification {
-			background-color: $notification_background_warning;
+		.notification__progress__bar__button__icon {
+			color: $notification_background_warning;
+			.MuiCircularProgress-root {
+				color: $notification_background_warning;
+			}
 		}
 	}
 	&.information {
@@ -102,8 +122,11 @@
 		.close__icon {
 			color: $notification_background_information;
 		}
-		.loader__bar__notification {
-			background-color: $notification_background_information;
+		.notification__progress__bar__button__icon {
+			color: $notification_background_information;
+			.MuiCircularProgress-root {
+				color: $notification_background_information;
+			}
 		}
 	}
 }

@@ -1,11 +1,25 @@
 import { ipcRenderer } from 'electron'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useLocation } from 'react-router'
+import dialogContext from '@context/dialogContext'
 
 export const useNavBar = () => {
+	const { dialog, setDialog } = useContext(dialogContext)
 	const [ openSideBar, setOpenSideBar ] = useState(false)
 	const Closed = () => {
-		ipcRenderer.send('closed')
+		setDialog({
+			...dialog,
+			isOpenDialog: true,
+			titleDialog: 'Información',
+			textDialog: 'Seguro que desea salir? Si acepta cerrara sesión y saldrá del programa.',
+			typeDialog: 'information',
+			textButtonDialogAgree: 'Quedarse',
+			textButtonDialogDisagree: 'Salir',
+			handleAgreeDialog: () => {},
+			handleDisagreeDialog: () => {
+				ipcRenderer.send('closed')
+			},
+		})
 	}
 
 	const Minimized = () => {

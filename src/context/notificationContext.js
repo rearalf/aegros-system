@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react'
 
-const notificationContext = React.createContext({
+const notificationContext = createContext({
 	// Notification
 	isOpenNotification: false,
 	titleNotification: '',
 	subTitleNotification: '',
 	typeNotification: '',
-	// Message
-	isOpenMessage: false,
-	titleMessage: '',
-	subTitleMessage: '',
-});
+})
 
 export function NotificationContext({ children }){
 	const [ notification, setNotification ] = useState({
@@ -18,18 +14,12 @@ export function NotificationContext({ children }){
 		titleNotification: '',
 		subTitleNotification: '',
 		typeNotification: '',
-	});
-	const [ message, setMessage ] = useState({
-		isOpenMessage: false,
-		titleMessage: '',
-		subTitleMessage: '',
-	});
+	})
 	return (
-		<notificationContext.Provider
-			value={{ notification, setNotification, message, setMessage }}>
+		<notificationContext.Provider value={{ notification, setNotification }}>
 			{children}
 		</notificationContext.Provider>
-	);
+	)
 }
 
-export default notificationContext;
+export default notificationContext

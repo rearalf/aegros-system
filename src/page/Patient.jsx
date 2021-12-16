@@ -22,6 +22,7 @@ export const Patient = () => {
 		changeInputeAllergies,
 		cancelChangeAllergies,
 		saveInputAllergies,
+		handleDeletePatient,
 	} = usePatient({
 		id,
 	})
@@ -109,7 +110,9 @@ export const Patient = () => {
 									</Tooltip>
 								</Link>
 								<Tooltip title="Eliminar paciente">
-									<IconButton className="btn__icon btn__delete__patient">
+									<IconButton
+										className="btn__icon btn__delete__patient"
+										onClick={handleDeletePatient}>
 										<FiTrash size={18} />
 									</IconButton>
 								</Tooltip>

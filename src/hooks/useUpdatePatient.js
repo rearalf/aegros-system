@@ -168,7 +168,7 @@ const useUpdatePatient = ({ id }) => {
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Success',
+				titleNotification: 'Operación exitosa.',
 				subTitleNotification: `Datos de ${patient.patient_name} actualizados.`,
 				typeNotification: 'success',
 			})

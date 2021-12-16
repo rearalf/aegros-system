@@ -166,7 +166,7 @@ export const useCreatePatient = () => {
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Success',
+				titleNotification: 'Operación exitosa.',
 				subTitleNotification: 'La operación fue un éxito.',
 				typeNotification: 'success',
 			})
