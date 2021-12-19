@@ -7,7 +7,8 @@ const {
 	createPatient,
 	getPatient,
 	modifyAllergy,
-	UpdatePatient,
+	updatePatient,
+	deletePatient,
 } = require('./controllers/patient.controllers')
 
 let mainWindow
@@ -96,7 +97,8 @@ function createWindow(){
 	ipcMain.on('create-patient-main', createPatient)
 	ipcMain.on('modify-patient-allergy-main', modifyAllergy)
 	ipcMain.on('find-patients-by-name-main', getAllPatients)
-	ipcMain.on('update-patient-main', UpdatePatient)
+	ipcMain.on('update-patient-main', updatePatient)
+	ipcMain.on('delete-patient-main', deletePatient)
 
 	/* Actions Appointment */
 	ipcMain.on('get-all-appointment-main', getAllappointments)

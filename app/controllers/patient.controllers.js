@@ -25,7 +25,7 @@ const getAllPatients = async (event, args) => {
 			}
 		}
 		else {
-			const patients = await Patient.find()
+			const patients = await Patient.find({ patient_state: true })
 				.lean()
 				.limit(limit * 1)
 				.skip((currentPage - 1) * limit)
@@ -59,7 +59,6 @@ const createPatient = async (event, args) => {
 	try {
 		const newPatient = await new Patient(args)
 		const savePatient = await newPatient.save()
-		console.log(savePatient)
 		event.returnValue = {
 			success: true,
 			patien: JSON.stringify(savePatient),
@@ -77,7 +76,8 @@ const createPatient = async (event, args) => {
 
 const getPatient = async (event, args) => {
 	try {
-		const patient = await Patient.findById(args.id).lean().exec()
+		const { id } = args
+		const patient = await Patient.findById(id).lean().exec()
 		event.returnValue = {
 			success: true,
 			patient_result: JSON.stringify(patient),
@@ -114,7 +114,7 @@ const modifyAllergy = async (event, args) => {
 	}
 }
 
-const UpdatePatient = async (event, args) => {
+const updatePatient = async (event, args) => {
 	try {
 		const { id, updates } = args
 		const patient = await Patient.findOneAndUpdate({ id }, updates, {
@@ -135,10 +135,39 @@ const UpdatePatient = async (event, args) => {
 	}
 }
 
+const deletePatient = async (event, args) => {
+	try {
+		const { id, patient_state } = args
+		const patient = await Patient.findByIdAndUpdate(
+			id,
+			{
+				patient_state,
+			},
+			{
+				returnOriginal: false,
+			},
+		)
+		console.log({ args, patient })
+		event.returnValue = {
+			success: true,
+			patient: JSON.stringify(patient),
+		}
+	} catch (err) {
+		console.log(err)
+		event.returnValue = {
+			success: false,
+			error_message: err.message,
+			error_code: err.code,
+			error: err,
+		}
+	}
+}
+
 module.exports = {
 	getAllPatients,
 	createPatient,
 	getPatient,
 	modifyAllergy,
-	UpdatePatient,
+	updatePatient,
+	deletePatient,
 }

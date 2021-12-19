@@ -31,14 +31,22 @@ export const usePatient = ({ id }) => {
 			}
 
 			/* Separating data */
-			const { patient_result } = result
-			const patient = JSON.parse(patient_result)
+			const patient = JSON.parse(result.patient_result)
 			const { patient_date_birth, patient_name, patient_allergies } = patient
-
 			/* Calculate age */
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-			const patient_age = resultAge.split(' ')[1]
-
+			if (
+				new Date(patient_date_birth).getMonth() === 0 ||
+				new Date(patient_date_birth).getMonth() === 1 ||
+				new Date(patient_date_birth).getMonth() === 2
+			) {
+				const patient_age = resultAge.split(' ')[1] - 1
+				patient.patient_age = patient_age
+			}
+			else {
+				const patient_age = resultAge.split(' ')[1]
+				patient.patient_age = patient_age
+			}
 			/* Shorten name */
 			const shorten_name_split = patient_name.split(' ')
 			const shorten_name =
@@ -47,7 +55,6 @@ export const usePatient = ({ id }) => {
 					: shorten_name_split.length === 3
 						? `${shorten_name_split[0]} ${shorten_name_split[2]}`
 						: `${shorten_name_split[0]} ${shorten_name_split[1]}`
-			patient.patient_age = patient_age
 			patient.shorten_name = shorten_name
 			setPatient(patient)
 			setInputAllergies({
@@ -156,17 +163,54 @@ export const usePatient = ({ id }) => {
 		setDialog({
 			...dialog,
 			isOpenDialog: true,
-			titleDialog: 'Advertencia',
-			textDialog:
-				'Seguro que desea eleiminar este usuario? Si aceptar no podra recuperar los datos.',
-			typeDialog: 'warning',
-			textButtonDialogAgree: 'No eliminar',
-			textButtonDialogDisagree: 'Eliminar',
+			titleDialog: patient.patient_state ? 'Advertencia' : 'Información',
+			textDialog: patient.patient_state
+				? 'Esta apunto de deshabilitar un paciente. Ya no podra crear citas con este paciente.'
+				: 'Esta apunto de habilitar un paciente. Podra crear citas con este paciente.',
+			typeDialog: patient.patient_state ? 'warning' : 'information',
+			textButtonDialogAgree: patient.patient_state ? 'No deshabilitar' : 'No habilitar',
+			textButtonDialogDisagree: patient.patient_state ? 'Deshabilitar' : 'Habilitar',
 			handleAgreeDialog: () => {},
 			handleDisagreeDialog: () => {
-				console.log('object')
+				deletePatient()
 			},
 		})
+	}
+
+	const deletePatient = async () => {
+		try {
+			/* calling the function for delete patient */
+			const result = await ipcRenderer.sendSync('delete-patient-main', {
+				id,
+				patient_state: !patient.patient_state,
+			})
+			/* Validation */
+			if (!result.success) {
+				console.log(result)
+				throw {
+					message: 'Ocurrio un error al deshabilitar al paciente.',
+				}
+			}
+			/* Notification State */
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Operación exitosa.',
+				subTitleNotification: `El paciente fue ${patient.patient_state
+					? 'deshabilitado'
+					: 'habilitado'}.`,
+				typeNotification: 'success',
+			})
+			/* navigate(-1) */
+			getPatient()
+		} catch (error) {
+			console.log(error)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: error.message,
+				typeNotification: 'error',
+			})
+		}
 	}
 
 	return {

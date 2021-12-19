@@ -54,23 +54,42 @@ export const CreatePatient = () => {
 		error_weight,
 		error_height,
 	} = validationData
+	const linksToBreadCrumbsComponent = id_patient
+		? [
+				{
+					link_name: 'Pacientes',
+					link_to: '/patients',
+				},
+				{
+					link_name: patient_name,
+					link_to: `/patients/patient/${id_patient}`,
+				},
+				{
+					link_name: `Actualizar datos de ${patient_name}`,
+					link_to: '/patients/create-patient',
+				},
+			]
+		: [
+				{
+					link_name: 'Pacientes',
+					link_to: '/patients',
+				},
+				{
+					link_name: 'Crear paciente',
+					link_to: '/patients/create-patient',
+				},
+			]
+
 	return (
 		<AppLayout ClassName="create__patient">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Pacientes',
-						link_to: '/patients',
-					},
-					{
-						link_name: 'Crear paciente',
-						link_to: '/patients/create-patient',
-					},
-				]}
-			/>
-			<header className="create__patient__header">
-				<h1 className="create__patient__header__title">Crear paciente</h1>
-			</header>
+			{!loading && <BreadCrumbsComponent links={linksToBreadCrumbsComponent} />}
+			{!loading && (
+				<header className="create__patient__header">
+					<h1 className="create__patient__header__title">
+						{id_patient ? `Actualizar datos de ${patient_name}` : 'Crear paciente'}
+					</h1>
+				</header>
+			)}
 			{loading ? (
 				<Loading />
 			) : (

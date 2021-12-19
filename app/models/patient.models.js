@@ -39,6 +39,10 @@ const patientSchema = new Schema(
 		patient_height: {
 			type: Number,
 		},
+		patient_state: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	{
 		timestamps: true,

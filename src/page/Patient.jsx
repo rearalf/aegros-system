@@ -6,7 +6,16 @@ import { usePatient } from '@hooks/usePatient'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AvatarComponent } from '@components/AvatarComponent'
-import { FiPhone, FiMail, FiCalendar, FiEdit, FiSave, FiXCircle, FiTrash } from 'react-icons/fi'
+import {
+	FiPhone,
+	FiMail,
+	FiCalendar,
+	FiEdit,
+	FiSave,
+	FiXCircle,
+	FiFrown,
+	FiSmile,
+} from 'react-icons/fi'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
 import { Loading } from '@components/Loading'
 import '@styles/page/Patient.scss'
@@ -35,6 +44,7 @@ export const Patient = () => {
 		patient_email,
 		patient_height,
 		patient_weight,
+		patient_state,
 		_id,
 	} = patient
 
@@ -109,13 +119,23 @@ export const Patient = () => {
 										</Button>
 									</Tooltip>
 								</Link>
-								<Tooltip title="Eliminar paciente">
-									<IconButton
-										className="btn__icon btn__delete__patient"
-										onClick={handleDeletePatient}>
-										<FiTrash size={18} />
-									</IconButton>
-								</Tooltip>
+								{patient_state ? (
+									<Tooltip title="Deshabilitar paciente">
+										<IconButton
+											className="btn__icon btn__delete__patient"
+											onClick={handleDeletePatient}>
+											<FiFrown size={24} />
+										</IconButton>
+									</Tooltip>
+								) : (
+									<Tooltip title="Habilitar paciente">
+										<IconButton
+											className="btn__icon btn__delete__patient"
+											onClick={handleDeletePatient}>
+											<FiSmile size={22} />
+										</IconButton>
+									</Tooltip>
+								)}
 							</div>
 						</div>
 						<div className="patient__section__personal__information__allergies">

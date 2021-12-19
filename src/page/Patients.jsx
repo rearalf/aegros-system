@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FiActivity, FiUserPlus, FiSearch, FiX } from 'react-icons/fi'
+import { FiActivity, FiUserPlus, FiSearch, FiX, FiFrown } from 'react-icons/fi'
 import { format, formatDistanceToNow } from 'date-fns'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
@@ -72,6 +72,7 @@ export const Patients = () => {
 								patient_date_birth,
 								patient_email,
 								patient_phone_number,
+								patient_state,
 							} = patient
 							const formatDate = format(
 								new Date(patient_date_birth),
@@ -79,13 +80,37 @@ export const Patients = () => {
 							)
 							const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 							const patient_age = resultAge.split(' ')
+							let validateAge = false
+							if (
+								new Date(patient_date_birth).getMonth() === 0 ||
+								new Date(patient_date_birth).getMonth() === 1 ||
+								new Date(patient_date_birth).getMonth() === 2
+							) {
+								validateAge = true
+							}
+
+							const validateNameState = patient_state ? (
+								patient_name
+							) : (
+								<Tooltip title="Paciente deshabilitado">
+									<div>
+										<FiFrown />
+										{patient_name}
+									</div>
+								</Tooltip>
+							)
 							return (
 								<TableRow
 									key={_id}
-									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell>{patient_name}</TableCell>
+									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									className={`${patient_state
+										? null
+										: 'table__patients__row__disabled'}`}>
+									<TableCell>{validateNameState}</TableCell>
 									<TableCell align="center">{formatDate}</TableCell>
-									<TableCell align="center">{patient_age[1]}</TableCell>
+									<TableCell align="center">
+										{validateAge ? patient_age[1] - 1 : patient_age[1]}
+									</TableCell>
 									<TableCell align="center">
 										<Tooltip title="Enviar un correo">
 											<a href={`mailto:${patient_email}`}>{patient_email}</a>
@@ -223,7 +248,7 @@ export const Patients = () => {
 			)}
 			{loading &&
 			loadingSort &&
-			patients.length && (
+			patients.length > 0 && (
 				<div className="patients__total">
 					<p>Total de pacientes: {totalPatients}</p>
 				</div>

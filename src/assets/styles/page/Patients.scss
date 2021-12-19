@@ -70,4 +70,18 @@
 		td:first-child {
 		text-transform: capitalize;
 	}
+
+	.table__basic.table__patients.MuiTableContainer-root
+		.MuiTableRow-root.table__patients__row__disabled {
+		.MuiTableCell-root:first-child div {
+			color: $border_color_button_error;
+			display: flex;
+			gap: 5px;
+			align-items: center;
+			svg {
+				width: 18px;
+				height: 18px;
+			}
+		}
+	}
 }
