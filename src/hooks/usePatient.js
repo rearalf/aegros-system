@@ -33,6 +33,7 @@ export const usePatient = ({ id }) => {
 			/* Separating data */
 			const patient = JSON.parse(result.patient_result)
 			const { patient_date_birth, patient_name, patient_allergies } = patient
+			console.log(patient)
 			/* Calculate age */
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 			if (

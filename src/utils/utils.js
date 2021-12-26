@@ -45,3 +45,14 @@ export function validateEmails(email){
 		return false
 	}
 }
+
+export function capitlizeString(word){
+	let wordSeparation = word.split(' ')
+	wordSeparation = wordSeparation.map(word => {
+		const firstletter = word.charAt(0).toUpperCase()
+		word = firstletter.concat(word.slice(1, word.length))
+		return word
+	})
+	wordSeparation = wordSeparation.join(' ')
+	return wordSeparation
+}

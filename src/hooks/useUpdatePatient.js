@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
-import { validateEmails } from '../utils/utils'
+import { capitlizeString, validateEmails } from '../utils/utils'
 
 const useUpdatePatient = ({ id }) => {
 	const navigate = useNavigate()
@@ -37,29 +37,20 @@ const useUpdatePatient = ({ id }) => {
 	const onChangeInput = e => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
-		if (e.target.type === 'number') {
-			validateNumbers(value, name)
+		if (e.target.type === 'number') validateNumbers(value, name)
+		if (name === 'patient_name') {
+			/* Change state */
 			setPatientData({
 				...PatientData,
-				[name]: value,
+				[name]: capitlizeString(value),
 			})
 			return
 		}
-		/* For validation inputs */
-		const names = name.split('_')
-		if (value.length === 0) {
-			errorMessageInputs(`error_${names[1]}`, true)
-		}
-		else {
-			errorMessageInputs(`error_${names[1]}`, false)
-		}
-
 		/* Change state */
 		setPatientData({
 			...PatientData,
 			[name]: value,
 		})
-		return
 	}
 
 	/* Validation numbers for weight and height */
@@ -85,13 +76,6 @@ const useUpdatePatient = ({ id }) => {
 			})
 			errorMessageInputs('error_date_birth', false)
 		} catch (error) {
-			console.log(error)
-			setNotification({
-				isOpenNotification: true,
-				titleNotification: 'Error',
-				subTitleNotification: 'Fecha no valida',
-				typeNotification: 'error',
-			})
 			errorMessageInputs('error_date_birth', true)
 		}
 	}
@@ -146,11 +130,23 @@ const useUpdatePatient = ({ id }) => {
 					name: 'error_phone_number',
 					message: 'Debe de agregar un número de teléfono.',
 				}
-			if (PatientData.patient_date_birth === '')
+			if (PatientData.patient_date_birth === '' || validationData.error_date_birth === true)
 				throw {
 					name: 'error_date_birth',
-					message: 'Debe de seleccionar un la fecha de nacimiento.',
+					message: 'Debe de agregar un la fecha de nacimiento valida.',
 				}
+			if (PatientData.patient_weight !== '' && PatientData.patient_weight < 0) {
+				throw {
+					name: 'error_weight',
+					message: 'Debe de agregar un peso valido.',
+				}
+			}
+			if (PatientData.patient_height !== '' && PatientData.patient_height < 0) {
+				throw {
+					name: 'error_height',
+					message: 'Debe de agregar una altura valida.',
+				}
+			}
 
 			const result = await ipcRenderer.sendSync('update-patient-main', {
 				id,
@@ -172,18 +168,6 @@ const useUpdatePatient = ({ id }) => {
 				subTitleNotification: `Datos de ${patient.patient_name} actualizados.`,
 				typeNotification: 'success',
 			})
-
-			setValidationData({
-				...validationData,
-				error_name: false,
-				error_email: false,
-				error_gender: false,
-				error_allgergies: false,
-				error_date_birth: false,
-				error_phone_number: false,
-				error_weight: false,
-				error_height: false,
-			})
 		} catch (error) {
 			console.log(error)
 			/* Function for show error in inputs */
@@ -199,13 +183,13 @@ const useUpdatePatient = ({ id }) => {
 	}
 
 	const handleCanceled = () => {
-		navigate(-1)
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
-			subTitleNotification: 'Se cancelo la creación del usuario.',
+			subTitleNotification: `Se cancelo modificar los datos del paciente.`,
 			typeNotification: 'information',
 		})
+		navigate(-1)
 	}
 
 	const getPatientData = async () => {
@@ -233,6 +217,7 @@ const useUpdatePatient = ({ id }) => {
 				patient_date_birth: format(new Date(date_birth), 'MM/dd/yyyy'),
 				patient_weight: patient.patient_weight ? patient.patient_weight : '',
 				patient_height: patient.patient_height ? patient.patient_height : '',
+				patient_name_static: patient.patient_name,
 			})
 			setLoading(false)
 		} catch (error) {

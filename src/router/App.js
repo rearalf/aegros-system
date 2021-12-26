@@ -9,6 +9,8 @@ import { CreateAppointment } from '@page/CreateAppointment'
 import { CreatePatient } from '@page/CreatePatient'
 import { Patients } from '@page/Patients'
 import { Patient } from '@page/Patient'
+import { Notification } from '@components/Notification'
+import { DialogComponent } from '@components/DialogComponent'
 
 const App = () => {
 	return (
@@ -31,6 +33,8 @@ const App = () => {
 						</Route>
 						<Route path="*" element={<Dashboard />} />
 					</Routes>
+					<Notification />
+					<DialogComponent />
 				</DialogContext>
 			</NotificationContext>
 		</HashRouter>

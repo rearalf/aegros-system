@@ -12,16 +12,21 @@ export const BreadCrumbsComponent = ({
 		},
 	],
 }) => {
+	const totalLinks = links.length - 1
 	return (
 		<Breadcrumbs
 			aria-label="breadcrumb"
 			id="breadCrumbs"
 			separator={<FiChevronRight size={18} />}>
-			{links.map(({ link_name, link_to }) => (
-				<Link to={link_to} key={link_to}>
-					{link_name}
-				</Link>
-			))}
+			{links.map(({ link_name, link_to }, index) => {
+				return totalLinks === index ? (
+					<p key={link_to}>{link_name}</p>
+				) : (
+					<Link to={link_to} key={link_to}>
+						{link_name}
+					</Link>
+				)
+			})}
 		</Breadcrumbs>
 	)
 }

@@ -9,10 +9,10 @@
 	min-width: 350px;
 	background-color: $notification_background_color;
 	.notification__content {
-		display: flex;
+		display: grid;
 		align-items: center;
-		justify-content: space-between;
-		gap: 15px;
+		grid-template-columns: 5px 25px auto 40px;
+		gap: 10px;
 		padding: 15px;
 	}
 	.notification__bar {

@@ -124,11 +124,19 @@ button:focus-visible, a:focus-visible
         outline: $background_color_button_error_focus auto 1px
 
 /** Inputs **/
-.MuiFormControl-root .MuiOutlinedInput-input[type=text]
-    text-transform: capitalize
 .MuiFormControl-root:hover .MuiOutlinedInput-notchedOutline
     border-color: $border_color_input_hover!important
-
+.MuiFormControl-root .MuiOutlinedInput-root .MuiInputAdornment-root
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 10px
+    i
+        display: flex
+        align-items: center
+        color: $color__input__error
+.MuiFormControl-root .MuiOutlinedInput-root.MuiSelect-root .MuiInputAdornment-root
+    padding-right: 20px
 .MuiFormControl-root:hover textarea.Mui-disabled + .MuiOutlinedInput-notchedOutline
     border-color: rgba($color_icons, .6)!important
 textarea

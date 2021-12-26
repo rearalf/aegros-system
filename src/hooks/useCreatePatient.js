@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
-import { validateEmails } from '../utils/utils'
+import { capitlizeString, validateEmails } from '@utils/utils'
 
 export const useCreatePatient = () => {
 	const navigate = useNavigate()
@@ -37,29 +37,20 @@ export const useCreatePatient = () => {
 	const onChangeInput = e => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
-		if (e.target.type === 'number') {
-			validateNumbers(value, name)
+		if (e.target.type === 'number') validateNumbers(value, name)
+		if (name === 'patient_name') {
+			/* Change state */
 			setPatientData({
 				...PatientData,
-				[name]: value,
+				[name]: capitlizeString(value),
 			})
 			return
 		}
-		/* For validation inputs */
-		const names = name.split('_')
-		if (value.length === 0) {
-			errorMessageInputs(`error_${names[1]}`, true)
-		}
-		else {
-			errorMessageInputs(`error_${names[1]}`, false)
-		}
-
 		/* Change state */
 		setPatientData({
 			...PatientData,
 			[name]: value,
 		})
-		return
 	}
 
 	/* Validation numbers for weight and height */
@@ -146,41 +137,39 @@ export const useCreatePatient = () => {
 					name: 'error_phone_number',
 					message: 'Debe de agregar un número de teléfono.',
 				}
-			if (PatientData.patient_date_birth === '')
+			if (PatientData.patient_date_birth === '' || validationData.error_date_birth === true)
 				throw {
 					name: 'error_date_birth',
 					message: 'Debe de seleccionar un la fecha de nacimiento.',
 				}
+			if (PatientData.patient_weight !== '' && PatientData.patient_weight < 0) {
+				throw {
+					name: 'error_weight',
+					message: 'Debe de agregar un peso valido.',
+				}
+			}
+			if (PatientData.patient_height !== '' && PatientData.patient_height < 0) {
+				throw {
+					name: 'error_height',
+					message: 'Debe de agregar una altura valida.',
+				}
+			}
 
 			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
-			const { success, patien } = result
-			if (!success) {
+			if (!result.success) {
 				console.log(result)
 				throw {
 					message: 'Ocurrio un error',
 				}
 			}
-			console.log(JSON.parse(patien))
+			const patient = JSON.parse(result.patien)
 			navigate('/patients')
-
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Operación exitosa.',
-				subTitleNotification: 'La operación fue un éxito.',
+				subTitleNotification: `Paciente ${patient.patient_name} creado.`,
 				typeNotification: 'success',
-			})
-
-			setValidationData({
-				validationData,
-				error_name: false,
-				error_email: false,
-				error_gender: false,
-				error_allgergies: false,
-				error_date_birth: false,
-				error_phone_number: false,
-				error_weight: false,
-				error_height: false,
 			})
 		} catch (error) {
 			console.log(error)

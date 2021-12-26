@@ -77,7 +77,7 @@ const createPatient = async (event, args) => {
 const getPatient = async (event, args) => {
 	try {
 		const { id } = args
-		const patient = await Patient.findById(id).lean().exec()
+		const patient = await Patient.findOne({ _id: id })
 		event.returnValue = {
 			success: true,
 			patient_result: JSON.stringify(patient),
@@ -98,7 +98,7 @@ const modifyAllergy = async (event, args) => {
 		const { id, patient_allergies } = args
 		const patient = await Patient.findByIdAndUpdate(id, {
 			patient_allergies,
-		})
+		}).exec()
 		event.returnValue = {
 			success: true,
 			patient,
@@ -117,9 +117,9 @@ const modifyAllergy = async (event, args) => {
 const updatePatient = async (event, args) => {
 	try {
 		const { id, updates } = args
-		const patient = await Patient.findOneAndUpdate({ id }, updates, {
+		const patient = await Patient.findByIdAndUpdate(id, updates, {
 			returnOriginal: false,
-		})
+		}).exec()
 		event.returnValue = {
 			success: true,
 			patient: JSON.stringify(patient),
@@ -147,7 +147,6 @@ const deletePatient = async (event, args) => {
 				returnOriginal: false,
 			},
 		)
-		console.log({ args, patient })
 		event.returnValue = {
 			success: true,
 			patient: JSON.stringify(patient),
