@@ -187,7 +187,7 @@ export const Patient = () => {
 					<section className="patient__section__apointment">
 						<div className="patient__section__apointment__header">
 							<h2>Citas</h2>
-							<Link to={`/appointments/creat-appointment/${id}/${patient_name}`}>
+							<Link to={`/appointments/creat-appointment/${id}`}>
 								<Button variant="contained" className="btn_basic">
 									<FiCalendar size={18} /> Crear cita
 								</Button>

@@ -1,7 +1,11 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
-const { getAllappointments, createAppointment } = require('./controllers/appointment.controllers')
+const {
+	getAllappointments,
+	createAppointment,
+	findPatientByName,
+} = require('./controllers/appointment.controllers')
 const {
 	getAllPatients,
 	createPatient,
@@ -102,6 +106,7 @@ function createWindow(){
 
 	/* Actions Appointment */
 	ipcMain.on('get-all-appointment-main', getAllappointments)
+	ipcMain.on('find-appointment-patient-by-name-main', findPatientByName)
 	ipcMain.on('create-appointment-main', createAppointment)
 
 	ipcMain.on('test-main', async (event, args) => {

@@ -29,7 +29,7 @@ const App = () => {
 						<Route
 							path="/appointments/creat-appointment/"
 							element={<CreateAppointment />}>
-							<Route path=":id_patient/:patient_name" element={null} />
+							<Route path=":patient_id" element={null} />
 						</Route>
 						<Route path="*" element={<Dashboard />} />
 					</Routes>

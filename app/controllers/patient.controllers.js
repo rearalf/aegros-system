@@ -77,7 +77,7 @@ const createPatient = async (event, args) => {
 const getPatient = async (event, args) => {
 	try {
 		const { id } = args
-		const patient = await Patient.findOne({ _id: id })
+		const patient = await Patient.findById({ _id: id }).lean().populate('appointments')
 		event.returnValue = {
 			success: true,
 			patient_result: JSON.stringify(patient),

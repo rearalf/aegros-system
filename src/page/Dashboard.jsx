@@ -24,9 +24,11 @@ export const Dashboard = () => {
 					<h3>Bienvenid@ Mulan Rodriguez</h3>
 				</article>
 				<div className="dashboard__header__button__group">
-					<Button variant="contained" className="btn_basic">
-						<FiExternalLink size={18} /> Crear cita
-					</Button>
+					<Link to="/appointments/creat-appointment">
+						<Button variant="contained" className="btn_basic">
+							<FiExternalLink size={18} /> Crear cita
+						</Button>
+					</Link>
 					<Link to="/patients/create-patient">
 						<Button variant="contained" className="btn_basic">
 							<FiUserPlus size={18} /> Nuevo paciente

@@ -2,18 +2,9 @@ const { Schema, model } = require('mongoose')
 
 const appointmentSchema = new Schema(
 	{
-		/* appointment_patient: {
-			patient_name: {
-				type: String,
-			},
-			patient_id: {
-				type: String,
-				required: [ true, 'Ocurrio un problema con el paciente al crear la fecha' ],
-			},
-		}, */
-		appointment_patient: {
+		patient: {
 			type: Schema.Types.ObjectId,
-			ref: 'patient',
+			ref: 'Patient',
 		},
 		appointment_date: {
 			type: Date,
@@ -37,4 +28,4 @@ const appointmentSchema = new Schema(
 	},
 )
 
-module.exports = model('appointment', appointmentSchema)
+module.exports = model('Appointment', appointmentSchema)

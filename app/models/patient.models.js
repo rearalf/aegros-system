@@ -43,10 +43,16 @@ const patientSchema = new Schema(
 			type: Boolean,
 			default: true,
 		},
+		appointments: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Appointment',
+			},
+		],
 	},
 	{
 		timestamps: true,
 	},
 )
 
-module.exports = model('patient', patientSchema)
+module.exports = model('Patient', patientSchema)
