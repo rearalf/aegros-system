@@ -5,6 +5,7 @@ import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import useAppointments from '@hooks/useAppoitnments'
 import { Loading } from '@components/Loading'
+import { format, formatDistanceToNow } from 'date-fns'
 import {
 	Button,
 	IconButton,
@@ -18,19 +19,6 @@ import {
 	Tooltip,
 } from '@mui/material'
 import '@styles/page/Appointments.scss'
-import { format, formatDistanceToNow } from 'date-fns'
-
-function createData(name, calories, fat, carbs, protein){
-	return { name, calories, fat, carbs, protein }
-}
-
-const rows = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
 
 export const Appointments = () => {
 	const { loading, appointments } = useAppointments()
@@ -42,7 +30,7 @@ export const Appointments = () => {
 						<TableRow>
 							<TableCell>Nombre del paciente</TableCell>
 							<TableCell align="center">Fecha de la cita</TableCell>
-							<TableCell align="center">Fecha de creación</TableCell>
+							<TableCell align="center">Creado</TableCell>
 							<TableCell align="center">Estado</TableCell>
 							<TableCell align="center">Acciones</TableCell>
 						</TableRow>
@@ -58,10 +46,9 @@ export const Appointments = () => {
 							} = appointment
 							const formatDate = format(
 								new Date(appointment_date),
-								'dd/MMM/yyyy - h:m bbbb',
+								'dd / MMM / yyyy - h:m bbbb',
 							)
 							const formatDateAt = formatDistanceToNow(new Date(createdAt))
-							console.log(formatDateAt)
 							return (
 								<TableRow
 									key={_id}
@@ -71,7 +58,11 @@ export const Appointments = () => {
 									</TableCell>
 									<TableCell align="center">{formatDate}</TableCell>
 									<TableCell align="center">{formatDateAt}</TableCell>
-									<TableCell align="center">{appointment_state}</TableCell>
+									<TableCell
+										align="center"
+										className={`appointment__table__state ${appointment_state}`}>
+										{appointment_state}
+									</TableCell>
 									<TableCell align="center">
 										<Tooltip title="Ver más">
 											<IconButton className="btn__icon bnt__edit">

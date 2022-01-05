@@ -38,14 +38,6 @@ export const useCreatePatient = () => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
 		if (e.target.type === 'number') validateNumbers(value, name)
-		if (name === 'patient_name') {
-			/* Change state */
-			setPatientData({
-				...PatientData,
-				[name]: capitlizeString(value),
-			})
-			return
-		}
 		/* Change state */
 		setPatientData({
 			...PatientData,
@@ -155,7 +147,11 @@ export const useCreatePatient = () => {
 				}
 			}
 
-			const result = await ipcRenderer.sendSync('create-patient-main', PatientData)
+			const patient_data = {
+				...PatientData,
+				patient_name: capitlizeString(PatientData.patient_name),
+			}
+			const result = await ipcRenderer.sendSync('create-patient-main', patient_data)
 			if (!result.success) {
 				console.log(result)
 				throw {

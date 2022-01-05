@@ -38,14 +38,6 @@ const useUpdatePatient = ({ id }) => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
 		if (e.target.type === 'number') validateNumbers(value, name)
-		if (name === 'patient_name') {
-			/* Change state */
-			setPatientData({
-				...PatientData,
-				[name]: capitlizeString(value),
-			})
-			return
-		}
 		/* Change state */
 		setPatientData({
 			...PatientData,
@@ -148,9 +140,13 @@ const useUpdatePatient = ({ id }) => {
 				}
 			}
 
+			const patient_data = {
+				...PatientData,
+				patient_name: capitlizeString(PatientData.patient_name),
+			}
 			const result = await ipcRenderer.sendSync('update-patient-main', {
 				id,
-				updates: PatientData,
+				updates: patient_data,
 			})
 			if (!result.success) {
 				console.log(result)

@@ -47,8 +47,8 @@ export const useCreateAppointment = ({ patient_id }) => {
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
-				subTitleNotification: error.message ? error.message : 'Ocurrio un error',
-				typeNotification: error.message ? 'information' : 'error',
+				subTitleNotification: 'Ocurrio un error',
+				typeNotification: 'error',
 			})
 		}
 	}
@@ -162,23 +162,20 @@ export const useCreateAppointment = ({ patient_id }) => {
 				}
 			const current_date = new Date(subMinutes(new Date(), 5)).getTime()
 			const new_date = new Date(appointment.appointment_date).getTime()
-			const last_appointment = appointments[appointments.length - 1]
-			const last_fifteen = new Date(
-				addMinutes(new Date(last_appointment.appointment_date), 15),
-			).getTime()
-			if (last_appointment.appointment_state === 'Activa') {
-				throw {
-					message: 'Este paciente ya tiene una cita activa.',
-				}
-			}
 			if (current_date > new_date)
 				throw {
 					message: 'La fecha está atras de la fecha actual.',
 				}
-			if (last_fifteen >= new_date)
-				throw {
-					message: 'La cita está demasiado cerca de la ultima cita.',
+			if (appointments.length > 0) {
+				const last_appointment = appointments[appointments.length - 1]
+				if (last_appointment.appointment_state === 'Activa') {
+					throw {
+						type: 'information',
+						title: 'Información',
+						message: 'Este paciente ya tiene una cita activa.',
+					}
 				}
+			}
 			await ipcRenderer.send('create-appointment-main', appointment)
 			await ipcRenderer.on('create-appointment-reply', async (event, args) => {
 				if (!args.success) {
@@ -195,6 +192,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 					patient_result,
 				})
 			})
+			navigate(-1)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
@@ -207,9 +205,9 @@ export const useCreateAppointment = ({ patient_id }) => {
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Error',
+				titleNotification: error.title ? error.title : 'Error',
 				subTitleNotification: error.message,
-				typeNotification: 'error',
+				typeNotification: error.type ? error.type : 'error',
 			})
 		}
 	}

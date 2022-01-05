@@ -85,7 +85,7 @@ export const CreateAppointment = () => {
 						<div className="create__appointment__content__patient__find">
 							<h2>Pacientes encontrados</h2>
 							<div className="create__appointment__content__patient__find__patients">
-								{patients.length > 0 &&
+								{patients.length > 0 ? (
 									patients.map(patient => {
 										return (
 											<article
@@ -101,7 +101,10 @@ export const CreateAppointment = () => {
 												</IconButton>
 											</article>
 										)
-									})}
+									})
+								) : (
+									<h3>No hay citas</h3>
+								)}
 							</div>
 						</div>
 					)}
@@ -125,10 +128,10 @@ export const CreateAppointment = () => {
 							<DateTimePicker
 								label="Hora de la cita"
 								renderInput={props => <TextField {...props} />}
+								minDate={new Date()}
 								value={appointment_date}
 								onChange={handleChangeInpuDate}
 							/>
-							{/* minDate={new Date()} */}
 						</LocalizationProvider>
 					</div>
 					<div className="btn__group">

@@ -69,19 +69,22 @@
 		tr
 		td:first-child {
 		text-transform: capitalize;
+		&:hover a div {
+			color: $color_text_link_hover;
+		}
 	}
-
-	.table__basic.table__patients.MuiTableContainer-root
-		.MuiTableRow-root.table__patients__row__disabled {
-		.MuiTableCell-root:first-child div {
+	.table__basic.table__patients {
+		.table__patients__row__disabled a div {
 			color: $border_color_button_error;
 			display: flex;
 			gap: 5px;
 			align-items: center;
-			svg {
-				width: 18px;
-				height: 18px;
-			}
+		}
+		.table__patients__row__actions {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 20px;
 		}
 	}
 }

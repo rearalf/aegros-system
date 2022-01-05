@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FiActivity, FiUserPlus, FiSearch, FiX, FiFrown } from 'react-icons/fi'
+import { FiActivity, FiUserPlus, FiSearch, FiX, FiFrown, FiCalendar } from 'react-icons/fi'
 import { format, formatDistanceToNow } from 'date-fns'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
@@ -90,9 +90,11 @@ export const Patients = () => {
 							}
 
 							const validateNameState = patient_state ? (
-								patient_name
+								<Tooltip title="Ver más">
+									<div>{patient_name}</div>
+								</Tooltip>
 							) : (
-								<Tooltip title="Paciente deshabilitado">
+								<Tooltip title="Paciente deshabilitado. Ver más">
 									<div>
 										<FiFrown />
 										{patient_name}
@@ -102,11 +104,23 @@ export const Patients = () => {
 							return (
 								<TableRow
 									key={_id}
-									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-									className={`${patient_state
-										? null
-										: 'table__patients__row__disabled'}`}>
-									<TableCell>{validateNameState}</TableCell>
+									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+									<TableCell
+										className={`${patient_state
+											? null
+											: 'table__patients__row__disabled'}`}>
+										<Tooltip
+											title={`${patient_state
+												? 'Ver más'
+												: 'Paciente deshabilitado. Ver más'}`}>
+											<Link to={`/patients/patient/${_id}`}>
+												<div>
+													{patient_state ? null : <FiFrown size={18} />}
+													{patient_name}
+												</div>
+											</Link>
+										</Tooltip>
+									</TableCell>
 									<TableCell align="center">{formatDate}</TableCell>
 									<TableCell align="center">
 										{validateAge ? patient_age[1] - 1 : patient_age[1]}
@@ -117,7 +131,16 @@ export const Patients = () => {
 										</Tooltip>
 									</TableCell>
 									<TableCell align="center">{patient_phone_number}</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										className="table__patients__row__actions">
+										<Tooltip title="Crear cita">
+											<Link to={`/appointments/creat-appointment/${_id}`}>
+												<IconButton className="btn__icon bnt__edit">
+													<FiCalendar size={18} />
+												</IconButton>
+											</Link>
+										</Tooltip>
 										<Tooltip title="Ver más">
 											<Link to={`/patients/patient/${_id}`}>
 												<IconButton className="btn__icon bnt__edit">

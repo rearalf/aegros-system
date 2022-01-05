@@ -1,7 +1,23 @@
+@import '../variables.sass';
+
 .Appointments {
 	.appointments__header {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 25px;
+	}
+	.appointment__table {
+		.appointment__table__state {
+			font-weight: 500;
+			&.Activa {
+				color: $background_color_button_success_hover;
+			}
+			&.Inactiva {
+				color: $background_color_button_basic_hover;
+			}
+			&.Cancelada {
+				color: $color_text_button_error;
+			}
+		}
 	}
 }

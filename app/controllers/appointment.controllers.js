@@ -4,7 +4,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity
 
 const getAllappointments = async event => {
 	try {
-		const appointments = await Appointment.find().lean().populate('patients')
+		const appointments = await Appointment.find().lean().populate('patient')
 		event.returnValue = {
 			success: true,
 			appointments: JSON.stringify(appointments),
