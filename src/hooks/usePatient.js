@@ -14,6 +14,9 @@ export const usePatient = ({ id }) => {
 	const [ patient, setPatient ] = useState({})
 	const [ appointments, setAppointments ] = useState([])
 	const [ loading, setLoading ] = useState(false)
+	const [ inputStates, setInputState ] = useState({
+		state__appointment: 0,
+	})
 	const [ inputAllergies, setInputAllergies ] = useState({
 		state_input_allergies: true,
 		state_button_allergies: true,
@@ -76,16 +79,6 @@ export const usePatient = ({ id }) => {
 			})
 		}
 	}
-
-	useEffect(
-		() => {
-			setLoading(true)
-			setTimeout(() => {
-				getPatient()
-			}, 1000)
-		},
-		[ id ],
-	)
 
 	const changeStateInputAllergies = () =>
 		setInputAllergies({
@@ -162,6 +155,18 @@ export const usePatient = ({ id }) => {
 		}
 	}
 
+	const handleChangeInputState = e => {
+		const { name, value } = e.target
+		setInputState({
+			...inputStates,
+			[name]: value,
+		})
+	}
+
+	const handleSortAppointmentState =()=>{
+		
+	}
+
 	const handleDeletePatient = () => {
 		setDialog({
 			...dialog,
@@ -216,15 +221,34 @@ export const usePatient = ({ id }) => {
 		}
 	}
 
+	useEffect(
+		() => {
+			setLoading(true)
+			setTimeout(() => {
+				getPatient()
+			}, 1000)
+		},
+		[ id ],
+	)
+
+	useEffect(
+		() => {
+			
+		},
+		[ inputStates.state__appointment ],
+	)
+
 	return {
 		patient,
 		loading,
 		appointments,
-		changeStateInputAllergies,
 		inputAllergies,
+		inputStates,
+		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,
 		saveInputAllergies,
+		handleChangeInputState,
 		handleDeletePatient,
 	}
 }

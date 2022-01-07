@@ -96,12 +96,12 @@
 			}
 		}
 		.patient__section__apointment {
-			height: 600px;
+			height: 681px;
 			position: relative;
 			.patient__section__apointment__line__time {
 				background-color: $background_4;
 				position: absolute;
-				top: 85px;
+				top: 167px;
 				left: 48px;
 				width: 2px;
 				height: 489px;
@@ -113,6 +113,12 @@
 				justify-content: space-between;
 				align-items: center;
 				margin-bottom: 25px;
+			}
+			.patient__section__apointment__state {
+				margin-bottom: 25px;
+				.patient__section__apointment__state__input {
+					width: 300px;
+				}
 			}
 			.patient__section__apointment__appointments {
 				position: relative;

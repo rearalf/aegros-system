@@ -181,7 +181,7 @@ export const CreatePatient = () => {
 						<TextField
 							id="patient_gender"
 							name="patient_gender"
-							label="Select"
+							label="Genero"
 							onChange={onChangeInput}
 							value={patient_gender}
 							className="create__patient__form__inputs__input"

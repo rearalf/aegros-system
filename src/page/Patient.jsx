@@ -1,14 +1,15 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import { Button, TextField, IconButton, Tooltip } from '@mui/material'
 import { usePatient } from '@hooks/usePatient'
 import { AppLayout } from '@components/AppLayout'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AvatarComponent } from '@components/AvatarComponent'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
 import image__empty from '@image/no-data.svg'
 import { Loading } from '@components/Loading'
+import { format } from 'date-fns'
+import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
+import { Button, TextField, IconButton, Tooltip, MenuItem } from '@mui/material'
 import {
 	FiPhone,
 	FiMail,
@@ -21,7 +22,6 @@ import {
 	FiExternalLink,
 } from 'react-icons/fi'
 import '@styles/page/Patient.scss'
-import { format } from 'date-fns'
 
 export const Patient = () => {
 	const params = useParams()
@@ -30,16 +30,19 @@ export const Patient = () => {
 		patient,
 		loading,
 		appointments,
-		changeStateInputAllergies,
 		inputAllergies,
+		inputStates,
+		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,
 		saveInputAllergies,
+		handleChangeInputState,
 		handleDeletePatient,
 	} = usePatient({
 		id,
 	})
 	const { state_input_allergies, input_allergies, state_button_allergies } = inputAllergies
+	const { state__appointment } = inputStates
 	const {
 		patient_name,
 		patient_gender,
@@ -53,6 +56,91 @@ export const Patient = () => {
 	} = patient
 
 	const titleTooltip = state_input_allergies ? 'Activar edición' : 'Desactivar edición'
+
+	const showAppointments = () =>
+		appointments.map(({ _id, appointment_date, appointment_state, createdAt }) => {
+			const appointment_date__format = format(
+				new Date(appointment_date),
+				'dd / MMM / yyyy - h:m bbbb',
+			)
+			const createdAt__format = format(new Date(createdAt), 'dd / MMM / yyyy - h:m bbbb')
+			if (state__appointment === 0) {
+				return (
+					<article
+						key={_id}
+						className="patient__section__apointment__appointments__article">
+						<Tooltip title={`Cita ${appointment_state}`}>
+							<div
+								className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
+							/>
+						</Tooltip>
+						<div className="patient__section__apointment__appointments__article__date">
+							<h3 className="patient__section__apointment__appointments__article__date__title">
+								{appointment_date__format}
+							</h3>
+							<p className="patient__section__apointment__appointments__article__date__p">
+								Fecha de la cita
+							</p>
+						</div>
+						<div className="patient__section__apointment__appointments__article__parting_line" />
+						<div className="patient__section__apointment__appointments__article__created">
+							<h3 className="patient__section__apointment__appointments__article__created__title">
+								{createdAt__format}
+							</h3>
+							<p className="patient__section__apointment__appointments__article__created__created">
+								Fecha de creación
+							</p>
+						</div>
+						<div className="patient__section__apointment__appointments__article__parting_line" />
+						<Tooltip title="Ver cita">
+							<Link to="/patients">
+								<IconButton className="btn__icon">
+									<FiExternalLink size={18} />
+								</IconButton>
+							</Link>
+						</Tooltip>
+					</article>
+				)
+			}
+			else if (state__appointment === appointment_state) {
+				return (
+					<article
+						key={_id}
+						className="patient__section__apointment__appointments__article">
+						<Tooltip title={`Cita ${appointment_state}`}>
+							<div
+								className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
+							/>
+						</Tooltip>
+						<div className="patient__section__apointment__appointments__article__date">
+							<h3 className="patient__section__apointment__appointments__article__date__title">
+								{appointment_date__format}
+							</h3>
+							<p className="patient__section__apointment__appointments__article__date__p">
+								Fecha de la cita
+							</p>
+						</div>
+						<div className="patient__section__apointment__appointments__article__parting_line" />
+						<div className="patient__section__apointment__appointments__article__created">
+							<h3 className="patient__section__apointment__appointments__article__created__title">
+								{createdAt__format}
+							</h3>
+							<p className="patient__section__apointment__appointments__article__created__created">
+								Fecha de creación
+							</p>
+						</div>
+						<div className="patient__section__apointment__appointments__article__parting_line" />
+						<Tooltip title="Ver cita">
+							<Link to="/patients">
+								<IconButton className="btn__icon">
+									<FiExternalLink size={18} />
+								</IconButton>
+							</Link>
+						</Tooltip>
+					</article>
+				)
+			}
+		})
 
 	return (
 		<AppLayout ClassName="Patient">
@@ -200,56 +288,26 @@ export const Patient = () => {
 								</Button>
 							</Link>
 						</div>
+						{appointments.length > 0 && (
+							<div className="patient__section__apointment__state">
+								<TextField
+									id="state__appointment"
+									name="state__appointment"
+									label="Statdos de citas"
+									className="patient__section__apointment__state__input"
+									value={state__appointment}
+									onChange={handleChangeInputState}
+									select>
+									<MenuItem value={0}>Todos</MenuItem>
+									<MenuItem value={'Activa'}>Activas</MenuItem>
+									<MenuItem value={'Inactiva'}>Inactivas</MenuItem>
+									<MenuItem value={'Cancelada'}>Canceladas</MenuItem>
+								</TextField>
+							</div>
+						)}
 						{appointments.length > 0 ? (
 							<div className="patient__section__apointment__appointments">
-								{appointments.map(
-									({ _id, appointment_date, appointment_state, createdAt }) => {
-										const appointment_date__format = format(
-											new Date(appointment_date),
-											'dd / MMM / yyyy - h:m bbbb',
-										)
-										const createdAt__format = format(
-											new Date(createdAt),
-											'dd / MMM / yyyy - h:m bbbb',
-										)
-										return (
-											<article
-												key={_id}
-												className="patient__section__apointment__appointments__article">
-												<Tooltip title={`Cita ${appointment_state}`}>
-													<div
-														className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
-													/>
-												</Tooltip>
-												<div className="patient__section__apointment__appointments__article__date">
-													<h3 className="patient__section__apointment__appointments__article__date__title">
-														{appointment_date__format}
-													</h3>
-													<p className="patient__section__apointment__appointments__article__date__p">
-														Fecha de la cita
-													</p>
-												</div>
-												<div className="patient__section__apointment__appointments__article__parting_line" />
-												<div className="patient__section__apointment__appointments__article__created">
-													<h3 className="patient__section__apointment__appointments__article__created__title">
-														{createdAt__format}
-													</h3>
-													<p className="patient__section__apointment__appointments__article__created__created">
-														Fecha de creación
-													</p>
-												</div>
-												<div className="patient__section__apointment__appointments__article__parting_line" />
-												<Tooltip title="Ver cita">
-													<Link to="/patients">
-														<IconButton className="btn__icon">
-															<FiExternalLink size={18} />
-														</IconButton>
-													</Link>
-												</Tooltip>
-											</article>
-										)
-									},
-								)}
+								{showAppointments()}
 							</div>
 						) : (
 							<div className="patient__section__apointment__empty">
@@ -269,14 +327,3 @@ export const Patient = () => {
 		</AppLayout>
 	)
 }
-/* {appointments.map(
-								({ _id, appointment_date, appointment_state, createdAt }) => {
-									return (
-										<article
-											key={_id}
-											className="patient__section__apointment__appointments__article">
-											cita
-										</article>
-									)
-								},
-							)} */
