@@ -12,6 +12,7 @@ export const usePatient = ({ id }) => {
 	const { setNotification } = useContext(notificationContext)
 	/* State */
 	const [ patient, setPatient ] = useState({})
+	const [ appointments, setAppointments ] = useState([])
 	const [ loading, setLoading ] = useState(false)
 	const [ inputAllergies, setInputAllergies ] = useState({
 		state_input_allergies: true,
@@ -29,11 +30,9 @@ export const usePatient = ({ id }) => {
 					message: 'Ocurrio un problema.',
 				}
 			}
-
 			/* Separating data */
-			const patient = JSON.parse(result.patient_result)
-			const { patient_date_birth, patient_name, patient_allergies } = patient
-			console.log(patient)
+			const patient_result = JSON.parse(result.patient_result)
+			const { patient_date_birth, patient_name, patient_allergies } = patient_result
 			/* Calculate age */
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 			if (
@@ -46,7 +45,7 @@ export const usePatient = ({ id }) => {
 			}
 			else {
 				const patient_age = resultAge.split(' ')[1]
-				patient.patient_age = patient_age
+				patient_result.patient_age = patient_age
 			}
 			/* Shorten name */
 			const shorten_name_split = patient_name.split(' ')
@@ -56,12 +55,14 @@ export const usePatient = ({ id }) => {
 					: shorten_name_split.length === 3
 						? `${shorten_name_split[0]} ${shorten_name_split[2]}`
 						: `${shorten_name_split[0]} ${shorten_name_split[1]}`
-			patient.shorten_name = shorten_name
-			setPatient(patient)
+			patient_result.shorten_name = shorten_name
+			setPatient(patient_result)
 			setInputAllergies({
 				...inputAllergies,
 				input_allergies: patient_allergies,
 			})
+			const appointments_reverse = patient_result.appointments.reverse()
+			setAppointments(appointments => appointments.concat(appointments_reverse))
 			setLoading(false)
 		} catch (error) {
 			navigate(-1)
@@ -75,6 +76,7 @@ export const usePatient = ({ id }) => {
 			})
 		}
 	}
+
 	useEffect(
 		() => {
 			setLoading(true)
@@ -217,6 +219,7 @@ export const usePatient = ({ id }) => {
 	return {
 		patient,
 		loading,
+		appointments,
 		changeStateInputAllergies,
 		inputAllergies,
 		changeInputeAllergies,

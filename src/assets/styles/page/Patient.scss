@@ -96,16 +96,130 @@
 			}
 		}
 		.patient__section__apointment {
+			height: 600px;
+			position: relative;
+			.patient__section__apointment__line__time {
+				background-color: $background_4;
+				position: absolute;
+				top: 85px;
+				left: 48px;
+				width: 2px;
+				height: 489px;
+				transform: translateX(-2px);
+				z-index: 1;
+			}
 			.patient__section__apointment__header {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				margin-bottom: 25px;
+			}
+			.patient__section__apointment__appointments {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				gap: 25px;
+				height: 489px;
+				padding: 15px 15px 15px 40px;
+				border-radius: 5px;
+				overflow-y: auto;
+				background-color: $background_3;
+				.patient__section__apointment__appointments__article {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					border-radius: 5px;
+					padding: 15px 25px;
+					position: relative;
+					background-color: $background_2;
+					transition: box-shadow .5s ease-in-out;
+					&:hover {
+						box-shadow: $shadow_background_3;
+					}
+					.patient__section__apointment__appointments__article__circle__state {
+						position: absolute;
+						left: -30px;
+						top: 50%;
+						transform: translateY(-50%);
+						width: 25px;
+						height: 25px;
+						border-radius: 50%;
+						z-index: 1;
+						&.Activa {
+							background-color: $background_2;
+							border: 2px solid $background_color_button_success_hover;
+						}
+						&.Inactiva {
+							background-color: $background_2;
+							border: 2px solid $background_color_button_basic_hover;
+						}
+						&.Cancelada {
+							background-color: $background_2;
+							border: 2px solid $color_text_button_error;
+						}
+					}
+					.patient__section__apointment__appointments__article__created,
+					.patient__section__apointment__appointments__article__date {
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						gap: 5px;
+					}
+					.patient__section__apointment__appointments__article__parting_line {
+						width: 3px;
+						height: 100%;
+						background-color: $line_color;
+					}
+				}
+
+				&::-webkit-scrollbar {
+					width: 10px;
+					background: #0c62da;
+					border-left: 4px solid #eff7fe;
+					border-right: 4px solid #eff7fe;
+				}
+				&::-webkit-scrollbar-thumb {
+					background: #0c62da;
+					border-radius: 20px;
+					border-right: 2px solid #eff7fe;
+					border-left: 2px solid #eff7fe;
+				}
+				&::-webkit-scrollbar-thumb:hover {
+					background: #084aa7;
+				}
+				&::-webkit-scrollbar-thumb:active {
+					background-color: #094291;
+				}
+				&::-webkit-scrollbar-track {
+					background: transparent;
+					border-radius: 10px;
+				}
+			}
+
+			.patient__section__apointment__empty {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				gap: 50px;
+				height: 489px;
+				border-radius: 5px;
+				background-color: $background_3;
+				.patient__section__apointment__empty__image {
+					width: 100%;
+					height: 300px;
+				}
 			}
 		}
 	}
-	@media screen and (min-width: 1024px) {
+	@media screen and (max-width: 1450px) and (min-width: 1200px) {
 		.patient__section {
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: 1fr 55%;
+		}
+	}
+	@media screen and (min-width: 1450px) {
+		.patient__section {
+			grid-template-columns: 1fr 65%;
 		}
 	}
 

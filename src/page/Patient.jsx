@@ -6,6 +6,9 @@ import { usePatient } from '@hooks/usePatient'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AvatarComponent } from '@components/AvatarComponent'
+import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
+import image__empty from '@image/no-data.svg'
+import { Loading } from '@components/Loading'
 import {
 	FiPhone,
 	FiMail,
@@ -15,10 +18,10 @@ import {
 	FiXCircle,
 	FiFrown,
 	FiSmile,
+	FiExternalLink,
 } from 'react-icons/fi'
-import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
-import { Loading } from '@components/Loading'
 import '@styles/page/Patient.scss'
+import { format } from 'date-fns'
 
 export const Patient = () => {
 	const params = useParams()
@@ -26,6 +29,7 @@ export const Patient = () => {
 	const {
 		patient,
 		loading,
+		appointments,
 		changeStateInputAllergies,
 		inputAllergies,
 		changeInputeAllergies,
@@ -185,17 +189,94 @@ export const Patient = () => {
 						</div>
 					</section>
 					<section className="patient__section__apointment">
+						{appointments.length > 0 && (
+							<div className="patient__section__apointment__line__time" />
+						)}
 						<div className="patient__section__apointment__header">
 							<h2>Citas</h2>
 							<Link to={`/appointments/creat-appointment/${id}`}>
 								<Button variant="contained" className="btn_basic">
-									<FiCalendar size={18} /> Crear cita
+									<FiCalendar size={18} /> Nueva cita
 								</Button>
 							</Link>
 						</div>
+						{appointments.length > 0 ? (
+							<div className="patient__section__apointment__appointments">
+								{appointments.map(
+									({ _id, appointment_date, appointment_state, createdAt }) => {
+										const appointment_date__format = format(
+											new Date(appointment_date),
+											'dd / MMM / yyyy - h:m bbbb',
+										)
+										const createdAt__format = format(
+											new Date(createdAt),
+											'dd / MMM / yyyy - h:m bbbb',
+										)
+										return (
+											<article
+												key={_id}
+												className="patient__section__apointment__appointments__article">
+												<Tooltip title={`Cita ${appointment_state}`}>
+													<div
+														className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
+													/>
+												</Tooltip>
+												<div className="patient__section__apointment__appointments__article__date">
+													<h3 className="patient__section__apointment__appointments__article__date__title">
+														{appointment_date__format}
+													</h3>
+													<p className="patient__section__apointment__appointments__article__date__p">
+														Fecha de la cita
+													</p>
+												</div>
+												<div className="patient__section__apointment__appointments__article__parting_line" />
+												<div className="patient__section__apointment__appointments__article__created">
+													<h3 className="patient__section__apointment__appointments__article__created__title">
+														{createdAt__format}
+													</h3>
+													<p className="patient__section__apointment__appointments__article__created__created">
+														Fecha de creación
+													</p>
+												</div>
+												<div className="patient__section__apointment__appointments__article__parting_line" />
+												<Tooltip title="Ver cita">
+													<Link to="/patients">
+														<IconButton className="btn__icon">
+															<FiExternalLink size={18} />
+														</IconButton>
+													</Link>
+												</Tooltip>
+											</article>
+										)
+									},
+								)}
+							</div>
+						) : (
+							<div className="patient__section__apointment__empty">
+								<img
+									src={image__empty}
+									alt="No hay citas"
+									className="patient__section__apointment__empty__image"
+								/>
+								<h3 className="patient__section__apointment__empty__title">
+									No tiene citas
+								</h3>
+							</div>
+						)}
 					</section>
 				</section>
 			)}
 		</AppLayout>
 	)
 }
+/* {appointments.map(
+								({ _id, appointment_date, appointment_state, createdAt }) => {
+									return (
+										<article
+											key={_id}
+											className="patient__section__apointment__appointments__article">
+											cita
+										</article>
+									)
+								},
+							)} */
