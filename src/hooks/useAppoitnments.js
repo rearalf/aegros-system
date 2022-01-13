@@ -15,7 +15,6 @@ function useAppointments(){
 			}
 			const appointments_result = JSON.parse(result.appointments)
 			setAppointments(appointments_result)
-			console.log(appointments_result)
 			setLoading(true)
 		} catch (error) {
 			console.log(error)

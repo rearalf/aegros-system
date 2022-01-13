@@ -101,7 +101,6 @@ const modifyAllergy = async (event, args) => {
 		}).exec()
 		event.returnValue = {
 			success: true,
-			patient,
 		}
 	} catch (err) {
 		console.log(err)

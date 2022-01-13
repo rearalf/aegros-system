@@ -63,13 +63,15 @@ export const Appointments = () => {
 										className={`appointment__table__state ${appointment_state}`}>
 										{appointment_state}
 									</TableCell>
-									<TableCell align="center">
-										<Tooltip title="Ver más">
-											<IconButton className="btn__icon bnt__edit">
-												<FiActivity size={18} />
-											</IconButton>
-										</Tooltip>
-									</TableCell>
+									<Tooltip title="Ver más">
+										<TableCell align="center">
+											<Link to={`/appointments/${_id}`}>
+												<IconButton className="btn__icon bnt__edit">
+													<FiActivity size={18} />
+												</IconButton>
+											</Link>
+										</TableCell>
+									</Tooltip>
 								</TableRow>
 							)
 						})}
@@ -78,7 +80,6 @@ export const Appointments = () => {
 			</TableContainer>
 		)
 	}
-
 	return (
 		<AppLayout ClassName="Appointments">
 			<BreadCrumbsComponent

@@ -20,6 +20,27 @@ const getAllappointments = async event => {
 	}
 }
 
+const getAppointment = async (event, args) => {
+	try {
+		const { id } = args
+		const appointment = await Appointment.findById(id)
+		const patient = await Patient.findById(appointment.patient).populate('appointments')
+		event.returnValue = {
+			success: true,
+			appointment: JSON.stringify(appointment),
+			patient: JSON.stringify(patient),
+		}
+	} catch (error) {
+		console.log(error)
+		event.returnValue = {
+			success: false,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
+		}
+	}
+}
+
 const findPatientByName = async (event, args) => {
 	try {
 		const { patient_name } = args
@@ -84,4 +105,5 @@ module.exports = {
 	getAllappointments,
 	createAppointment,
 	findPatientByName,
+	getAppointment,
 }

@@ -11,6 +11,7 @@ import { Patients } from '@page/Patients'
 import { Patient } from '@page/Patient'
 import { Notification } from '@components/Notification'
 import { DialogComponent } from '@components/DialogComponent'
+import { Appointment } from '@page/Appointment'
 
 const App = () => {
 	return (
@@ -26,6 +27,7 @@ const App = () => {
 						</Route>
 						<Route path="/patients/patient/:id" exact element={<Patient />} />
 						<Route path="/appointments" exact element={<Appointments />} />
+						<Route path="/appointments/:appointment__id" element={<Appointment />} />
 						<Route
 							path="/appointments/creat-appointment/"
 							element={<CreateAppointment />}>

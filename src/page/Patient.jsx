@@ -93,7 +93,7 @@ export const Patient = () => {
 						</div>
 						<div className="patient__section__apointment__appointments__article__parting_line" />
 						<Tooltip title="Ver cita">
-							<Link to="/patients">
+							<Link to={`/appointments/${_id}`}>
 								<IconButton className="btn__icon">
 									<FiExternalLink size={18} />
 								</IconButton>

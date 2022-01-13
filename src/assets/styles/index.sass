@@ -143,6 +143,8 @@ textarea
     padding: 16.5px 0 16.5px 14px
 textarea
     padding-right: 14px
+textarea.MuiOutlinedInput-input
+    overflow-y: auto!important
 textarea::-webkit-scrollbar
     width: 10px
     background: #0C62DA
@@ -151,8 +153,8 @@ textarea::-webkit-scrollbar
 textarea::-webkit-scrollbar-thumb
     background: #0C62DA
     border-radius: 20px
-    border-right: 2px solid #EFF7FE
-    border-left: 2px solid #EFF7FE
+    border-right: 2px solid transparent
+    border-left: 2px solid transparent
     cursor: pointer
 
 textarea::-webkit-scrollbar-thumb:hover
@@ -183,7 +185,7 @@ textarea::-webkit-scrollbar-track
         border: none
     .MuiTableBody-root tr
         transition: background-color .5s ease-in-out
-        td
+        td, th
             border-bottom: 2px solid $line_color
             color: $color_text_paragraph_secondary
         &:hover

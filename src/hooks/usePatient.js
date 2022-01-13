@@ -44,7 +44,7 @@ export const usePatient = ({ id }) => {
 				new Date(patient_date_birth).getMonth() === 2
 			) {
 				const patient_age = resultAge.split(' ')[1] - 1
-				patient.patient_age = patient_age
+				patient_result.patient_age = patient_age
 			}
 			else {
 				const patient_age = resultAge.split(' ')[1]
@@ -161,10 +161,6 @@ export const usePatient = ({ id }) => {
 			...inputStates,
 			[name]: value,
 		})
-	}
-
-	const handleSortAppointmentState =()=>{
-		
 	}
 
 	const handleDeletePatient = () => {
