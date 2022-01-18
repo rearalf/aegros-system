@@ -56,3 +56,21 @@ export function capitlizeString(word){
 	wordSeparation = wordSeparation.join(' ')
 	return wordSeparation
 }
+
+export function roundDate(){
+	let minutes = new Date().getMinutes()
+	if (minutes < 30 && minutes > 0) {
+		minutes = 0
+	}
+	else {
+		minutes = 30
+	}
+	const date = new Date(
+		new Date().getFullYear(),
+		new Date().getMonth(),
+		new Date().getDate(),
+		new Date().getHours(),
+		minutes,
+	)
+	return date
+}

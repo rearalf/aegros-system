@@ -41,6 +41,35 @@ const getAppointment = async (event, args) => {
 	}
 }
 
+const getAllAppointmentsOfTheDay = async (event, args) => {
+	try {
+		/* https://es.stackoverflow.com/questions/361107/como-buscar-solo-por-fecha-d%C3%ADa-mes-y-a%C3%B1o-en-mongodb-por-medio-del-resolver */
+		const { dateYear, dateMonth, dateDay } = args
+		const fullDate = new Date(dateYear, dateMonth, dateDay)
+		const appointments = await Appointment.find({
+			$expr: {
+				$and: [
+					{ $eq: [ { $year: '$appointment_date' }, { $year: fullDate } ] },
+					{ $eq: [ { $month: '$appointment_date' }, { $month: fullDate } ] },
+					{ $eq: [ { $dayOfMonth: '$appointment_date' }, { $dayOfMonth: fullDate } ] },
+				],
+			},
+		}).populate('patient')
+		event.returnValue = {
+			success: true,
+			appointments: JSON.stringify(appointments),
+		}
+	} catch (error) {
+		console.log(error)
+		event.returnValue = {
+			success: false,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
+		}
+	}
+}
+
 const findPatientByName = async (event, args) => {
 	try {
 		const { patient_name } = args
@@ -106,4 +135,5 @@ module.exports = {
 	createAppointment,
 	findPatientByName,
 	getAppointment,
+	getAllAppointmentsOfTheDay,
 }

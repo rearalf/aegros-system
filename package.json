@@ -1,6 +1,6 @@
 {
 	"name": "aegros-system",
-	"version": "1.0.0",
+	"version": "0.3.0",
 	"description": "Aegros system helps you manage your clients' appointments",
 	"private": false,
 	"main": "./app/index.js",

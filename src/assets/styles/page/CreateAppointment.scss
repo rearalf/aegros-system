@@ -16,6 +16,7 @@
 			background-color: $background_2;
 			box-shadow: $shadow_background_3;
 			width: 100%;
+			height: 300px;
 		}
 		.create__appointment__content__patient {
 			display: flex;
@@ -75,26 +76,99 @@
 				}
 			}
 		}
-	}
-	.create__appointment__content__form {
-		h2 {
-			margin-bottom: 25px;
-		}
-		.create__appointment__content__form__inputs {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 25px;
-			margin-bottom: 50px;
-			.MuiFormControl-root {
-				width: 100%;
+		.create__appointment__content__schedule {
+			padding: 25px;
+			border-radius: 5px;
+			background-color: $background_2;
+			box-shadow: $shadow_background_3;
+			width: 100%;
+			height: 700px;
+			.create__appointment__content__schedule__title {
+				margin-bottom: 25px;
 			}
-		}
-		.btn__group {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 25px;
+			.create__appointment__content__schedule__header {
+				margin-bottom: 25px;
+				display: flex;
+				justify-content: space-between;
+				.create__appointment__content__schedule__header__buttons {
+					display: flex;
+					gap: 15px;
+					align-items: center;
+				}
+			}
+			.create__appointment__content__schedule__content {
+				display: grid;
+				grid-template-columns: 150px 1fr;
+				height: 490px;
+				overflow: auto;
+				overflow-x: hidden;
+				.create__appointment__content__schedule__content__time {
+					.create__appointment__content__schedule__content__time__moment {
+						width: 100%;
+						height: 60px;
+						text-align: right;
+						padding: 10px 15px 30px;
+						background: $background_3;
+						border-bottom: 2px solid $background_2;
+						.create__appointment__content__schedule__content__time__moment__hour.Active {
+							color: $color_text_link_hover;
+						}
+					}
+				}
+				.create__appointment__content__schedule__content__day {
+					.create__appointment__content__schedule__content__day__moments {
+						width: 100%;
+						height: 60px;
+						background-color: $background_1;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						.create__appointment__content__schedule__content__day__moments__moment {
+							border-bottom: 2px solid $background_2;
+							height: 100%;
+							padding: 4px 15px 4px 20px;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							gap: 10px;
+							transition: border .1s ease-in-out;
+							&.Active {
+								border-left: 5px solid $color_text_link_hover;
+								color: $color_text_link_hover;
+							}
+							.create__appointment__content__schedule__content__day__moments__moment__icon {
+								svg {
+									width: 16px;
+									height: 16px;
+								}
+							}
+						}
+					}
+				}
+				&::-webkit-scrollbar {
+					width: 10px;
+					background: #0c62da;
+					border-left: 4px solid #eff7fe;
+					border-right: 4px solid #eff7fe;
+				}
+				&::-webkit-scrollbar-thumb {
+					background: #0c62da;
+					border-radius: 20px;
+					border-right: 2px solid transparent;
+					border-left: 2px solid transparent;
+					cursor: pointer;
+				}
+				&::-webkit-scrollbar-thumb:hover {
+					background: #084aa7;
+				}
+				&::-webkit-scrollbar-thumb:active {
+					background-color: #094291;
+				}
+				&::-webkit-scrollbar-track {
+					background: transparent;
+					border-radius: 10px;
+				}
+			}
 		}
 	}
 	@media screen and (min-width: 1024px) {
@@ -117,3 +191,89 @@
 		}
 	}
 }
+.create__appointment__dialog.MuiDialog-root {
+	.MuiPaper-root {
+		padding: 25px;
+		.create__appointment__dialog__header {
+			margin-bottom: 25px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.create__appointment__dialog__form {
+			width: 350px;
+			display: flex;
+			flex-direction: column;
+			gap: 25px;
+			.create__appointment__dialog__form__input {
+				width: 100%;
+			}
+			.create__appointment__dialog__form__buttons {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 25px;
+			}
+		}
+	}
+}
+.past__appointment__dialog {
+	.MuiPaper-root {
+		padding: 25px;
+		.past__appointment__dialog__header {
+			margin-bottom: 25px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.past__appointment__dialog__information {
+			display: flex;
+			flex-direction: column;
+			gap: 25px;
+			.past__appointment__dialog__information__patient__name {
+				padding-left: 10px;
+				font-weight: 500;
+			}
+			.past__appointment__dialog__information__reason {
+				#past_appointment_reason {
+					-webkit-text-fill-color: $color_text_paragraph;
+				}
+			}
+			.past__appointment__dialog__information__state {
+				.Activa {
+					padding-left: 5px;
+					color: $background_color_button_success_hover;
+				}
+				.Inactiva {
+					padding-left: 5px;
+					color: $background_color_button_basic_hover;
+				}
+				.Cancelada {
+					padding-left: 10px;
+					color: $color_text_button_error;
+				}
+			}
+		}
+	}
+}
+/* .create__appointment__content__form {
+	h2 {
+		margin-bottom: 25px;
+	}
+	.create__appointment__content__form__inputs {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 25px;
+		margin-bottom: 50px;
+		.MuiFormControl-root {
+			width: 100%;
+		}
+	}
+	.btn__group {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 25px;
+	}
+} */
