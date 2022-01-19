@@ -159,7 +159,7 @@ export const useCreatePatient = () => {
 				}
 			}
 			const patient = JSON.parse(result.patien)
-			navigate('/patients')
+			navigate(`/patients/patient/${patient._id}`)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,

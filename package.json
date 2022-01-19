@@ -42,7 +42,8 @@
 	},
 	"license": "BSD 2-Clause License",
 	"bugs": {
-		"url": "https://github.com/rearalf/aegros-system/issues"
+		"url": "https://github.com/rearalf/aegros-system/issues",
+		"email": "rear_recinos@hotmail.com"
 	},
 	"homepage": "https://github.com/rearalf/aegros-system#readme",
 	"devDependencies": {

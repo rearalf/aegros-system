@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 
+const databaseLink = 'mongodb://localhost/electrondb'
+
 mongoose
-	.connect('mongodb://localhost/electrondb', {
+	.connect(databaseLink, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})

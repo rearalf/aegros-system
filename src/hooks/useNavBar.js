@@ -93,6 +93,7 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 	const stateLinkDashboard = path[1] === 'dashboard' ? 'nav__link__active' : null
 	const stateLinkAppointment = path[1] === 'appointments' ? 'nav__link__active' : null
 	const stateLinkPatient = path[1] === 'patients' ? 'nav__link__active' : null
+	const stateLinkSystem = path[1] === 'system' ? 'nav__link__active' : null
 
 	return {
 		changeValueSidebarOnFocus,
@@ -100,5 +101,6 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		stateLinkDashboard,
 		stateLinkAppointment,
 		stateLinkPatient,
+		stateLinkSystem,
 	}
 }

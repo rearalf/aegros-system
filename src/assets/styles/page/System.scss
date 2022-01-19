@@ -1,0 +1,57 @@
+@import '../variables.sass';
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+.system {
+	display: inline-grid;
+	width: 100%;
+	.system__header {
+		margin-bottom: 25px;
+	}
+	.system__content {
+		background-color: $background_2;
+		box-shadow: $shadow_background_3;
+		border-radius: 5px;
+		padding: 25px;
+		display: inline-flex;
+		flex-direction: column;
+		text-align: center;
+		justify-self: center;
+		.system__content__name {
+			display: flex;
+			align-items: center;
+			gap: 25px;
+			padding-bottom: 15px;
+			border-bottom: 1px solid $line_color;
+			.system__content__name__title {
+				color: #0050c9;
+				font-family: 'Lato', sans-serif;
+			}
+		}
+		.system__content__version {
+			padding: 15px 0;
+			border-bottom: 1px solid $line_color;
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+		}
+		.system__content__author {
+			padding: 15px 0 0;
+			.system__content__author__title {
+				.system__content__author__title__link {
+					padding-left: 5px;
+					color: inherit;
+					font-size: inherit;
+					font-weight: inherit;
+					&:hover {
+						color: #0050c9;
+					}
+				}
+			}
+		}
+		a {
+			&:hover {
+				color: #0050c9;
+			}
+		}
+	}
+}
