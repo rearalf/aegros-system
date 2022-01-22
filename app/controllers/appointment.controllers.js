@@ -130,10 +130,32 @@ const createAppointment = async (event, args) => {
 	}
 }
 
+const updateAppointmentDate = async (event, args) => {
+	try {
+		const { id, appointment_date } = args
+		const updateAppointment = await Appointment.findByIdAndUpdate(id, {
+			appointment_date,
+		})
+		event.returnValue = {
+			success: true,
+			appointment: JSON.stringify(updateAppointment),
+		}
+	} catch (error) {
+		console.log(error)
+		event.returnValue = {
+			success: false,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
+		}
+	}
+}
+
 module.exports = {
 	getAllappointments,
 	createAppointment,
 	findPatientByName,
 	getAppointment,
 	getAllAppointmentsOfTheDay,
+	updateAppointmentDate,
 }

@@ -155,7 +155,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
-			subTitleNotification: 'Se cancelo la creación del usuario.',
+			subTitleNotification: 'Se cancelo la creación de la cita.',
 			typeNotification: 'information',
 		})
 	}

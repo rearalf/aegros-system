@@ -6,7 +6,7 @@ import { AvatarComponent } from '@components/AvatarComponent'
 import { Loading } from '@components/Loading'
 import useAppointment from '../hooks/useAppointment'
 import { format } from 'date-fns'
-import { Button, Dialog, IconButton, TextField, Tooltip } from '@mui/material'
+import { Button, IconButton, TextField, Tooltip } from '@mui/material'
 import {
 	FiExternalLink,
 	FiActivity,
@@ -23,7 +23,6 @@ export const Appointment = () => {
 		loading,
 		appointment,
 		patient,
-		changeDate,
 		handleChangeObservation,
 		handleOpenDialog,
 		handleCancelAppointment,
@@ -31,11 +30,13 @@ export const Appointment = () => {
 	const {
 		format_appointment_date,
 		format_created,
+		format_update,
 		distance_to_now_appointment_date,
 		appointment_reason,
 		appointment_observation,
 		appointment_state,
 		state_date,
+		_id,
 	} = appointment
 	const {
 		patient_name,
@@ -55,7 +56,7 @@ export const Appointment = () => {
 						link_to: '/appointments',
 					},
 					{
-						link_name: patient_name ? patient_name : '',
+						link_name: patient_name ? `Cita de ${patient_name}` : '',
 						link_to: `/appointments/${appointment__id}`,
 					},
 				]}
@@ -68,12 +69,14 @@ export const Appointment = () => {
 						<h1>Cita</h1>
 						{appointment_state === 'Activa' && (
 							<div className="appointment__header__button_group">
-								<Button
-									variant="contained"
-									className="btn_basic"
-									onClick={handleOpenDialog}>
-									<FiCalendar />Modificar fecha de cita
-								</Button>
+								<Link to={`/appointments/update-appointment/${_id}`}>
+									<Button
+										variant="contained"
+										className="btn_basic"
+										onClick={handleOpenDialog}>
+										<FiCalendar />Modificar fecha de cita
+									</Button>
+								</Link>
 								<Button variant="contained" className="btn__success">
 									<FiSave />
 									Terminar cita
@@ -151,6 +154,12 @@ export const Appointment = () => {
 										<b>Fecha de creacion: </b>
 										{format_created}
 									</p>
+									{format_update && (
+										<p className="appointment__information__patient__appointment__data__text">
+											<b>Ultima actualización: </b>
+											{format_update}
+										</p>
+									)}
 									<p className="appointment__information__patient__appointment__data__text">
 										<b>Fecha de la cita: </b>
 										{format_appointment_date}
@@ -252,18 +261,6 @@ export const Appointment = () => {
 							</div>
 						</section>
 					</section>
-					<Dialog
-						open={changeDate.openDialog}
-						className="dialog__change__date"
-						aria-labelledby="Cambiar la fecha"
-						aria-describedby="Cambiar la fecha">
-						<IconButton
-							className="btn__icon dialog__change__date__exit"
-							onClick={handleOpenDialog}>
-							<FiXCircle />
-						</IconButton>
-						<h2 className="dialog__change__date__title">Cabiar la fecha de la cita</h2>
-					</Dialog>
 				</React.Fragment>
 			)}
 		</AppLayout>

@@ -20,6 +20,7 @@ function stringToColor(string){
 
 export function stringAvatar(name){
 	if (name === undefined) return
+	if (name.length === 0) return
 	const nameSplit = name.split(' ')
 	if (nameSplit.length === 4 || nameSplit.length === 3)
 		return {

@@ -13,6 +13,7 @@ import { Notification } from '@components/Notification'
 import { DialogComponent } from '@components/DialogComponent'
 import { Appointment } from '@page/Appointment'
 import System from '@page/System'
+import UpdateAppointment from '@page/UpdateAppointment'
 
 const App = () => {
 	return (
@@ -34,6 +35,10 @@ const App = () => {
 							element={<CreateAppointment />}>
 							<Route path=":patient_id" element={null} />
 						</Route>
+						<Route
+							path="appointments/update-appointment/:id_appointment"
+							element={<UpdateAppointment />}
+						/>
 						<Route path="/system" element={<System />} />
 						<Route path="*" element={<Dashboard />} />
 					</Routes>

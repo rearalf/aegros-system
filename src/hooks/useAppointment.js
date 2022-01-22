@@ -11,6 +11,7 @@ const useAppointment = id => {
 	const [ appointment, setAppointment ] = useState({
 		appointment_observation: '',
 		format_created: '',
+		format_update: '',
 		format_appointment_date: '',
 		distance_to_now_appointment_date: '',
 	})
@@ -33,7 +34,8 @@ const useAppointment = id => {
 			}
 			const appointment_result = JSON.parse(result.appointment)
 			const patient_result = JSON.parse(result.patient)
-			const { patient_date_birth, patient_name, patient_allergies } = patient_result
+			const { patient_date_birth } = patient_result
+			const { appointment_date, createdAt, updatedAt } = appointment_result
 			/* Calculate age */
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 			if (
@@ -50,26 +52,28 @@ const useAppointment = id => {
 			}
 			/* Da formato a las fechas */
 			const format_appointment_date = format(
-				new Date(appointment_result.appointment_date),
+				new Date(appointment_date),
 				'dd / MMM / yyyy - h:m bbbb',
 			)
-			const format_created = format(
-				new Date(appointment_result.createdAt),
-				'dd / MMM / yyyy - h:m bbbb',
-			)
+			const format_created = format(new Date(createdAt), 'dd / MMM / yyyy - h:m bbbb', {
+				locale: esLocale,
+			})
+			const format_update = format(new Date(updatedAt), 'dd / MMM / yyyy - h:m bbbb', {
+				locale: esLocale,
+			})
 			/* Calcula distancias entre fechas */
-			const DistanceToNow = formatDistanceToNow(
-				new Date(appointment_result.appointment_date),
-				{
-					locale: esLocale,
-					addSuffix: true,
-				},
-			)
+			const DistanceToNow = formatDistanceToNow(new Date(appointment_date), {
+				locale: esLocale,
+				addSuffix: true,
+			})
 			/* Agrega los nuevos valores */
 			appointment_result.state_date =
 				new Date(appointment_result.appointment_date).getTime() > new Date().getTime()
 			appointment_result.format_created = format_created
 			appointment_result.format_appointment_date = format_appointment_date
+			if (new Date(createdAt).getTime() !== new Date(updatedAt).getTime()) {
+				appointment_result.format_update = format_update
+			}
 			/* Agrega en estados los resutados */
 			setAppointment({
 				...appointment_result,
