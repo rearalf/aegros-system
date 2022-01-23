@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { useParams } from 'react-router'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
@@ -7,7 +7,7 @@ import { Button, IconButton, TextField, Dialog, Tooltip } from '@mui/material'
 import { FiLogIn, FiSave, FiXCircle, FiX, FiCheckCircle, FiActivity } from 'react-icons/fi'
 import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import format from 'date-fns/format'
+const ScheduleOneDay = lazy(() => import('@components/ScheduleOneDay'))
 import '@styles/page/CreateAppointment.scss'
 
 export const CreateAppointment = () => {
@@ -16,7 +16,6 @@ export const CreateAppointment = () => {
 		patient,
 		patients,
 		appointment,
-		times,
 		dialog,
 		appointmentsToday,
 		handleChangeInput,
@@ -28,14 +27,11 @@ export const CreateAppointment = () => {
 		handleCreateAppointment,
 		handleGetTiemeSchedule,
 		handleOpenDialogCreateAppointment,
-		handleOpenDialogPastAppointment,
-		getPastAppointment,
 	} = useCreateAppointment({
 		patient_id,
 	})
-	const { patient_name, patient_state_form } = patient
-	const { appointment_date, appointment_reason, appointment_current_date } = appointment
-
+	const { patient_name, patient_state_form, _id } = patient
+	const { appointment_date, appointment_reason } = appointment
 	const linksBreadCrumbs = [
 		{
 			link_name: 'Citas',
@@ -46,47 +42,8 @@ export const CreateAppointment = () => {
 			link_to: '/appointments/creat-appointment/',
 		},
 	]
-
-	const DialogPastAppointment = () => (
-		<Dialog open={dialog.openDialogPastAppointment} className="past__appointment__dialog">
-			<div className="past__appointment__dialog__header">
-				<h2 className="past__appointment__dialog__header__title">Cita</h2>
-				<Tooltip title="Cerrar ventana">
-					<IconButton
-						className="btn__icon past__appointment__dialog__header__btn"
-						onClick={handleOpenDialogPastAppointment}>
-						<FiX />
-					</IconButton>
-				</Tooltip>
-			</div>
-			<div className="past__appointment__dialog__information">
-				<h3 className="past__appointment__dialog__information__patient">
-					Paciente:
-					<span className="past__appointment__dialog__information__patient__name">
-						{dialog.pastAppointment.patient.patient_name}
-					</span>
-				</h3>
-				<TextField
-					id="past_appointment_reason"
-					name="past_appointment_reason"
-					label="Razon"
-					className="past__appointment__dialog__information__reason"
-					value={dialog.pastAppointment.appointment_reason}
-					multiline
-					rows={4}
-					disabled
-				/>
-				<p className="past__appointment__dialog__information__state">
-					Estado:
-					<span className={dialog.pastAppointment.appointment_state}>
-						{dialog.pastAppointment.appointment_state}
-					</span>
-				</p>
-			</div>
-		</Dialog>
-	)
 	const DialogCreateAppointment = () => (
-		<Dialog open={dialog.openDialogCreateAppointment} className="create__appointment__dialog">
+		<Dialog open={dialog} className="create__appointment__dialog">
 			<div className="create__appointment__dialog__header">
 				<h2 className="create__appointment__dialog__header__title">Crear Cita</h2>
 				<Tooltip title="Cerrar ventana">
@@ -257,136 +214,18 @@ export const CreateAppointment = () => {
 								</Button>
 							</div>
 						</div>
-						<div className="create__appointment__content__schedule__content">
-							<div className="create__appointment__content__schedule__content__time">
-								{times.map((time, s) => {
-									return (
-										<div
-											className="create__appointment__content__schedule__content__time__moment"
-											key={s}>
-											{time.map((t, i) => {
-												const dateFormat = format(
-													t,
-													'dd / MMM / yyyy - h:m bbbb',
-												)
-												const dateFormatHour = format(t, ' h:m bbbb')
-												const selectedDateFormatHour = format(t, 'h')
-												const selectedDateFormatb = format(t, 'bbbb')
-												const selectedDateFormatHour2 = format(
-													appointment_date,
-													'h',
-												)
-												const selectedDateFormatb2 = format(
-													appointment_date,
-													'bbbb',
-												)
-												let value = ''
-												if (
-													selectedDateFormatHour ===
-														selectedDateFormatHour2 &&
-													selectedDateFormatb === selectedDateFormatb2
-												) {
-													value = 'Active'
-												}
-												return (
-													i === 0 && (
-														<h3
-															className={`create__appointment__content__schedule__content__time__moment__hour ${value}`}
-															key={dateFormat}>
-															{dateFormatHour}
-														</h3>
-													)
-												)
-											})}
-										</div>
-									)
-								})}
-							</div>
-							<div className="create__appointment__content__schedule__content__day">
-								{times.map((time, a) => {
-									return (
-										<div
-											className="create__appointment__content__schedule__content__day__moments"
-											key={a}>
-											{time.map((t, q) => {
-												const dateFormat = format(
-													t,
-													'dd / MMM / yyyy - h:m bbbb',
-												)
-												const getTimeSchedule = new Date(t).getTime()
-												const currentDate = new Date(
-													appointment_current_date,
-												).getTime()
-												const value =
-													getTimeSchedule ===
-													new Date(appointment_date).getTime()
-												const appointmentNow = appointmentsToday.filter(
-													appointment => {
-														const { appointment_date } = appointment
-														const getTime_appointment_date = new Date(
-															appointment_date,
-														).getTime()
-														if (
-															getTimeSchedule ===
-															getTime_appointment_date
-														) {
-															return appointment
-														}
-														return null
-													},
-												)
-												//{dateFormat}
-												if (currentDate <= getTimeSchedule) {
-													return (
-														<div
-															className={`create__appointment__content__schedule__content__day__moments__moment ${value &&
-																'Active'}`}
-															key={dateFormat}
-															onClick={() =>
-																handleGetTiemeSchedule(t)}>
-															{appointmentNow.length > 0 ? (
-																appointmentNow.map(date => {
-																	return (
-																		<Tooltip
-																			key={date._id}
-																			title="Ver más">
-																			<IconButton
-																				onClick={() =>
-																					getPastAppointment(
-																						date,
-																					)}
-																				className="btn__icon create__appointment__content__schedule__content__day__moments__moment__icon">
-																				<FiActivity />
-																			</IconButton>
-																		</Tooltip>
-																	)
-																})
-															) : (
-																<p>Disponible</p>
-															)}
-														</div>
-													)
-												}
-												else {
-													return (
-														<div
-															className={`create__appointment__content__schedule__content__day__moments__moment ${value &&
-																'Active'}`}
-															key={dateFormat}
-														/>
-													)
-												}
-											})}
-										</div>
-									)
-								})}
-							</div>
-						</div>
+						<Suspense fallback={<h1>Cargando</h1>}>
+							<ScheduleOneDay
+								appointment_date__schedule={appointment_date}
+								handleDateAppointment={handleGetTiemeSchedule}
+								listAppointmentsToday={appointmentsToday}
+								id_patient={_id}
+							/>
+						</Suspense>
 					</div>
 				)}
 			</section>
 			{DialogCreateAppointment()}
-			{DialogPastAppointment()}
 		</AppLayout>
 	)
 }

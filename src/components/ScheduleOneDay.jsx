@@ -11,8 +11,9 @@ const ScheduleOneDay = ({
 	handleDateAppointment,
 	listAppointmentsToday = [],
 	id_appointment = '',
+	id_patient = '',
 }) => {
-	const { times, dialog, getPastAppointment } = useScheduleOneDay({
+	const { times, dialog, getPastAppointment, currentDate } = useScheduleOneDay({
 		appointment_date__schedule,
 	})
 	return (
@@ -57,19 +58,16 @@ const ScheduleOneDay = ({
 						))}
 					</div>
 					<div className="schedule__one__day__moment">
-						{times.map((time, i) => (
+						{times.map(time => (
 							<div key={time} className="schedule__one__day__moment__time">
 								{time.map(t => {
 									const dateFormat = format(t, 'dd / MMM / yyyy - h:m bbbb')
 									const getTimeSchedule = new Date(t).getTime()
-									const currentDate = new Date().getTime()
+									const currentDateGetTime = currentDate.getTime()
 									const currentAppointmentDate = new Date(
 										appointment_date__schedule,
 									).getTime()
 									let value = getTimeSchedule === currentAppointmentDate
-									if (value && currentDate >= currentAppointmentDate) {
-										value = false
-									}
 									const appointmentNow = listAppointmentsToday.filter(
 										appointment => {
 											const { appointment_date } = appointment
@@ -82,7 +80,7 @@ const ScheduleOneDay = ({
 											return null
 										},
 									)
-									if (currentDate <= getTimeSchedule) {
+									if (currentDateGetTime <= getTimeSchedule) {
 										return (
 											<div
 												className={`schedule__one__day__moment__time__moment ${value &&
@@ -90,11 +88,15 @@ const ScheduleOneDay = ({
 												key={dateFormat}
 												onClick={() => handleDateAppointment(t)}>
 												{appointmentNow.length ? (
-													appointmentNow.map(date => {
-														if (date._id === id_appointment) {
+													appointmentNow.map(data => {
+														const { _id, patient } = data
+														if (
+															_id === id_appointment ||
+															patient._id === id_patient
+														) {
 															return (
 																<Tooltip
-																	key={date._id}
+																	key={_id}
 																	title="Esta es su cita">
 																	<IconButton className="btn__icon schedule__one__day__moment__time__moment__icon">
 																		<FiUser />
@@ -103,11 +105,11 @@ const ScheduleOneDay = ({
 															)
 														}
 														return (
-															<Tooltip key={date._id} title="Ver más">
+															<Tooltip key={_id} title="Ver más">
 																<IconButton
 																	className="btn__icon schedule__one__day__moment__time__moment__icon"
 																	onClick={() =>
-																		getPastAppointment(date)}>
+																		getPastAppointment(data)}>
 																	<FiMessageSquare />
 																</IconButton>
 															</Tooltip>

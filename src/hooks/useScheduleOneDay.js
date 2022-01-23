@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { roundDate } from '@utils/utils'
 import format from 'date-fns/format'
 
 function useScheduleOneDay({ appointment_date__schedule }){
 	const [ times, setTimes ] = useState([])
+	const [ currentDate, setCurrentDate ] = useState(roundDate())
 	const [ dialog, setDialog ] = useState({
 		openDialogPastAppointment: false,
 		pastAppointment: '',
@@ -61,6 +63,7 @@ function useScheduleOneDay({ appointment_date__schedule }){
 	return {
 		times,
 		dialog,
+		currentDate,
 		getPastAppointment,
 	}
 }

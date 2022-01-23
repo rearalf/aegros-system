@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { format, subMinutes } from 'date-fns'
+import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import { roundDate } from '@utils/utils'
@@ -13,7 +13,6 @@ export const useCreateAppointment = ({ patient_id }) => {
 		appointment_date: roundDate(),
 		appointment_reason: '',
 		appointment_state: true,
-		appointment_current_date: roundDate(),
 	})
 	const [ patient, setPatient ] = useState({
 		patient_name: '',
@@ -22,21 +21,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 	const [ appointments, setAppointments ] = useState([])
 	const [ appointmentsToday, setAppointmentsToday ] = useState([])
 	const [ patients, setPatients ] = useState([])
-	const [ times, setTimes ] = useState([])
-	const [ dialog, setDialog ] = useState({
-		openDialogCreateAppointment: false,
-		openDialogPastAppointment: false,
-		pastAppointment: {
-			appointment_date: '',
-			appointment_reason: '',
-			appointment_state: '',
-			patient: {
-				patient_name: '',
-				_id: '',
-			},
-			_id: '',
-		},
-	})
+	const [ dialog, setDialog ] = useState(false)
 
 	const handleChangeInput = e => {
 		const { name, value } = e.target
@@ -191,7 +176,9 @@ export const useCreateAppointment = ({ patient_id }) => {
 			/* Citas anteriores del paciente */
 			if (appointments.length > 0) {
 				const last_appointment = appointments[appointments.length - 1]
-				if (last_appointment.appointment_state === 'Activa') {
+				const { _id, appointment_state } = last_appointment
+				if (appointment_state === 'Activa') {
+					navigate(`/appointments/${_id}`)
 					throw {
 						type: 'information',
 						title: 'Información',
@@ -226,7 +213,6 @@ export const useCreateAppointment = ({ patient_id }) => {
 			})
 		} catch (error) {
 			handleOpenDialogCreateAppointment()
-			console.log(error)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
@@ -243,26 +229,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 			appointment_date: date,
 		})
 
-	const handleOpenDialogCreateAppointment = () => {
-		setDialog({
-			...dialog,
-			openDialogCreateAppointment: !dialog.openDialogCreateAppointment,
-		})
-	}
-
-	const getPastAppointment = date => {
-		setDialog({
-			...dialog,
-			openDialogPastAppointment: !dialog.openDialogPastAppointment,
-			pastAppointment: date,
-		})
-	}
-	const handleOpenDialogPastAppointment = () => {
-		setDialog({
-			...dialog,
-			openDialogPastAppointment: !dialog.openDialogPastAppointment,
-		})
-	}
+	const handleOpenDialogCreateAppointment = () => setDialog(!dialog)
 
 	const getAllAppointmentsOfTheDay = async () => {
 		try {
@@ -283,36 +250,6 @@ export const useCreateAppointment = ({ patient_id }) => {
 		}
 	}
 
-	const recorer = () => {
-		const { appointment_date } = appointment
-		const appointment_dateSplit = format(appointment_date, 'MM/dd/yyyy').split('/')
-		let i = 1
-		const time = []
-		const a = setInterval(() => {
-			time.push([
-				new Date(
-					appointment_dateSplit[2],
-					appointment_dateSplit[0] - 1,
-					appointment_dateSplit[1],
-					i,
-					0,
-				),
-				new Date(
-					appointment_dateSplit[2],
-					appointment_dateSplit[0] - 1,
-					appointment_dateSplit[1],
-					i,
-					30,
-				),
-			])
-			i++
-			if (time.length === 23) {
-				clearInterval(a)
-				setTimes(time)
-			}
-		}, 5)
-	}
-
 	useEffect(
 		() => {
 			patient_id !== undefined && getPatient({ id: patient_id })
@@ -322,7 +259,6 @@ export const useCreateAppointment = ({ patient_id }) => {
 
 	useEffect(
 		() => {
-			recorer()
 			getAllAppointmentsOfTheDay()
 		},
 		[ appointment.appointment_date ],
@@ -332,7 +268,6 @@ export const useCreateAppointment = ({ patient_id }) => {
 		patient,
 		patients,
 		appointment,
-		times,
 		dialog,
 		appointmentsToday,
 		handleChangeInput,
@@ -344,7 +279,5 @@ export const useCreateAppointment = ({ patient_id }) => {
 		handleCreateAppointment,
 		handleGetTiemeSchedule,
 		handleOpenDialogCreateAppointment,
-		handleOpenDialogPastAppointment,
-		getPastAppointment,
 	}
 }

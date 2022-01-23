@@ -9,7 +9,6 @@ import { Button, TextField } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
-/* import ScheduleOneDay from '@components/ScheduleOneDay' */
 const ScheduleOneDay = React.lazy(() => import('@components/ScheduleOneDay'))
 import '@styles/page/UpdateAppointment.scss'
 
