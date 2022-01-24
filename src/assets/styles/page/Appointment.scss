@@ -86,7 +86,7 @@
 						.Activa {
 							color: $background_color_button_success_hover;
 						}
-						.Inactiva {
+						.Finalizada {
 							color: $background_color_button_basic_hover;
 						}
 						.Cancelada {
@@ -252,7 +252,7 @@
 							background-color: $background_2;
 							border: 2px solid $background_color_button_success_hover;
 						}
-						&.Inactiva {
+						&.Finalizada {
 							background-color: $background_2;
 							border: 2px solid $background_color_button_basic_hover;
 						}

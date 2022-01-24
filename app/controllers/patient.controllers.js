@@ -96,7 +96,7 @@ const getPatient = async (event, args) => {
 const modifyAllergy = async (event, args) => {
 	try {
 		const { id, patient_allergies } = args
-		const patient = await Patient.findByIdAndUpdate(id, {
+		await Patient.findByIdAndUpdate(id, {
 			patient_allergies,
 		}).exec()
 		event.returnValue = {

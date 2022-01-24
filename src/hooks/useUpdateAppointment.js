@@ -88,7 +88,7 @@ function useUpdateAppointment(id_appointment){
 					throw 'La fecha seleccionada es menor a la fecha actual'
 				}
 			}
-			const result = await ipcRenderer.sendSync('update-appointment-datet-main', {
+			const result = await ipcRenderer.sendSync('update-appointment-date-main', {
 				id: id_appointment,
 				appointment_date,
 			})

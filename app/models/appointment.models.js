@@ -19,7 +19,7 @@ const appointmentSchema = new Schema(
 		},
 		appointment_state: {
 			type: String,
-			enum: [ 'Activa', 'Inactiva', 'Cancelada' ],
+			enum: [ 'Activa', 'Finalizada', 'Cancelada' ],
 			default: 'Activa',
 		},
 	},

@@ -86,7 +86,6 @@ const useAppointment = id => {
 			console.log({ appointment_result, patient_result })
 			setLoading(false)
 		} catch (error) {
-			console.log(error)
 			navigate(-1)
 			setLoading(false)
 			setNotification({
@@ -110,12 +109,35 @@ const useAppointment = id => {
 			openDialog: !changeDate.openDialog,
 		})
 
-	const handleCancelAppointment = () => {
-		setAppointment({
-			...appointment,
-			appointment_state: 'Cancelada',
-		})
-		console.log({ appointment_observation: appointment.appointment_observation, appointment })
+	const handleCancelAppointment = async () => {
+		try {
+			const result = await ipcRenderer.sendSync('cancel-appointment-main', {
+				id,
+			})
+			if (!result.success) {
+				console.log(result)
+				throw 'Ocurrio un error al cancelar la cita.'
+			}
+			setAppointment({
+				...appointment,
+				appointment_state: 'Cancelada',
+			})
+			const result_appointment = JSON.parse(result.appointment)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Información.',
+				subTitleNotification: `La cita está cancelada.`,
+				typeNotification: 'information',
+			})
+			console.log(result_appointment)
+		} catch (error) {
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: error,
+				typeNotification: 'error',
+			})
+		}
 	}
 
 	useEffect(

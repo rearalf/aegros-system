@@ -300,7 +300,7 @@ export const Patient = () => {
 									select>
 									<MenuItem value={0}>Todos</MenuItem>
 									<MenuItem value={'Activa'}>Activas</MenuItem>
-									<MenuItem value={'Inactiva'}>Inactivas</MenuItem>
+									<MenuItem value={'Finalizada'}>Finalizadas</MenuItem>
 									<MenuItem value={'Cancelada'}>Canceladas</MenuItem>
 								</TextField>
 							</div>
