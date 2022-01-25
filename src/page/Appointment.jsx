@@ -31,7 +31,9 @@ export const Appointment = () => {
 	const {
 		format_appointment_date,
 		format_created,
-		format_update,
+		format_appointment_update_date,
+		format_appointment_end_date,
+		format_appointment_cancel_date,
 		distance_to_now_appointment_date,
 		appointment_reason,
 		appointment_observation,
@@ -158,10 +160,10 @@ export const Appointment = () => {
 										<b>Fecha de creacion: </b>
 										{format_created}
 									</p>
-									{format_update && (
+									{format_appointment_update_date && (
 										<p className="appointment__information__patient__appointment__data__text">
-											<b>Ultima actualización: </b>
-											{format_update}
+											<b>Cambio de día de la cita: </b>
+											{format_appointment_update_date}
 										</p>
 									)}
 									<p className="appointment__information__patient__appointment__data__text">
@@ -174,6 +176,18 @@ export const Appointment = () => {
 											{appointment_state}
 										</span>
 									</p>
+									{format_appointment_end_date && (
+										<p className="appointment__information__patient__appointment__data__text">
+											<b>La cita finalizó el día: </b>
+											{format_appointment_end_date}
+										</p>
+									)}
+									{format_appointment_cancel_date && (
+										<p className="appointment__information__patient__appointment__data__text">
+											<b>La cita fue cancelada el día: </b>
+											{format_appointment_cancel_date}
+										</p>
+									)}
 								</div>
 							</article>
 						</section>

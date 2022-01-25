@@ -65,7 +65,7 @@
 		.update__appointment__section {
 			grid-template-areas: "patient schedule" "buttons schedule";
 			grid-template-columns: 300px 1fr;
-			grid-template-rows: 250px 1fr;
+			grid-template-rows: 300px 1fr;
 			.update__appointment__section__patient {
 				justify-self: start;
 				align-self: start;

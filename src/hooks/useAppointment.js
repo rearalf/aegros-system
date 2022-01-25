@@ -11,7 +11,9 @@ const useAppointment = id => {
 	const [ appointment, setAppointment ] = useState({
 		appointment_observation: '',
 		format_created: '',
-		format_update: '',
+		format_appointment_update_date: '',
+		format_appointment_end_date: '',
+		format_appointment_cancel_date: '',
 		format_appointment_date: '',
 		distance_to_now_appointment_date: '',
 		id,
@@ -36,7 +38,7 @@ const useAppointment = id => {
 			const appointment_result = JSON.parse(result.appointment)
 			const patient_result = JSON.parse(result.patient)
 			const { patient_date_birth } = patient_result
-			const { appointment_date, createdAt, updatedAt } = appointment_result
+			const { appointment_date, createdAt } = appointment_result
 			/* Calculate age */
 			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
 			if (
@@ -54,12 +56,9 @@ const useAppointment = id => {
 			/* Da formato a las fechas */
 			const format_appointment_date = format(
 				new Date(appointment_date),
-				'dd / MMM / yyyy - h:m bbbb',
+				'dd / MMM / yyyy - h:mm bbbb',
 			)
-			const format_created = format(new Date(createdAt), 'dd / MMM / yyyy - h:m bbbb', {
-				locale: esLocale,
-			})
-			const format_update = format(new Date(updatedAt), 'dd / MMM / yyyy - h:m bbbb', {
+			const format_created = format(new Date(createdAt), 'dd / MMM / yyyy - h:mm bbbb', {
 				locale: esLocale,
 			})
 			/* Calcula distancias entre fechas */
@@ -72,11 +71,33 @@ const useAppointment = id => {
 				new Date(appointment_result.appointment_date).getTime() > new Date().getTime()
 			appointment_result.format_created = format_created
 			appointment_result.format_appointment_date = format_appointment_date
-			if (new Date(createdAt).getTime() !== new Date(updatedAt).getTime()) {
-				appointment_result.format_update = format_update
-			}
 			if (appointment_result.appointment_observation === undefined)
 				appointment_result.appointment_observation = ''
+			if (appointment_result.appointment_update_date !== undefined)
+				appointment_result.format_appointment_update_date = format(
+					new Date(appointment_result.appointment_update_date),
+					'dd / MMM / yyyy - h:mm bbbb',
+					{
+						locale: esLocale,
+					},
+				)
+			if (appointment_result.appointment_end_date !== undefined)
+				appointment_result.format_appointment_end_date = format(
+					new Date(appointment_result.appointment_end_date),
+					'dd / MMM / yyyy - h:mm bbbb',
+					{
+						locale: esLocale,
+					},
+				)
+			if (appointment_result.appointment_cancel_date !== undefined)
+				appointment_result.format_appointment_cancel_date = format(
+					new Date(appointment_result.appointment_cancel_date),
+					'dd / MMM / yyyy - h:mm bbbb',
+					{
+						locale: esLocale,
+					},
+				)
+
 			/* Agrega en estados los resutados */
 			setAppointment({
 				...appointment_result,
@@ -124,14 +145,13 @@ const useAppointment = id => {
 				...appointment,
 				appointment_state: 'Cancelada',
 			})
-			const result_appointment = JSON.parse(result.appointment)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Información.',
 				subTitleNotification: `La cita está cancelada.`,
 				typeNotification: 'information',
 			})
-			console.log(result_appointment)
+			getAppointment()
 		} catch (error) {
 			console.log(error)
 			setNotification({
@@ -163,6 +183,7 @@ const useAppointment = id => {
 				...appointment,
 				appointment_state: 'Finalizada',
 			})
+			getAppointment()
 		} catch (error) {
 			console.log(error)
 			setNotification({

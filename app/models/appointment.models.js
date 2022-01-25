@@ -22,6 +22,15 @@ const appointmentSchema = new Schema(
 			enum: [ 'Activa', 'Finalizada', 'Cancelada' ],
 			default: 'Activa',
 		},
+		appointment_end_date: {
+			type: Date,
+		},
+		appointment_cancel_date: {
+			type: Date,
+		},
+		appointment_update_date: {
+			type: Date,
+		},
 	},
 	{
 		timestamps: true,

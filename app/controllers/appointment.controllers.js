@@ -135,6 +135,7 @@ const updateAppointmentDate = async (event, args) => {
 		const { id, appointment_date } = args
 		const updateAppointment = await Appointment.findByIdAndUpdate(id, {
 			appointment_date,
+			appointment_update_date: new Date(),
 		})
 		event.returnValue = {
 			success: true,
@@ -154,8 +155,9 @@ const updateAppointmentDate = async (event, args) => {
 const cancelAppointment = async (event, args) => {
 	try {
 		const { id } = args
-		const cancelAppointment = await Appointment.findByIdAndUpdate(id, {
+		await Appointment.findByIdAndUpdate(id, {
 			appointment_state: 'Cancelada',
+			appointment_cancel_date: new Date(),
 		})
 		event.returnValue = {
 			success: true,
@@ -177,6 +179,7 @@ const finishedAppointment = async (event, args) => {
 		await Appointment.findByIdAndUpdate(id, {
 			appointment_observation,
 			appointment_state: 'Finalizada',
+			appointment_end_date: new Date(),
 		})
 		event.returnValue = {
 			success: true,
