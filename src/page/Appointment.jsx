@@ -26,6 +26,7 @@ export const Appointment = () => {
 		handleChangeObservation,
 		handleOpenDialog,
 		handleCancelAppointment,
+		handleFinishedAppointment,
 	} = useAppointment(appointment__id)
 	const {
 		format_appointment_date,
@@ -77,7 +78,10 @@ export const Appointment = () => {
 										<FiCalendar />Modificar fecha de cita
 									</Button>
 								</Link>
-								<Button variant="contained" className="btn__success">
+								<Button
+									variant="contained"
+									className="btn__success"
+									onClick={handleFinishedAppointment}>
 									<FiSave />
 									Terminar cita
 								</Button>

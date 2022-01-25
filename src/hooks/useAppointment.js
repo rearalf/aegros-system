@@ -14,6 +14,7 @@ const useAppointment = id => {
 		format_update: '',
 		format_appointment_date: '',
 		distance_to_now_appointment_date: '',
+		id,
 	})
 	const [ patient, setPatient ] = useState({
 		appointments: [],
@@ -74,6 +75,8 @@ const useAppointment = id => {
 			if (new Date(createdAt).getTime() !== new Date(updatedAt).getTime()) {
 				appointment_result.format_update = format_update
 			}
+			if (appointment_result.appointment_observation === undefined)
+				appointment_result.appointment_observation = ''
 			/* Agrega en estados los resutados */
 			setAppointment({
 				...appointment_result,
@@ -83,7 +86,6 @@ const useAppointment = id => {
 				...patient_result,
 				appointments: patient_result.appointments.reverse(),
 			})
-			console.log({ appointment_result, patient_result })
 			setLoading(false)
 		} catch (error) {
 			navigate(-1)
@@ -131,6 +133,38 @@ const useAppointment = id => {
 			})
 			console.log(result_appointment)
 		} catch (error) {
+			console.log(error)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: error,
+				typeNotification: 'error',
+			})
+		}
+	}
+
+	const handleFinishedAppointment = async () => {
+		try {
+			const result = await ipcRenderer.sendSync('finished-appointment-main', {
+				id,
+				appointment_observation: appointment.appointment_observation,
+			})
+			if (!result.success) {
+				console.log(result)
+				throw 'Ocurrio un error al cancelar la cita.'
+			}
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Operación exitosa.',
+				subTitleNotification: `La cita está finalizada.`,
+				typeNotification: 'success',
+			})
+			setAppointment({
+				...appointment,
+				appointment_state: 'Finalizada',
+			})
+		} catch (error) {
+			console.log(error)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
@@ -145,6 +179,7 @@ const useAppointment = id => {
 			setLoading(true)
 			setTimeout(() => {
 				getAppointment()
+				ipcRenderer.setMaxListeners(30)
 			}, 1000)
 		},
 		[ id ],
@@ -158,6 +193,7 @@ const useAppointment = id => {
 		handleChangeObservation,
 		handleOpenDialog,
 		handleCancelAppointment,
+		handleFinishedAppointment,
 	}
 }
 

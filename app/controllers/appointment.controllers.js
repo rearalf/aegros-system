@@ -154,16 +154,32 @@ const updateAppointmentDate = async (event, args) => {
 const cancelAppointment = async (event, args) => {
 	try {
 		const { id } = args
-		const cancelAppointment = await Appointment.findByIdAndUpdate(
-			id,
-			{
-				appointment_state: 'Cancelada',
-			},
-			{ returnOriginal: false },
-		)
+		const cancelAppointment = await Appointment.findByIdAndUpdate(id, {
+			appointment_state: 'Cancelada',
+		})
 		event.returnValue = {
 			success: true,
-			appointment: JSON.stringify(cancelAppointment),
+		}
+	} catch (error) {
+		console.log(error)
+		event.returnValue = {
+			success: false,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
+		}
+	}
+}
+
+const finishedAppointment = async (event, args) => {
+	try {
+		const { id, appointment_observation } = args
+		await Appointment.findByIdAndUpdate(id, {
+			appointment_observation,
+			appointment_state: 'Finalizada',
+		})
+		event.returnValue = {
+			success: true,
 		}
 	} catch (error) {
 		console.log(error)
@@ -184,4 +200,5 @@ module.exports = {
 	getAllAppointmentsOfTheDay,
 	updateAppointmentDate,
 	cancelAppointment,
+	finishedAppointment,
 }

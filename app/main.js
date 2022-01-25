@@ -9,6 +9,7 @@ const {
 	getAllAppointmentsOfTheDay,
 	updateAppointmentDate,
 	cancelAppointment,
+	finishedAppointment,
 } = require('./controllers/appointment.controllers')
 const {
 	getAllPatients,
@@ -116,6 +117,7 @@ function createWindow(){
 	ipcMain.on('get-appointment-main', getAppointment)
 	ipcMain.on('update-appointment-date-main', updateAppointmentDate)
 	ipcMain.on('cancel-appointment-main', cancelAppointment)
+	ipcMain.on('finished-appointment-main', finishedAppointment)
 
 	ipcMain.on('test-main', async (event, args) => {
 		console.log(args)

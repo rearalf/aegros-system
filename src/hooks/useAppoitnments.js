@@ -32,6 +32,8 @@ function useAppointments(){
 		setTimeout(() => {
 			getAllAppointment()
 		}, 1000)
+		ipcRenderer.removeAllListeners('get-all-appointment-main')
+		ipcRenderer.setMaxListeners(20)
 	}, [])
 
 	return {
