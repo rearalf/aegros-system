@@ -2,12 +2,61 @@ const Appointment = require('../models/appointment.models')
 const Patient = require('../models/patient.models')
 require('events').EventEmitter.defaultMaxListeners = Infinity
 
-const getAllappointments = async event => {
+const getAllappointments = async (event, args) => {
 	try {
-		const appointments = await Appointment.find().lean().populate('patient')
+		const { limit, currentPage, patient_name, sortBy, asc, sortStatus } = args
+		const sortByStatus =
+			sortStatus === 'Todas'
+				? {}
+				: sortStatus === 'Activa'
+					? {
+							appointment_state: 'Activa',
+						}
+					: sortStatus === 'Finalizada'
+						? {
+								appointment_state: 'Finalizada',
+							}
+						: sortStatus === 'Cancelada'
+							? {
+									appointment_state: 'Cancelada',
+								}
+							: {}
+		const appointments = await Appointment.find(sortByStatus)
+			.lean()
+			.populate('patient')
+			.limit(limit)
+			.skip((currentPage - 1) * limit)
+			.sort({
+				[sortBy]: asc ? 1 : -1,
+			})
+		const totalAppointments = await Appointment.countDocuments(sortByStatus).catch(error => {
+			throw error
+		})
+		if (patient_name) {
+			const patientsList = await searchAppointmentByPatient(patient_name)
+			const appointmentFound = await Appointment.find({
+				patient: {
+					$in: patientsList,
+				},
+			})
+				.lean()
+				.populate('patient')
+				.limit(limit)
+				.skip((currentPage - 1) * limit)
+			event.returnValue = {
+				success: true,
+				appointments: JSON.stringify(appointmentFound),
+				totalAppointments,
+				totalPages: Math.ceil(totalAppointments / limit),
+				currentPage,
+			}
+		}
 		event.returnValue = {
 			success: true,
 			appointments: JSON.stringify(appointments),
+			totalAppointments,
+			totalPages: Math.ceil(totalAppointments / limit),
+			currentPage,
 		}
 	} catch (err) {
 		console.log(err)
@@ -18,6 +67,18 @@ const getAllappointments = async event => {
 			error: err,
 		}
 	}
+}
+
+const searchAppointmentByPatient = async name => {
+	const patients = await Patient.find({
+		patient_name: {
+			$regex: '.*' + name + '*.',
+		},
+	})
+		.lean()
+		.exec()
+	const patientsList = JSON.parse(JSON.stringify(patients))
+	return patientsList
 }
 
 const getAppointment = async (event, args) => {

@@ -6,7 +6,58 @@
 		justify-content: space-between;
 		margin-bottom: 25px;
 	}
+	.appointment__params {
+		margin-bottom: 25px;
+		background-color: $background_2;
+		padding: 25px;
+		border-radius: 5px;
+		box-shadow: $shadow_background_3;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		gap: 25px;
+		.appointment__params__search {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			.appointment__params__search__form {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				transition: all .2s ease-in-out;
+				width: 0;
+				opacity: 0;
+				visibility: hidden;
+				.appointment__params__search__form__input {
+					width: 350px;
+					.MuiOutlinedInput-root {
+						padding-right: 15px;
+						.MuiOutlinedInput-input {
+							padding-left: 15px;
+							padding-right: 15px;
+						}
+					}
+				}
+				&.appointment__params__search__form__show {
+					width: 475px;
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+		.appointment__params__sorts {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr auto;
+			gap: 15px;
+			.appointment__params__sorts__input,
+			.appointment__params__sorts__status {
+				position: relative;
+			}
+		}
+	}
 	.appointment__table {
+		margin-bottom: 25px;
 		.appointment__table__state {
 			font-weight: 500;
 			&.Activa {
@@ -17,6 +68,28 @@
 			}
 			&.Cancelada {
 				color: $color_text_button_error;
+			}
+		}
+	}
+	.appointments__total__appointment {
+		display: flex;
+		justify-content: flex-end;
+		margin-right: 15px;
+	}
+	@media screen and (min-width: 1250px) {
+		.appointment__params {
+			flex-direction: row;
+			justify-content: space-between;
+			.appointment__params__sorts {
+				.appointment__params__sorts__input,
+				.appointment__params__sorts__status {
+					width: 150px;
+					.MuiFormHelperText-root {
+						position: absolute;
+						bottom: -20px;
+						margin: 0;
+					}
+				}
 			}
 		}
 	}

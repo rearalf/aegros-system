@@ -220,10 +220,7 @@ export const Patients = () => {
 								}}
 							/>
 							{patient_name.length >= 5 && (
-								<Button
-									variant="contained"
-									className="btn_basic"
-									onClick={handleSearchPatients}>
+								<Button variant="contained" className="btn_basic" type="submit">
 									<FiSearch size={18} /> Buscar
 								</Button>
 							)}
@@ -254,7 +251,7 @@ export const Patients = () => {
 							<MenuItem value="createdAt">Fecha de creación</MenuItem>
 							<MenuItem value="patient_date_birth">Fecha de nacimiento</MenuItem>
 						</TextField>
-						<Tooltip title={`Ordenar de forma ${!asc ? 'ascendente' : 'Descendente'}`}>
+						<Tooltip title={`Ordenar de forma ${!asc ? 'Ascendente' : 'Descendente'}`}>
 							<Checkbox name="asc" checked={asc} onClick={handleChangeAsc} />
 						</Tooltip>
 					</div>

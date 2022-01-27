@@ -1,23 +1,48 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
+import { format, formatDistanceToNow } from 'date-fns'
+import esLocale from 'date-fns/locale/es'
 
 function useAppointments(){
 	const { setNotification } = useContext(notificationContext)
 	const [ loading, setLoading ] = useState(true)
+	const [ pagesAndLimit, setPagesAndLimit ] = useState({
+		currentPage: 1,
+		limit: 10,
+		totalAppointments: 0,
+		totalPages: 0,
+		sortBy: 'createdAt',
+		sortStatus: 'Todas',
+		asc: false,
+		loadingSort: true,
+	})
+	const [ appointmnetSearch, setAppointmentSearch ] = useState({
+		patient_search: '',
+		appointments_founds: [],
+		show_search_form: false,
+	})
 	const [ appointments, setAppointments ] = useState([])
+
 	const getAllAppointment = async () => {
 		try {
-			const result = await ipcRenderer.sendSync('get-all-appointment-main')
+			const result = await ipcRenderer.sendSync('get-all-appointment-main', pagesAndLimit)
 			if (!result.success) {
 				console.log(result)
 				throw 'Ocurrio un error'
 			}
 			const appointments_result = JSON.parse(result.appointments)
-			setAppointments(appointments_result)
+			const result_format = formatAppointmet(appointments_result)
+			setAppointments(result_format)
 			setLoading(true)
+			setPagesAndLimit({
+				...pagesAndLimit,
+				totalAppointments: result.totalAppointments,
+				totalPages: result.totalPages,
+				currentPage: result.currentPage,
+				loadingSort: true,
+			})
 		} catch (error) {
-			console.log(error)
 			setLoading(true)
 			setNotification({
 				isOpenNotification: true,
@@ -26,19 +51,200 @@ function useAppointments(){
 				typeNotification: 'error',
 			})
 		}
-	}
-	useEffect(() => {
-		setLoading(false)
-		setTimeout(() => {
-			getAllAppointment()
-		}, 1000)
 		ipcRenderer.removeAllListeners('get-all-appointment-main')
-		ipcRenderer.setMaxListeners(20)
-	}, [])
+	}
+
+	const handleChangeInput = e =>
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: e.target.value,
+		})
+
+	const handleChangeStateShowSearch = () => {
+		setAppointmentSearch({
+			...appointmnetSearch,
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	const handleResetSearchAppointment = () => {
+		getAllAppointment()
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: '',
+			appointments_founds: [],
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	const handleSearchAppointmets = async e => {
+		try {
+			setLoading(false)
+			e.preventDefault()
+			if (appointmnetSearch.patient_search.length < 5) {
+				throw {
+					message: 'Debe de agregar más información.',
+					type: 'information',
+					title: 'Información',
+				}
+			}
+			const result = await ipcRenderer.sendSync('get-all-appointment-main', {
+				limit: 10,
+				currentPage: 1,
+				patient_name: appointmnetSearch.patient_search,
+			})
+			if (!result.success) {
+				console.log(result)
+				throw {
+					message: 'Ocurrio un error al buscar.',
+				}
+			}
+			const result_format = formatAppointmet(JSON.parse(result.appointments))
+			result_format === null
+				? setNotification({
+						isOpenNotification: true,
+						titleNotification: 'Información',
+						subTitleNotification: 'No existe pacientes con ese nombre.',
+						typeNotification: 'information',
+					})
+				: setAppointments(result_format)
+			setLoading(true)
+		} catch (error) {
+			setLoading(true)
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: error.title ? error.title : 'Error',
+				subTitleNotification: error.message,
+				typeNotification: error.type ? error.type : 'error',
+			})
+		}
+		ipcRenderer.removeAllListeners('get-all-appointment-main')
+	}
+
+	const formatAppointmet = appointments => {
+		if (appointments.length > 0) {
+			const result = appointments.map(data => {
+				const { appointment_date, appointment_state, createdAt, patient, _id } = data
+				const format_appointment_date = format(
+					new Date(appointment_date),
+					'dd / MMM / yyyy - h:m bbbb',
+					{
+						locale: esLocale,
+					},
+				)
+				const format_created = formatDistanceToNow(new Date(createdAt), {
+					locale: esLocale,
+				})
+				return {
+					_id,
+					appointment_state,
+					format_appointment_date,
+					format_created,
+					patient_name: patient.patient_name,
+					patient_id: patient._id,
+				}
+			})
+			return result
+		}
+		return null
+	}
+
+	const handleChangeLimit = e => {
+		setPagesAndLimit({
+			...pagesAndLimit,
+			limit: e.target.value,
+			currentPage: 1,
+			loadingSort: false,
+		})
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: '',
+			appointments_founds: [],
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	const handleChangePage = async (event, pageNumber) =>
+		setPagesAndLimit({
+			...pagesAndLimit,
+			currentPage: pageNumber,
+			loadingSort: false,
+		})
+
+	const handleChangeStatus = e => {
+		setPagesAndLimit({
+			...pagesAndLimit,
+			sortStatus: e.target.value,
+			currentPage: 1,
+			loadingSort: false,
+		})
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: '',
+			appointments_founds: [],
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	const handleChangeSort = e => {
+		setPagesAndLimit({
+			...pagesAndLimit,
+			sortBy: e.target.value,
+			loadingSort: false,
+		})
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: '',
+			appointments_founds: [],
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	const handleChangeAsc = e => {
+		setPagesAndLimit({
+			...pagesAndLimit,
+			asc: e.target.checked,
+			loadingSort: false,
+		})
+		setAppointmentSearch({
+			...appointmnetSearch,
+			patient_search: '',
+			appointments_founds: [],
+			show_search_form: !appointmnetSearch.show_search_form,
+		})
+	}
+
+	useEffect(
+		() => {
+			setLoading(false)
+			setTimeout(() => {
+				getAllAppointment()
+			}, 1000)
+			ipcRenderer.setMaxListeners(50)
+		},
+		[
+			pagesAndLimit.currentPage,
+			pagesAndLimit.limit,
+			pagesAndLimit.asc,
+			pagesAndLimit.sortBy,
+			pagesAndLimit.sortStatus,
+		],
+	)
 
 	return {
 		loading,
 		appointments,
+		appointmnetSearch,
+		pagesAndLimit,
+		handleChangePage,
+		handleChangeInput,
+		handleSearchAppointmets,
+		handleChangeStateShowSearch,
+		handleResetSearchAppointment,
+		handleChangeLimit,
+		handleChangeStatus,
+		handleChangeSort,
+		handleChangeAsc,
 	}
 }
 

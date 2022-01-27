@@ -15,16 +15,13 @@
 		box-shadow: $shadow_background_3;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 15px;
+		justify-content: center;
+		flex-direction: column;
+		gap: 25px;
 		.patients__search {
 			display: flex;
 			align-items: center;
 			gap: 15px;
-			.btn__icon__basic {
-				padding: 18px;
-			}
 			.patients__search__form {
 				display: flex;
 				align-items: center;
@@ -54,14 +51,22 @@
 			}
 		}
 		.patients__params__sort {
-			display: flex;
+			display: grid;
+			grid-template-columns: 1fr 1fr auto;
 			gap: 15px;
+			.patients__params__sort__number__patients,
+			.patients__params__sort__type__patients {
+				position: relative;
+			}
 		}
 	}
 	.patients__total {
 		display: flex;
 		justify-content: flex-end;
-		margin: 25px 0;
+		margin-right: 15px;
+	}
+	.table__patients {
+		margin-bottom: 25px;
 	}
 	.table__basic.table__patients.MuiTableContainer-root
 		.MuiTable-root
@@ -85,6 +90,23 @@
 			align-items: center;
 			justify-content: center;
 			gap: 20px;
+		}
+	}
+	@media screen and (min-width: 1250px) {
+		.patients__params {
+			flex-direction: row;
+			justify-content: space-between;
+			.patients__params__sort {
+				.patients__params__sort__number__patients,
+				.patients__params__sort__type__patients {
+					width: 150px;
+					.MuiFormHelperText-root {
+						position: absolute;
+						bottom: -20px;
+						margin: 0;
+					}
+				}
+			}
 		}
 	}
 }

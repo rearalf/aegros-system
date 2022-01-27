@@ -125,7 +125,6 @@ export const usePatients = () => {
 				}
 			}
 		} catch (error) {
-			console.log(error)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
