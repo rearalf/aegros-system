@@ -24,25 +24,23 @@ const getAllPatients = async (event, args) => {
 				currentPage: currentPage,
 			}
 		}
-		else {
-			const patients = await Patient.find({ patient_state: true })
-				.lean()
-				.limit(limit * 1)
-				.skip((currentPage - 1) * limit)
-				.sort({
-					[sortBy]: asc ? 1 : -1,
-				})
-				.exec()
-			const totalPatients = await Patient.countDocuments().catch(error => {
-				throw error
+		const patients = await Patient.find({ patient_state: true })
+			.lean()
+			.limit(limit * 1)
+			.skip((currentPage - 1) * limit)
+			.sort({
+				[sortBy]: asc ? 1 : -1,
 			})
-			event.returnValue = {
-				success: true,
-				patients: JSON.stringify(patients),
-				totalPatients,
-				totalPage: Math.ceil(totalPatients / limit),
-				currentPage: currentPage,
-			}
+			.exec()
+		const totalPatients = await Patient.countDocuments().catch(error => {
+			throw error
+		})
+		event.returnValue = {
+			success: true,
+			patients: JSON.stringify(patients),
+			totalPatients,
+			totalPage: Math.ceil(totalPatients / limit),
+			currentPage: currentPage,
 		}
 	} catch (err) {
 		console.log(err)

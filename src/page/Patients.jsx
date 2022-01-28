@@ -30,7 +30,6 @@ export const Patients = () => {
 		loading,
 		patientSearch,
 		onChangeInputSearch,
-		deleteInputSearch,
 		handleSearchPatients,
 		onChangeStateShowSearch,
 		handleResetPatients,
@@ -50,7 +49,7 @@ export const Patients = () => {
 
 	const classValidationInputSearch = show_patient_form ? 'patients__search__form__show' : null
 
-	const TableBodyPatient = (patients = []) => {
+	const TableBodyPatient = () => {
 		return (
 			<TableContainer className="table__basic table__patients" component={Paper}>
 				<Table sx={{ minWidth: 1024 }} aria-label="simple table">
@@ -69,38 +68,12 @@ export const Patients = () => {
 							const {
 								_id,
 								patient_name,
-								patient_date_birth,
 								patient_email,
 								patient_phone_number,
 								patient_state,
+								patient_age,
+								formatDate,
 							} = patient
-							const formatDate = format(
-								new Date(patient_date_birth),
-								'dd - MMM - yyyy',
-							)
-							const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-							const patient_age = resultAge.split(' ')
-							let validateAge = false
-							if (
-								new Date(patient_date_birth).getMonth() === 0 ||
-								new Date(patient_date_birth).getMonth() === 1 ||
-								new Date(patient_date_birth).getMonth() === 2
-							) {
-								validateAge = true
-							}
-
-							const validateNameState = patient_state ? (
-								<Tooltip title="Ver más">
-									<div>{patient_name}</div>
-								</Tooltip>
-							) : (
-								<Tooltip title="Paciente deshabilitado. Ver más">
-									<div>
-										<FiFrown />
-										{patient_name}
-									</div>
-								</Tooltip>
-							)
 							return (
 								<TableRow
 									key={_id}
@@ -111,8 +84,8 @@ export const Patients = () => {
 											: 'table__patients__row__disabled'}`}>
 										<Tooltip
 											title={`${patient_state
-												? 'Ver más'
-												: 'Paciente deshabilitado. Ver más'}`}>
+												? 'Ver perfil del paciente'
+												: 'Paciente deshabilitado. Ver perfil del paciente'}`}>
 											<Link to={`/patients/patient/${_id}`}>
 												<div>
 													{patient_state ? null : <FiFrown size={18} />}
@@ -122,9 +95,7 @@ export const Patients = () => {
 										</Tooltip>
 									</TableCell>
 									<TableCell align="center">{formatDate}</TableCell>
-									<TableCell align="center">
-										{validateAge ? patient_age[1] - 1 : patient_age[1]}
-									</TableCell>
+									<TableCell align="center">{patient_age}</TableCell>
 									<TableCell align="center">
 										<Tooltip title="Enviar un correo">
 											<a href={`mailto:${patient_email}`}>{patient_email}</a>
@@ -213,7 +184,7 @@ export const Patients = () => {
 									endAdornment: patient_name.length > 0 && (
 										<IconButton
 											className="btn__icon"
-											onClick={deleteInputSearch}>
+											onClick={handleResetPatients}>
 											<FiX size={18} />
 										</IconButton>
 									),
@@ -257,12 +228,10 @@ export const Patients = () => {
 					</div>
 				</div>
 			) : null}
-			{loading ? loadingSort ? patients.length ? (
-				TableBodyPatient(patients)
+			{loading && loadingSort ? patients.length ? (
+				TableBodyPatient()
 			) : (
 				<h3>No hay pacientes</h3>
-			) : (
-				<Loading />
 			) : (
 				<Loading />
 			)}

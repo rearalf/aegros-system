@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-import notificationContext from '@context/notificationContext'
 import { ipcRenderer } from 'electron'
+import { format, formatDistanceToNow } from 'date-fns'
+import notificationContext from '@context/notificationContext'
+import esLocale from 'date-fns/locale/es'
 
 export const usePatients = () => {
 	const { setNotification } = useContext(notificationContext)
@@ -30,10 +32,9 @@ export const usePatients = () => {
 			}
 			const { patients, totalPage, totalPatients, currentPage } = result
 			const resultPatients = JSON.parse(patients)
-			setPatients([])
-			resultPatients.map(patient => {
-				setPatients(patients => patients.concat(patient))
-			})
+			const format_patients = formatPatients(resultPatients)
+			setPatients(format_patients)
+			setLoading(true)
 			setPagesAndLimit({
 				...pagesAndLimit,
 				totalPage,
@@ -41,9 +42,7 @@ export const usePatients = () => {
 				totalPatients,
 				loadingSort: true,
 			})
-			setLoading(true)
 		} catch (error) {
-			console.log(error)
 			setLoading(true)
 			setNotification({
 				isOpenNotification: true,
@@ -54,6 +53,47 @@ export const usePatients = () => {
 		}
 	}
 
+	const formatPatients = patients => {
+		if (patients.length > 0) {
+			const result = patients.map(data => {
+				const {
+					_id,
+					patient_name,
+					patient_date_birth,
+					patient_email,
+					patient_phone_number,
+					patient_state,
+				} = data
+
+				const formatDate = format(new Date(patient_date_birth), 'dd - MMM - yyyy', {
+					locale: esLocale,
+				})
+				const resultAge = formatDistanceToNow(new Date(patient_date_birth))
+				const patient_age_format = resultAge.split(' ')
+				let validateAge = false
+				if (
+					new Date(patient_date_birth).getMonth() === 0 ||
+					new Date(patient_date_birth).getMonth() === 1 ||
+					new Date(patient_date_birth).getMonth() === 2
+				) {
+					validateAge = true
+				}
+				const patient_age = validateAge ? patient_age_format[1] - 1 : patient_age_format[1]
+				return {
+					_id,
+					patient_name,
+					patient_email,
+					patient_phone_number,
+					patient_state,
+					patient_age,
+					formatDate,
+				}
+			})
+			return result
+		}
+		return null
+	}
+
 	const onChangeInputSearch = e => {
 		const { value } = e.target
 		setPatientSearch({
@@ -61,18 +101,12 @@ export const usePatients = () => {
 			patient_name: value,
 		})
 	}
-	const deleteInputSearch = () =>
-		setPatientSearch({
-			...patientSearch,
-			patient_name: '',
-		})
 
-	const onChangeStateShowSearch = () => {
+	const onChangeStateShowSearch = () =>
 		setPatientSearch({
 			...patientSearch,
 			show_patient_form: !patientSearch.show_patient_form,
 		})
-	}
 
 	const handleResetPatients = () => {
 		getPateints()
@@ -86,6 +120,7 @@ export const usePatients = () => {
 
 	const handleSearchPatients = async e => {
 		try {
+			setLoading(false)
 			e.preventDefault()
 			const { patient_name } = patientSearch
 			if (patient_name.length < 5) {
@@ -106,25 +141,18 @@ export const usePatients = () => {
 					message: 'Ocurrio un error al buscar.',
 				}
 			}
-			const resultPatients = JSON.parse(result.patients)
-			if (resultPatients.length > 0) {
-				setPatients([])
-				resultPatients.map(patient => {
-					setPatients(patients => patients.concat(patient))
-				})
-				setPatientSearch({
-					...patientSearch,
-					patients_search: resultPatients,
-				})
-			}
-			else {
-				throw {
-					message: 'No hay pacientes con ese nombre.',
-					type: 'information',
-					title: 'Información',
-				}
-			}
+			const format_patients = formatPatients(JSON.parse(result.patients))
+			format_patients === null
+				? setNotification({
+						isOpenNotification: true,
+						titleNotification: 'Información',
+						subTitleNotification: 'No existe pacientes con ese nombre.',
+						typeNotification: 'information',
+					})
+				: setPatients(format_patients)
+			setLoading(true)
 		} catch (error) {
+			setLoading(true)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,
@@ -135,20 +163,34 @@ export const usePatients = () => {
 		}
 	}
 
-	const handleChangeLimit = e =>
+	const handleChangeLimit = e => {
 		setPagesAndLimit({
 			...pagesAndLimit,
 			limit: e.target.value,
 			currentPage: 1,
 			loadingSort: false,
 		})
+		setPatientSearch({
+			...patientSearch,
+			patients_search: [],
+			patient_name: '',
+			show_patient_form: false,
+		})
+	}
 
-	const handleChangeSortBy = e =>
+	const handleChangeSortBy = e => {
 		setPagesAndLimit({
 			...pagesAndLimit,
 			sortBy: e.target.value,
 			loadingSort: false,
 		})
+		setPatientSearch({
+			...patientSearch,
+			patients_search: [],
+			patient_name: '',
+			show_patient_form: false,
+		})
+	}
 
 	const handleChangePage = async (event, pageNumber) =>
 		setPagesAndLimit({
@@ -157,24 +199,27 @@ export const usePatients = () => {
 			loadingSort: false,
 		})
 
-	const handleChangeAsc = e =>
+	const handleChangeAsc = e => {
 		setPagesAndLimit({
 			...pagesAndLimit,
 			asc: e.target.checked,
 			loadingSort: false,
 		})
+		setPatientSearch({
+			...patientSearch,
+			patients_search: [],
+			patient_name: '',
+			show_patient_form: false,
+		})
+	}
 
-	useEffect(() => {
-		setLoading(!loading)
-		setTimeout(() => {
-			getPateints()
-		}, 1000)
-	}, [])
 	useEffect(
 		() => {
+			setLoading(false)
 			setTimeout(() => {
 				getPateints()
 			}, 1000)
+			ipcRenderer.setMaxListeners(35)
 		},
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)
@@ -183,12 +228,11 @@ export const usePatients = () => {
 		patients,
 		loading,
 		patientSearch,
+		pagesAndLimit,
 		onChangeInputSearch,
-		deleteInputSearch,
 		handleSearchPatients,
 		onChangeStateShowSearch,
 		handleResetPatients,
-		pagesAndLimit,
 		handleChangePage,
 		handleChangeLimit,
 		handleChangeAsc,

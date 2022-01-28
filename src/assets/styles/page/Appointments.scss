@@ -58,6 +58,9 @@
 	}
 	.appointment__table {
 		margin-bottom: 25px;
+		a:hover {
+			color: $color_text_link_hover;
+		}
 		.appointment__table__state {
 			font-weight: 500;
 			&.Activa {

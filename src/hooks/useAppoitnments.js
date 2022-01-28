@@ -1,12 +1,17 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import notificationContext from '@context/notificationContext'
 import { format, formatDistanceToNow } from 'date-fns'
 import esLocale from 'date-fns/locale/es'
+import notificationContext from '@context/notificationContext'
 
 function useAppointments(){
 	const { setNotification } = useContext(notificationContext)
 	const [ loading, setLoading ] = useState(true)
+	const [ appointments, setAppointments ] = useState([])
+	const [ appointmnetSearch, setAppointmentSearch ] = useState({
+		patient_search: '',
+		show_search_form: false,
+	})
 	const [ pagesAndLimit, setPagesAndLimit ] = useState({
 		currentPage: 1,
 		limit: 10,
@@ -17,12 +22,6 @@ function useAppointments(){
 		asc: false,
 		loadingSort: true,
 	})
-	const [ appointmnetSearch, setAppointmentSearch ] = useState({
-		patient_search: '',
-		appointments_founds: [],
-		show_search_form: false,
-	})
-	const [ appointments, setAppointments ] = useState([])
 
 	const getAllAppointment = async () => {
 		try {
@@ -52,6 +51,34 @@ function useAppointments(){
 			})
 		}
 		ipcRenderer.removeAllListeners('get-all-appointment-main')
+	}
+
+	const formatAppointmet = appointments => {
+		if (appointments.length > 0) {
+			const result = appointments.map(data => {
+				const { appointment_date, appointment_state, createdAt, patient, _id } = data
+				const format_appointment_date = format(
+					new Date(appointment_date),
+					'dd / MMM / yyyy - h:m bbbb',
+					{
+						locale: esLocale,
+					},
+				)
+				const format_created = formatDistanceToNow(new Date(createdAt), {
+					locale: esLocale,
+				})
+				return {
+					_id,
+					appointment_state,
+					format_appointment_date,
+					format_created,
+					patient_name: patient.patient_name,
+					patient_id: patient._id,
+				}
+			})
+			return result
+		}
+		return null
 	}
 
 	const handleChangeInput = e =>
@@ -121,34 +148,6 @@ function useAppointments(){
 		ipcRenderer.removeAllListeners('get-all-appointment-main')
 	}
 
-	const formatAppointmet = appointments => {
-		if (appointments.length > 0) {
-			const result = appointments.map(data => {
-				const { appointment_date, appointment_state, createdAt, patient, _id } = data
-				const format_appointment_date = format(
-					new Date(appointment_date),
-					'dd / MMM / yyyy - h:m bbbb',
-					{
-						locale: esLocale,
-					},
-				)
-				const format_created = formatDistanceToNow(new Date(createdAt), {
-					locale: esLocale,
-				})
-				return {
-					_id,
-					appointment_state,
-					format_appointment_date,
-					format_created,
-					patient_name: patient.patient_name,
-					patient_id: patient._id,
-				}
-			})
-			return result
-		}
-		return null
-	}
-
 	const handleChangeLimit = e => {
 		setPagesAndLimit({
 			...pagesAndLimit,
@@ -160,11 +159,11 @@ function useAppointments(){
 			...appointmnetSearch,
 			patient_search: '',
 			appointments_founds: [],
-			show_search_form: !appointmnetSearch.show_search_form,
+			show_search_form: false,
 		})
 	}
 
-	const handleChangePage = async (event, pageNumber) =>
+	const handleChangePage = async (e, pageNumber) =>
 		setPagesAndLimit({
 			...pagesAndLimit,
 			currentPage: pageNumber,
@@ -182,7 +181,7 @@ function useAppointments(){
 			...appointmnetSearch,
 			patient_search: '',
 			appointments_founds: [],
-			show_search_form: !appointmnetSearch.show_search_form,
+			show_search_form: false,
 		})
 	}
 
@@ -196,7 +195,7 @@ function useAppointments(){
 			...appointmnetSearch,
 			patient_search: '',
 			appointments_founds: [],
-			show_search_form: !appointmnetSearch.show_search_form,
+			show_search_form: false,
 		})
 	}
 
@@ -210,7 +209,7 @@ function useAppointments(){
 			...appointmnetSearch,
 			patient_search: '',
 			appointments_founds: [],
-			show_search_form: !appointmnetSearch.show_search_form,
+			show_search_form: false,
 		})
 	}
 

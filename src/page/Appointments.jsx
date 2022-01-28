@@ -86,7 +86,9 @@ export const Appointments = () => {
 									key={_id}
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 									<TableCell component="th" scope="row">
-										{patient_name}
+										<Tooltip title="Ver cita">
+											<Link to={`/appointments/${_id}`}>{patient_name}</Link>
+										</Tooltip>
 									</TableCell>
 									<TableCell align="center">{format_appointment_date}</TableCell>
 									<TableCell align="center">{format_created}</TableCell>
@@ -95,15 +97,15 @@ export const Appointments = () => {
 										className={`appointment__table__state ${appointment_state}`}>
 										{appointment_state}
 									</TableCell>
-									<Tooltip title="Ver más">
-										<TableCell align="center">
+									<TableCell align="center">
+										<Tooltip title="Ver más">
 											<Link to={`/appointments/${_id}`}>
 												<IconButton className="btn__icon bnt__edit">
 													<FiActivity size={18} />
 												</IconButton>
 											</Link>
-										</TableCell>
-									</Tooltip>
+										</Tooltip>
+									</TableCell>
 								</TableRow>
 							)
 						})}
@@ -212,7 +214,7 @@ export const Appointments = () => {
 							id="sort__type__appointment"
 							select
 							className="appointment__params__sorts__status"
-							helperText="Mostrar tipos de citas"
+							helperText="Orden de las citas"
 							value={sortBy}
 							onChange={handleChangeSort}>
 							<MenuItem value="createdAt">Fecha de creación</MenuItem>
