@@ -1,13 +1,127 @@
 import React from 'react'
-import { FiExternalLink, FiUserPlus, FiMoreVertical, FiChevronRight } from 'react-icons/fi'
-import { Avatar, Button, IconButton, Tooltip } from '@mui/material'
-import PatientAppointmentTab from '@components/PatientAppointmentTab'
+import { Link } from 'react-router-dom'
+import { FiUserPlus, FiCalendar, FiUsers, FiArrowRight } from 'react-icons/fi'
+import { Button } from '@mui/material'
+import { Loading } from '@components/Loading'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
-import { Link } from 'react-router-dom'
+import useDashboard from '@hooks/useDashboard'
+import CardAppointment from '@components/CardAppointment'
 import '@styles/page/Dashboard.scss'
 
 export const Dashboard = () => {
+	const {
+		dataCount,
+		variantSelect,
+		appointments,
+		daysAppointments,
+		loading,
+		handleChangeVariantSelect,
+	} = useDashboard()
+	const {
+		totalAppointments,
+		totalPatients,
+		todayAppointments,
+		totalAppointmentsCancel,
+		totalAppointmentsFinish,
+		loadingDataCount,
+	} = dataCount
+
+	const AppointmentsDay = () => (
+		<div className="dashboard__appointments__schedule dashboard__appointments__schedule__day">
+			{appointments.length ? (
+				appointments.map(data => <CardAppointment {...data} key={data._id} />)
+			) : (
+				<h3>No hay pacinetes para hoy</h3>
+			)}
+		</div>
+	)
+	const AppointmentsWeek = () => (
+		<div className="dashboard__appointments__schedule">
+			{appointments.length ? (
+				<React.Fragment>
+					{daysAppointments.map(day => {
+						const today = new Date()
+						const todaySelect = new Date(
+							today.getFullYear(),
+							today.getMonth(),
+							day.split(' ')[1],
+						).getDate()
+						const validationToday = today.getDate() === todaySelect
+						return (
+							<div className="dashboard__appointments__schedule__week" key={day}>
+								<article className="dashboard__appointments__schedule__week__header">
+									<h3
+										className={`dashboard__appointments__schedule__week__header__title ${validationToday
+											? 'today'
+											: ''}`}>
+										{validationToday ? <FiArrowRight /> : null}
+										{day}
+									</h3>
+									<hr className="dashboard__appointments__schedule__week__header__hr" />
+								</article>
+								<div className="dashboard__appointments__schedule__week__appointment">
+									{appointments.map(data => {
+										const { format_day_appointment_date, _id } = data
+										if (day === format_day_appointment_date)
+											return <CardAppointment {...data} key={_id} />
+
+										return null
+									})}
+								</div>
+							</div>
+						)
+					})}
+				</React.Fragment>
+			) : (
+				<h3>No hay pacinetes para hoy</h3>
+			)}
+		</div>
+	)
+	const AppointmentMonth = () => (
+		<div className="dashboard__appointments__schedule dashboard__appointments__schedule__Month">
+			{appointments.length ? (
+				<React.Fragment>
+					{daysAppointments.map(day => {
+						const today = new Date()
+						const todaySelect = new Date(
+							today.getFullYear(),
+							today.getMonth(),
+							day.split(' ')[1],
+						).getDate()
+						const validationToday = today.getDate() === todaySelect
+						return (
+							<div className="dashboard__appointments__schedule__week" key={day}>
+								<article className="dashboard__appointments__schedule__week__header">
+									<h3
+										className={`dashboard__appointments__schedule__week__header__title ${validationToday
+											? 'today'
+											: ''}`}>
+										{validationToday ? <FiArrowRight /> : null}
+										{day}
+									</h3>
+									<hr className="dashboard__appointments__schedule__week__header__hr" />
+								</article>
+								<div className="dashboard__appointments__schedule__week__appointment">
+									{appointments.map(data => {
+										const { format_day_appointment_date, _id } = data
+										if (day === format_day_appointment_date) {
+											return <CardAppointment {...data} key={_id} />
+										}
+										return null
+									})}
+								</div>
+							</div>
+						)
+					})}
+				</React.Fragment>
+			) : (
+				<h3>No hay pacinetes para hoy</h3>
+			)}
+		</div>
+	)
+	const ContentLoader = () => <div className="content__loader" />
+
 	return (
 		<AppLayout ClassName="dashboard">
 			<BreadCrumbsComponent
@@ -26,7 +140,7 @@ export const Dashboard = () => {
 				<div className="dashboard__header__button__group">
 					<Link to="/appointments/creat-appointment">
 						<Button variant="contained" className="btn_basic">
-							<FiExternalLink size={18} /> Crear cita
+							<FiCalendar size={18} /> Crear cita
 						</Button>
 					</Link>
 					<Link to="/patients/create-patient">
@@ -36,43 +150,137 @@ export const Dashboard = () => {
 					</Link>
 				</div>
 			</header>
-			<section className="dashboard__content">
-				<article className="dashboard__patient__by__gender">
-					<h2 className="dashboard__patient__by__gender__title">Pacientes por genero</h2>
-				</article>
-				<article className="dashboard__average__patient__visit">
-					<h2 className="dashboard__average__patient__visit__title">
-						Visita promedio del paciente
-					</h2>
-				</article>
-				<article className="dashboard__latest__patients">
-					<h2 className="dashboard__latest__patients__title">Últimos pacientes</h2>
-					<div className="dashboard__latest__patients__list">
-						<PatientAppointmentTab />
-						<PatientAppointmentTab />
-						<PatientAppointmentTab />
-					</div>
-				</article>
-				<div className="dashboard__appointments__today">
-					<article className="dashboard__appointments__today__header">
-						<h2 className="dashboard__appointments__today__header__title">
-							Citas para hoy
-						</h2>
-						<a
-							href="#"
-							className="dashboard__appointments__today__header__all__appointments">
-							Todas las citas <FiChevronRight size={18} />
-						</a>
-					</article>
-					<div className="dashboard__appointments__today__list">
-						<div className="dashboard__appointments__today__list__appointment">
-							<h3 className="dashboard__appointments__today__list__appointment__hour">
-								10:30 am
+			<section className="dashboard__data__counts">
+				{loadingDataCount ? (
+					<ContentLoader />
+				) : (
+					<div className="dashboard__data__counts__article">
+						<i className="dashboard__data__counts__article__icon total__patients__icon">
+							<FiUsers />
+						</i>
+						<article className="dashboard__data__counts__article__data">
+							<p className="dashboard__data__counts__article__data__title">
+								Total de pacientes
+							</p>
+							<h3 className="dashboard__data__counts__article__data__number">
+								{totalPatients}
 							</h3>
-						</div>
-						<PatientAppointmentTab />
+						</article>
 					</div>
+				)}
+				{loadingDataCount ? (
+					<ContentLoader />
+				) : (
+					<div className="dashboard__data__counts__article">
+						<i className="dashboard__data__counts__article__icon total__appointments__icon">
+							<FiCalendar />
+						</i>
+						<article className="dashboard__data__counts__article__data">
+							<p className="dashboard__data__counts__article__data__title">
+								Total de citas
+							</p>
+							<h3 className="dashboard__data__counts__article__data__number">
+								{totalAppointments}
+							</h3>
+						</article>
+					</div>
+				)}
+				{loadingDataCount ? (
+					<ContentLoader />
+				) : (
+					<div className="dashboard__data__counts__article">
+						<i className="dashboard__data__counts__article__icon today__appointments__icon">
+							<FiCalendar />
+						</i>
+						<article className="dashboard__data__counts__article__data">
+							<p className="dashboard__data__counts__article__data__title">
+								Citas para hoy
+							</p>
+							<h3 className="dashboard__data__counts__article__data__number">
+								{todayAppointments}
+							</h3>
+						</article>
+					</div>
+				)}
+				{loadingDataCount ? (
+					<ContentLoader />
+				) : (
+					<div className="dashboard__data__counts__article">
+						<i className="dashboard__data__counts__article__icon total__appointments__cancel__icon">
+							<FiCalendar />
+						</i>
+						<article className="dashboard__data__counts__article__data">
+							<p className="dashboard__data__counts__article__data__title">
+								Citas canceladas
+							</p>
+							<h3 className="dashboard__data__counts__article__data__number">
+								{totalAppointmentsCancel}
+							</h3>
+						</article>
+					</div>
+				)}
+				{loadingDataCount ? (
+					<ContentLoader />
+				) : (
+					<div className="dashboard__data__counts__article">
+						<i className="dashboard__data__counts__article__icon total__appointments__finish__icon">
+							<FiCalendar />
+						</i>
+						<article className="dashboard__data__counts__article__data">
+							<p className="dashboard__data__counts__article__data__title">
+								Citas finalizadas
+							</p>
+							<h3 className="dashboard__data__counts__article__data__number">
+								{totalAppointmentsFinish}
+							</h3>
+						</article>
+					</div>
+				)}
+			</section>
+			<section className="dashboard__appointments">
+				<header className="dashboard__appointments__header">
+					<h2>Citas del día</h2>
+				</header>
+				<div className="dashboard__appointments__variant">
+					<Button
+						className={`dashboard__appointments__variant__button ${variantSelect ===
+						'Day'
+							? 'Active'
+							: null}`}
+						variant="outlined"
+						onClick={() => handleChangeVariantSelect('Day')}>
+						Día
+					</Button>
+					<Button
+						className={`dashboard__appointments__variant__button ${variantSelect ===
+						'Week'
+							? 'Active'
+							: null}`}
+						variant="outlined"
+						onClick={() => handleChangeVariantSelect('Week')}>
+						Semana
+					</Button>
+					<Button
+						className={`dashboard__appointments__variant__button ${variantSelect ===
+						'Month'
+							? 'Active'
+							: null}`}
+						variant="outlined"
+						onClick={() => handleChangeVariantSelect('Month')}>
+						Mes
+					</Button>
 				</div>
+				{loading ? (
+					<div className="dashboard__appointments__schedule">
+						<Loading />
+					</div>
+				) : variantSelect === 'Day' ? (
+					AppointmentsDay()
+				) : variantSelect === 'Week' ? (
+					AppointmentsWeek()
+				) : variantSelect === 'Month' ? (
+					AppointmentMonth()
+				) : null}
 			</section>
 		</AppLayout>
 	)

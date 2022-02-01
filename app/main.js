@@ -19,6 +19,10 @@ const {
 	updatePatient,
 	deletePatient,
 } = require('./controllers/patient.controllers')
+const {
+	getAppointmentsDashboard,
+	getCountDataDashboard,
+} = require('./controllers/dashboard.controllers')
 
 let mainWindow
 
@@ -118,6 +122,10 @@ function createWindow(){
 	ipcMain.on('update-appointment-date-main', updateAppointmentDate)
 	ipcMain.on('cancel-appointment-main', cancelAppointment)
 	ipcMain.on('finished-appointment-main', finishedAppointment)
+
+	/* Actions Dashboard */
+	ipcMain.handle('get-appointments-dashboard-main', getAppointmentsDashboard)
+	ipcMain.on('get-count-data-dashboard-main', getCountDataDashboard)
 
 	ipcMain.on('test-main', async (event, args) => {
 		console.log(args)

@@ -1,0 +1,44 @@
+@import '../variables.sass';
+
+.dashboard__appointments__schedule__appointment {
+	display: grid;
+	grid-template-columns: auto 50% 20% auto;
+	align-items: center;
+	padding: 20px 25px;
+	border-radius: 5px;
+	transition: box-shadow .5s ease-in-out;
+	.dashboard__appointments__schedule__appointment__moment {
+		&.late__date {
+			color: $notification_background_error;
+		}
+	}
+	.dashboard__appointments__schedule__appointment__patient {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+	}
+	.dashboard__appointments__schedule__appointment__state {
+		padding: 6px 16px;
+		text-align: center;
+		border-radius: 5px;
+		justify-self: center;
+		&.Activa {
+			background-color: rgba($color: $background_color_button_success, $alpha: .25);
+			color: $background_color_button_success;
+		}
+		&.Finalizada {
+			background-color: rgba($color: $background_color_button_basic, $alpha: .25);
+			color: $background_color_button_basic;
+		}
+		&.Cancelada {
+			background-color: rgba($color: $notification_background_error, $alpha: .25);
+			color: $notification_background_error;
+		}
+	}
+	.dashboard__appointments__schedule__appointment__link {
+		justify-self: end;
+	}
+	&:hover {
+		box-shadow: $shadow_background_3;
+	}
+}
