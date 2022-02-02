@@ -7,6 +7,7 @@ import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import useDashboard from '@hooks/useDashboard'
 import CardAppointment from '@components/CardAppointment'
+import image__empty from '@image/no-data.svg'
 import '@styles/page/Dashboard.scss'
 
 export const Dashboard = () => {
@@ -27,99 +28,103 @@ export const Dashboard = () => {
 		loadingDataCount,
 	} = dataCount
 
-	const AppointmentsDay = () => (
-		<div className="dashboard__appointments__schedule dashboard__appointments__schedule__day">
-			{appointments.length ? (
-				appointments.map(data => <CardAppointment {...data} key={data._id} />)
-			) : (
-				<h3>No hay pacinetes para hoy</h3>
-			)}
+	const EmptyAppointments = () => (
+		<div className="dashboard__appointments__schedule__empty">
+			<img
+				src={image__empty}
+				alt="No hay citas"
+				className="dashboard__appointments__schedule__empty__image"
+			/>
+			<h3 className="dashboard__appointments__schedule__empty__title">
+				No hay citas para hoy
+			</h3>
 		</div>
 	)
-	const AppointmentsWeek = () => (
-		<div className="dashboard__appointments__schedule">
-			{appointments.length ? (
-				<React.Fragment>
-					{daysAppointments.map(day => {
-						const today = new Date()
-						const todaySelect = new Date(
-							today.getFullYear(),
-							today.getMonth(),
-							day.split(' ')[1],
-						).getDate()
-						const validationToday = today.getDate() === todaySelect
-						return (
-							<div className="dashboard__appointments__schedule__week" key={day}>
-								<article className="dashboard__appointments__schedule__week__header">
-									<h3
-										className={`dashboard__appointments__schedule__week__header__title ${validationToday
-											? 'today'
-											: ''}`}>
-										{validationToday ? <FiArrowRight /> : null}
-										{day}
-									</h3>
-									<hr className="dashboard__appointments__schedule__week__header__hr" />
-								</article>
-								<div className="dashboard__appointments__schedule__week__appointment">
-									{appointments.map(data => {
-										const { format_day_appointment_date, _id } = data
-										if (day === format_day_appointment_date)
-											return <CardAppointment {...data} key={_id} />
-
-										return null
-									})}
-								</div>
+	const AppointmentsDay = () =>
+		appointments.length ? (
+			<div className="dashboard__appointments__schedule dashboard__appointments__schedule__day">
+				{appointments.map(data => <CardAppointment {...data} key={data._id} />)}
+			</div>
+		) : (
+			<EmptyAppointments />
+		)
+	const AppointmentsWeek = () =>
+		appointments.length ? (
+			<div className="dashboard__appointments__schedule">
+				{daysAppointments.map(day => {
+					const today = new Date()
+					const todaySelect = new Date(
+						today.getFullYear(),
+						today.getMonth(),
+						day.split(' ')[1],
+					).getDate()
+					const validationToday = today.getDate() === todaySelect
+					return (
+						<div className="dashboard__appointments__schedule__week" key={day}>
+							<article className="dashboard__appointments__schedule__week__header">
+								<h3
+									className={`dashboard__appointments__schedule__week__header__title ${validationToday
+										? 'today'
+										: ''}`}>
+									{validationToday ? <FiArrowRight /> : null}
+									{day}
+								</h3>
+								<hr className="dashboard__appointments__schedule__week__header__hr" />
+							</article>
+							<div className="dashboard__appointments__schedule__week__appointment">
+								{appointments.map(data => {
+									const { format_day_appointment_date, _id } = data
+									if (day === format_day_appointment_date)
+										return <CardAppointment {...data} key={_id} />
+									return null
+								})}
 							</div>
-						)
-					})}
-				</React.Fragment>
-			) : (
-				<h3>No hay pacinetes para hoy</h3>
-			)}
-		</div>
-	)
-	const AppointmentMonth = () => (
-		<div className="dashboard__appointments__schedule dashboard__appointments__schedule__Month">
-			{appointments.length ? (
-				<React.Fragment>
-					{daysAppointments.map(day => {
-						const today = new Date()
-						const todaySelect = new Date(
-							today.getFullYear(),
-							today.getMonth(),
-							day.split(' ')[1],
-						).getDate()
-						const validationToday = today.getDate() === todaySelect
-						return (
-							<div className="dashboard__appointments__schedule__week" key={day}>
-								<article className="dashboard__appointments__schedule__week__header">
-									<h3
-										className={`dashboard__appointments__schedule__week__header__title ${validationToday
-											? 'today'
-											: ''}`}>
-										{validationToday ? <FiArrowRight /> : null}
-										{day}
-									</h3>
-									<hr className="dashboard__appointments__schedule__week__header__hr" />
-								</article>
-								<div className="dashboard__appointments__schedule__week__appointment">
-									{appointments.map(data => {
-										const { format_day_appointment_date, _id } = data
-										if (day === format_day_appointment_date) {
-											return <CardAppointment {...data} key={_id} />
-										}
-										return null
-									})}
-								</div>
+						</div>
+					)
+				})}
+			</div>
+		) : (
+			<EmptyAppointments />
+		)
+	const AppointmentMonth = () =>
+		appointments.length ? (
+			<div className="dashboard__appointments__schedule">
+				{daysAppointments.map(day => {
+					const today = new Date()
+					const todaySelect = new Date(
+						today.getFullYear(),
+						today.getMonth(),
+						day.split(' ')[1],
+					).getDate()
+					const validationToday = today.getDate() === todaySelect
+					return (
+						<div className="dashboard__appointments__schedule__week" key={day}>
+							<article className="dashboard__appointments__schedule__week__header">
+								<h3
+									className={`dashboard__appointments__schedule__week__header__title ${validationToday
+										? 'today'
+										: ''}`}>
+									{validationToday ? <FiArrowRight /> : null}
+									{day}
+								</h3>
+								<hr className="dashboard__appointments__schedule__week__header__hr" />
+							</article>
+							<div className="dashboard__appointments__schedule__week__appointment">
+								{appointments.map(data => {
+									const { format_day_appointment_date, _id } = data
+									if (day === format_day_appointment_date) {
+										return <CardAppointment {...data} key={_id} />
+									}
+									return null
+								})}
 							</div>
-						)
-					})}
-				</React.Fragment>
-			) : (
-				<h3>No hay pacinetes para hoy</h3>
-			)}
-		</div>
-	)
+						</div>
+					)
+				})}
+			</div>
+		) : (
+			<EmptyAppointments />
+		)
 	const ContentLoader = () => <div className="content__loader" />
 
 	return (
