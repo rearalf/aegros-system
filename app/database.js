@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const databaseLink = 'mongodb://localhost/electrondb'
+const databaseLink = 'mongodb://localhost/aegrosdb'
 
 mongoose
 	.connect(databaseLink, {

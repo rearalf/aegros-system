@@ -43,6 +43,7 @@ jspm_packages/
 package-lock.json
 builds/
 initialState.js
+database.dev.js
 
 # TypeScript v1 declaration files
 typings/

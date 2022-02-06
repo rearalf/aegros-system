@@ -19,7 +19,7 @@ export const useLogin = () => {
 		const email = data.get('email')
 		const password = data.get('password')
 		if ('soyLuigi1' === password && 'mario.verde@gmail.com' === email) {
-			navigate('/Dashboard')
+			navigate('/dashboard')
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Bienvenido',

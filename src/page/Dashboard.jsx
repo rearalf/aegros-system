@@ -8,7 +8,19 @@ import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import useDashboard from '@hooks/useDashboard'
 import CardAppointment from '@components/CardAppointment'
 import image__empty from '@image/no-data.svg'
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend,
+} from 'chart.js'
+import { Bar } from 'react-chartjs-2'
 import '@styles/page/Dashboard.scss'
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export const Dashboard = () => {
 	const {
@@ -16,6 +28,8 @@ export const Dashboard = () => {
 		variantSelect,
 		appointments,
 		daysAppointments,
+		dataBarChart,
+		optionsChartLine,
 		loading,
 		handleChangeVariantSelect,
 	} = useDashboard()
@@ -242,50 +256,60 @@ export const Dashboard = () => {
 					</div>
 				)}
 			</section>
-			<section className="dashboard__appointments">
-				<header className="dashboard__appointments__header">
-					<h2>Citas del día</h2>
-				</header>
-				<div className="dashboard__appointments__variant">
-					<Button
-						className={`dashboard__appointments__variant__button ${variantSelect ===
-						'Day'
-							? 'Active'
-							: null}`}
-						variant="outlined"
-						onClick={() => handleChangeVariantSelect('Day')}>
-						Día
-					</Button>
-					<Button
-						className={`dashboard__appointments__variant__button ${variantSelect ===
-						'Week'
-							? 'Active'
-							: null}`}
-						variant="outlined"
-						onClick={() => handleChangeVariantSelect('Week')}>
-						Semana
-					</Button>
-					<Button
-						className={`dashboard__appointments__variant__button ${variantSelect ===
-						'Month'
-							? 'Active'
-							: null}`}
-						variant="outlined"
-						onClick={() => handleChangeVariantSelect('Month')}>
-						Mes
-					</Button>
-				</div>
-				{loading ? (
-					<div className="dashboard__appointments__schedule">
-						<Loading />
+			<section className="dashboard__information">
+				<section className="dashboard__appointments">
+					<header className="dashboard__appointments__header">
+						<h2>Citas del día</h2>
+					</header>
+					<div className="dashboard__appointments__variant">
+						<Button
+							className={`dashboard__appointments__variant__button ${variantSelect ===
+							'Day'
+								? 'Active'
+								: null}`}
+							variant="outlined"
+							onClick={() => handleChangeVariantSelect('Day')}>
+							Día
+						</Button>
+						<Button
+							className={`dashboard__appointments__variant__button ${variantSelect ===
+							'Week'
+								? 'Active'
+								: null}`}
+							variant="outlined"
+							onClick={() => handleChangeVariantSelect('Week')}>
+							Semana
+						</Button>
+						<Button
+							className={`dashboard__appointments__variant__button ${variantSelect ===
+							'Month'
+								? 'Active'
+								: null}`}
+							variant="outlined"
+							onClick={() => handleChangeVariantSelect('Month')}>
+							Mes
+						</Button>
 					</div>
-				) : variantSelect === 'Day' ? (
-					AppointmentsDay()
-				) : variantSelect === 'Week' ? (
-					AppointmentsWeek()
-				) : variantSelect === 'Month' ? (
-					AppointmentMonth()
-				) : null}
+					{loading ? (
+						<div className="dashboard__appointments__schedule">
+							<Loading />
+						</div>
+					) : variantSelect === 'Day' ? (
+						AppointmentsDay()
+					) : variantSelect === 'Week' ? (
+						AppointmentsWeek()
+					) : variantSelect === 'Month' ? (
+						AppointmentMonth()
+					) : null}
+				</section>
+				<section className="dashboard__charts">
+					<h2 className="dashboard__charts__title">Citas por los ultimos 12 meses</h2>
+					<Bar
+						options={optionsChartLine}
+						data={dataBarChart}
+						className="dashboard__charts__chart"
+					/>
+				</section>
 			</section>
 		</AppLayout>
 	)

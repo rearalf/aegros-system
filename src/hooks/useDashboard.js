@@ -18,6 +18,36 @@ function useDashboard(){
 	const [ daysAppointments, setDaysAppointments ] = useState([])
 	const [ appointments, setAppointments ] = useState([])
 	const [ loading, setLoading ] = useState(true)
+	const [ dataBarChart, setDataBarChart ] = useState({
+		labels: [],
+		datasets: [
+			{
+				label: 'Citas por mes',
+				data: [],
+				borderColor: 'rgb(12, 98, 218)',
+				backgroundColor: 'rgba(12, 98, 218,.5)',
+				borderWidth: 1,
+				barPercentage: 1,
+				hoverBackgroundColor: 'rgb(12 98 218)',
+			},
+		],
+	})
+	const optionsChartLine = {
+		responsive: true,
+		plugins: {
+			legend: {
+				position: 'top',
+			},
+			title: {
+				display: false,
+			},
+		},
+		scale: {
+			ticks: {
+				precision: 0,
+			},
+		},
+	}
 
 	const getCountDataDashboard = async () => {
 		try {
@@ -32,7 +62,9 @@ function useDashboard(){
 				todayAppointments,
 				totalAppointmentsCancel,
 				totalAppointmentsFinish,
+				appointmentsByMonth,
 			} = result
+			formatAppointmentsByMonth(appointmentsByMonth)
 			setDataCount({
 				...dataCount,
 				totalAppointments,
@@ -170,6 +202,39 @@ function useDashboard(){
 		return []
 	}
 
+	const formatAppointmentsByMonth = value => {
+		const { data } = value
+		if (data !== {}) {
+			const numbers = Object.values(data)
+			const names = Object.getOwnPropertyNames(data)
+			const counts = []
+			names.map((name, i) => {
+				let object = {}
+				object.name = name
+				object.number = numbers[i]
+				counts.push(object)
+			})
+			const namesSort = counts.map(count => count.name)
+			const numberSort = counts.map(count => count.number)
+			setDataBarChart({
+				...dataBarChart,
+				labels: namesSort,
+				datasets: [
+					{
+						label: 'Citas por mes',
+						data: numberSort,
+						borderColor: 'rgb(12, 98, 218)',
+						backgroundColor: 'rgba(12, 98, 218,.5)',
+						borderWidth: 1,
+						barPercentage: 1,
+						hoverBackgroundColor: 'rgb(12 98 218)',
+					},
+				],
+			})
+		}
+		return null
+	}
+
 	const handleChangeVariantSelect = value => setVariantSelect(value)
 
 	useEffect(() => {
@@ -194,6 +259,8 @@ function useDashboard(){
 		variantSelect,
 		appointments,
 		daysAppointments,
+		dataBarChart,
+		optionsChartLine,
 		loading,
 		handleChangeVariantSelect,
 	}
