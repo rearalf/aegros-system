@@ -14,6 +14,8 @@ import { DialogComponent } from '@components/DialogComponent'
 import { Appointment } from '@page/Appointment'
 import System from '@page/System'
 import UpdateAppointment from '@page/UpdateAppointment'
+import Users from '../page/Users'
+import CreateUser from '../page/CreateUser'
 
 const App = () => {
 	return (
@@ -39,6 +41,8 @@ const App = () => {
 							path="appointments/update-appointment/:id_appointment"
 							element={<UpdateAppointment />}
 						/>
+						<Route path="/users" element={<Users />} />
+						<Route path="users/create-user" element={<CreateUser />} />
 						<Route path="/system" element={<System />} />
 						<Route path="*" element={<Dashboard />} />
 					</Routes>

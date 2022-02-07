@@ -1,0 +1,45 @@
+@import '../variables.sass';
+
+.create__user {
+	display: grid;
+	.create__user__header {
+		margin-bottom: 25px;
+	}
+	.create__user__form {
+		display: flex;
+		flex-direction: column;
+		gap: 50px;
+		.create__user__form__inputs {
+			padding: 25px 25px 35px;
+			border-radius: 5px;
+			background-color: $background_2;
+			box-shadow: $shadow_background_3;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 35px;
+			.create__user__form__inputs__input {
+				position: relative;
+				.MuiFormHelperText-root {
+					position: absolute;
+					bottom: -25px;
+				}
+			}
+		}
+		.create__user__form__buttons {
+			display: flex;
+			gap: 25px;
+			justify-content: center;
+		}
+	}
+	@media screen and (min-width: 1024px) {
+		.create__user__form {
+			justify-self: center;
+			width: 80%;
+		}
+	}
+	@media screen and (min-width: 1444px) {
+		.create__user__form {
+			width: 70%;
+		}
+	}
+}
