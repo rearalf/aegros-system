@@ -37,7 +37,7 @@ const userSchema = new Schema(
 	},
 )
 
-userSchema.pre('save', async next => {
+userSchema.pre('save', async function(next){
 	if (!this.isModified('user_password')) return next()
 	try {
 		const salt = await bcrypt.genSalt(10)

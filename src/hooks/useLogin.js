@@ -1,6 +1,7 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext, useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import notificationContext from '@context/notificationContext'
+import { ipcRenderer } from 'electron'
 
 export const useLogin = () => {
 	const navigate = useNavigate()
@@ -46,6 +47,38 @@ export const useLogin = () => {
 			...stateForm,
 			showPassword: !stateForm.showPassword,
 		})
+
+	const validateEmptyDatabase = async () => {
+		try {
+			const result = await ipcRenderer.sendSync('validate-empty-database-main')
+			if (!result.success) {
+				console.log(result)
+				throw {
+					message: 'Ocurrio un error',
+				}
+			}
+			if (result.totalUsers === 0) {
+				navigate('/new-user')
+				setNotification({
+					isOpenNotification: true,
+					titleNotification: 'Información',
+					subTitleNotification: 'No hay usuario en la base de datos.',
+					typeNotification: 'information',
+				})
+			}
+		} catch (error) {
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Error',
+				subTitleNotification: error.message,
+				typeNotification: 'error',
+			})
+		}
+	}
+
+	useEffect(() => {
+		validateEmptyDatabase()
+	}, [])
 
 	return {
 		handleSubmit,

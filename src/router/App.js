@@ -16,6 +16,7 @@ import System from '@page/System'
 import UpdateAppointment from '@page/UpdateAppointment'
 import Users from '../page/Users'
 import CreateUser from '../page/CreateUser'
+import NewUser from '../page/NewUser'
 
 const App = () => {
 	return (
@@ -24,6 +25,7 @@ const App = () => {
 				<DialogContext>
 					<Routes>
 						<Route path="/" exact element={<Login />} />
+						<Route path="/new-user" exact element={<NewUser />} />
 						<Route path="/dashboard" exact element={<Dashboard />} />
 						<Route path="/patients" exact element={<Patients />} />
 						<Route path="patients/create-patient" element={<CreatePatient />}>

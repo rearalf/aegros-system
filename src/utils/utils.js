@@ -75,3 +75,20 @@ export function roundDate(){
 	)
 	return date
 }
+
+export function passwordValidation(password){
+	const valid = {
+		uppercase: false,
+		lowercase: false,
+		num: false,
+		char: false,
+		more8: false,
+	}
+	password.match(/[A-Z]/) !== null ? (valid.uppercase = true) : (valid.uppercase = false)
+	password.match(/[a-z]/) !== null ? (valid.lowercase = true) : (valid.lowercase = false)
+	password.match(/[0-9]/) !== null ? (valid.num = true) : (valid.num = false)
+	password.match(/[!@#$%^&*]/) !== null ? (valid.char = true) : (valid.char = false)
+	password.length >= 8 ? (valid.more8 = true) : (valid.more8 = false)
+
+	return valid
+}
