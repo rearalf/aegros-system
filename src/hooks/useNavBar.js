@@ -1,7 +1,8 @@
 import { ipcRenderer } from 'electron'
-import { useContext, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useContext, useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import dialogContext from '@context/dialogContext'
+import { Cookies } from 'react-cookie'
 
 export const useNavBar = () => {
 	const { dialog, setDialog } = useContext(dialogContext)
@@ -74,14 +75,20 @@ export const useNavBar = () => {
 		Minimized,
 		Maximized,
 		openSideBar,
-		changeValueSidebar,
 		date,
+		changeValueSidebar,
 	}
 }
 
 export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
+	const cookies = new Cookies()
+	const navigate = useNavigate()
 	const { pathname } = useLocation()
 	const path = pathname.split('/')
+	const [ dataUser ] = useState({
+		user_name: cookies.get('user').user_name,
+		user_role: cookies.get('user').user_role,
+	})
 
 	const changeValueSidebarOnBluer = () => {
 		openSideBar ? changeValueSidebar() : null
@@ -90,6 +97,11 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		!openSideBar ? changeValueSidebar() : null
 	}
 
+	useEffect(() => {
+		const user = cookies.get('user')
+		if (user === undefined) navigate('/')
+	}, [])
+
 	const stateLinkDashboard = path[1] === 'dashboard' ? 'nav__link__active' : null
 	const stateLinkAppointment = path[1] === 'appointments' ? 'nav__link__active' : null
 	const stateLinkPatient = path[1] === 'patients' ? 'nav__link__active' : null
@@ -97,6 +109,7 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 	const stateLinkSystem = path[1] === 'system' ? 'nav__link__active' : null
 
 	return {
+		dataUser,
 		changeValueSidebarOnFocus,
 		changeValueSidebarOnBluer,
 		stateLinkDashboard,

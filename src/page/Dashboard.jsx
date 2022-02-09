@@ -24,6 +24,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export const Dashboard = () => {
 	const {
+		dataUser,
 		dataCount,
 		variantSelect,
 		appointments,
@@ -154,7 +155,7 @@ export const Dashboard = () => {
 			<header className="dashboard__header">
 				<article>
 					<h1 className="dashboard__header__title">Descrición General</h1>
-					<h3>Bienvenid@ Mulan Rodriguez</h3>
+					<h3>Bienvenid@ {dataUser}</h3>
 				</article>
 				<div className="dashboard__header__button__group">
 					<Link to="/appointments/creat-appointment">

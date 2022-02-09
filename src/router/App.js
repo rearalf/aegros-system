@@ -1,5 +1,6 @@
 import React from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 import { NotificationContext } from '@context/notificationContext'
 import { DialogContext } from '@context/dialogContext'
 import { Login } from '@page/Login'
@@ -20,39 +21,44 @@ import NewUser from '../page/NewUser'
 
 const App = () => {
 	return (
-		<HashRouter>
-			<NotificationContext>
-				<DialogContext>
-					<Routes>
-						<Route path="/" exact element={<Login />} />
-						<Route path="/new-user" exact element={<NewUser />} />
-						<Route path="/dashboard" exact element={<Dashboard />} />
-						<Route path="/patients" exact element={<Patients />} />
-						<Route path="patients/create-patient" element={<CreatePatient />}>
-							<Route path=":id_patient" element={null} />
-						</Route>
-						<Route path="/patients/patient/:id" exact element={<Patient />} />
-						<Route path="/appointments" exact element={<Appointments />} />
-						<Route path="/appointments/:appointment__id" element={<Appointment />} />
-						<Route
-							path="/appointments/creat-appointment/"
-							element={<CreateAppointment />}>
-							<Route path=":patient_id" element={null} />
-						</Route>
-						<Route
-							path="appointments/update-appointment/:id_appointment"
-							element={<UpdateAppointment />}
-						/>
-						<Route path="/users" element={<Users />} />
-						<Route path="users/create-user" element={<CreateUser />} />
-						<Route path="/system" element={<System />} />
-						<Route path="*" element={<Dashboard />} />
-					</Routes>
-					<Notification />
-					<DialogComponent />
-				</DialogContext>
-			</NotificationContext>
-		</HashRouter>
+		<CookiesProvider>
+			<HashRouter>
+				<NotificationContext>
+					<DialogContext>
+						<Routes>
+							<Route path="/" exact element={<Login />} />
+							<Route path="/new-user" exact element={<NewUser />} />
+							<Route path="/dashboard" exact element={<Dashboard />} />
+							<Route path="/patients" exact element={<Patients />} />
+							<Route path="patients/create-patient" element={<CreatePatient />}>
+								<Route path=":id_patient" element={null} />
+							</Route>
+							<Route path="/patients/patient/:id" exact element={<Patient />} />
+							<Route path="/appointments" exact element={<Appointments />} />
+							<Route
+								path="/appointments/:appointment__id"
+								element={<Appointment />}
+							/>
+							<Route
+								path="/appointments/creat-appointment/"
+								element={<CreateAppointment />}>
+								<Route path=":patient_id" element={null} />
+							</Route>
+							<Route
+								path="appointments/update-appointment/:id_appointment"
+								element={<UpdateAppointment />}
+							/>
+							<Route path="/users" element={<Users />} />
+							<Route path="users/create-user" element={<CreateUser />} />
+							<Route path="/system" element={<System />} />
+							<Route path="*" element={<Dashboard />} />
+						</Routes>
+						<Notification />
+						<DialogComponent />
+					</DialogContext>
+				</NotificationContext>
+			</HashRouter>
+		</CookiesProvider>
 	)
 }
 

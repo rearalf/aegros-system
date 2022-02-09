@@ -4,7 +4,15 @@ import logo64x64 from '@image/icons/logo64x64.png'
 import brand_nav from '@image/brand_nav.png'
 import aegros from '@image/aegros.png'
 import { useNavBar, useSideBar } from '@hooks/useNavBar'
-import { FiChevronRight, FiCalendar, FiHome, FiLogOut, FiUsers, FiCpu, FiUser } from 'react-icons/fi'
+import {
+	FiChevronRight,
+	FiCalendar,
+	FiHome,
+	FiLogOut,
+	FiUsers,
+	FiCpu,
+	FiUser,
+} from 'react-icons/fi'
 import {
 	VscChromeMinimize,
 	VscChromeClose,
@@ -52,6 +60,7 @@ export const NavBar = ({ openSideBar }) => {
 
 export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 	const {
+		dataUser,
 		changeValueSidebarOnBluer,
 		changeValueSidebarOnFocus,
 		stateLinkDashboard,
@@ -66,7 +75,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 			onBlur={changeValueSidebarOnBluer}
 			onFocus={changeValueSidebarOnFocus}>
 			<div className="navbar__brand">
-				<Link className="navbar__brand__link" to="/">
+				<Link className="navbar__brand__link" to="/dashboard">
 					<img src={logo64x64} alt="Aegros system" className="image__brand__1" />
 					<img src={aegros} alt="Aegros system" className="image__brand__2" />
 				</Link>
@@ -112,12 +121,14 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 				<div className="side__bar__footer__user">
 					<Avatar
 						className="side__bar__footer__user__avatar"
-						{...stringAvatar('Ricardo Alfaro')}
+						{...stringAvatar(dataUser.user_name)}
 					/>
 					<article className="side__bar__footer__user__data">
-						<h2 className="side__bar__footer__user__data__name">Mulan Rodriguez</h2>
+						<h2 className="side__bar__footer__user__data__name">
+							{dataUser.user_name}
+						</h2>
 						<small className="side__bar__footer__user__data__role">
-							Doctora Rashos X
+							{dataUser.user_role}
 						</small>
 					</article>
 					<IconButton className="btn__icon side__bar__footer__user__data__logout">
@@ -135,9 +146,9 @@ export const NavBarPublic = () => {
 		<header className="header__public">
 			<nav className="navbar">
 				<div className="navbar__brand">
-					<Link className="navbar__link__brand" to="/">
+					<span className="navbar__link__brand">
 						<img src={brand_nav} alt="Aegros system" className="image__brand" />
-					</Link>
+					</span>
 				</div>
 				<div className="navbar__center" />
 				<div className="navbar__actions">
