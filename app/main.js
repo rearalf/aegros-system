@@ -23,7 +23,12 @@ const {
 	getAppointmentsDashboard,
 	getCountDataDashboard,
 } = require('./controllers/dashboard.controllers')
-const { createUser, getUsers, validateEmptyDatabase } = require('./controllers/user.controllers')
+const {
+	createUser,
+	getUsers,
+	validateEmptyDatabase,
+	signInUser,
+} = require('./controllers/user.controllers')
 
 let mainWindow
 
@@ -132,6 +137,7 @@ function createWindow(){
 	ipcMain.on('validate-empty-database-main', validateEmptyDatabase)
 	ipcMain.on('get-users-main', getUsers)
 	ipcMain.on('create-user-main', createUser)
+	ipcMain.on('sign-in-user-main', signInUser)
 
 	ipcMain.on('test-main', async (event, args) => {
 		console.log(args)

@@ -25,21 +25,20 @@ export const Login = () => {
 						ref={formData}
 						onSubmit={handleSubmit}>
 						<TextField
-							id="email"
-							name="email"
+							id="user_email"
+							name="user_email"
 							label="Correo"
 							type="email"
 							placeholder="correo@caliente.com"
 							error={errroEmail}
-							value="mario.verde@gmail.com"
 							required
+							autoFocus
 						/>
 						<div className="from__login__password">
 							<TextField
-								id="password"
-								name="password"
+								id="user_password"
+								name="user_password"
 								label="Contraseña"
-								value="soyLuigi1"
 								type={showPassword ? 'text' : 'password'}
 								error={errorPassword}
 								className="from__login__password_input"
@@ -62,8 +61,6 @@ export const Login = () => {
 					<img src={imageLogin} alt="Image doctors" className="image__login" />
 				</div>
 			</main>
-			<Notification />
-			<DialogComponent />
 		</Fragment>
 	)
 }

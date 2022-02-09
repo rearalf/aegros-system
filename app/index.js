@@ -1,6 +1,6 @@
 const { app } = require('electron')
 const { createWindow } = require('./main')
-require('../database.dev')
+require('./database.dev')
 
 if (process.platform === 'win32') {
 	app.commandLine.appendSwitch('high-dpi-support', 'true')

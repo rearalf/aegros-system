@@ -58,7 +58,7 @@ function useNewUser(){
 					user_email_error: true,
 				})
 				throw {
-					meesage: 'Debe agregar un correo.',
+					message: 'Debe agregar un correo.',
 				}
 			}
 			const emailValid = validateEmails(user_email)
@@ -68,7 +68,7 @@ function useNewUser(){
 					user_email_error: true,
 				})
 				throw {
-					meesage: 'El correo no es valido.',
+					message: 'El correo no es valido.',
 				}
 			}
 			if (user_password === '') {
@@ -77,7 +77,7 @@ function useNewUser(){
 					user_password_error: true,
 				})
 				throw {
-					meesage: 'Debe agregar una contraseña.',
+					message: 'Debe agregar una contraseña.',
 				}
 			}
 			if (user_password !== user_password2) {

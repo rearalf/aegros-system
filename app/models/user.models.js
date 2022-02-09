@@ -48,6 +48,9 @@ userSchema.pre('save', async function(next){
 	}
 })
 
-module.exports = model('User', userSchema)
+userSchema.methods.matchPassword = async function(password){
+	console.log(password)
+	return await bcrypt.compare(password, this.user_password)
+}
 
-/* https://stackoverflow.com/questions/14588032/mongoose-password-hashing */
+module.exports = model('User', userSchema)
