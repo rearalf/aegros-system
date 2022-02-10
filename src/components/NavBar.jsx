@@ -61,19 +61,21 @@ export const NavBar = ({ openSideBar }) => {
 export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 	const {
 		dataUser,
-		changeValueSidebarOnBluer,
-		changeValueSidebarOnFocus,
 		stateLinkDashboard,
 		stateLinkAppointment,
 		stateLinkPatient,
 		stateLinkUsers,
 		stateLinkSystem,
+		handleLogOut,
+		changeValueSidebarOnBluer,
+		changeValueSidebarOnFocus,
 	} = useSideBar({ openSideBar, changeValueSidebar })
+	/* 
+	onBlur={changeValueSidebarOnBluer}
+	onFocus={changeValueSidebarOnFocus}
+	*/
 	return (
-		<div
-			className={`side__bar ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}
-			onBlur={changeValueSidebarOnBluer}
-			onFocus={changeValueSidebarOnFocus}>
+		<div className={`side__bar ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}>
 			<div className="navbar__brand">
 				<Link className="navbar__brand__link" to="/dashboard">
 					<img src={logo64x64} alt="Aegros system" className="image__brand__1" />
@@ -131,7 +133,9 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 							{dataUser.user_role}
 						</small>
 					</article>
-					<IconButton className="btn__icon side__bar__footer__user__data__logout">
+					<IconButton
+						className="btn__icon side__bar__footer__user__data__logout"
+						onClick={handleLogOut}>
 						<FiLogOut size={18} />
 					</IconButton>
 				</div>

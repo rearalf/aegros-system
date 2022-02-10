@@ -3,12 +3,10 @@ import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import format from 'date-fns/format'
 import esLocale from 'date-fns/locale/es'
-import { Cookies } from 'react-cookie'
 
 function useDashboard(){
-	const cookies = new Cookies()
 	const { setNotification } = useContext(notificationContext)
-	const [ dataUser ] = useState(cookies.get('user').user_name)
+	const [ dataUser, setDataUser ] = useState()
 	const [ dataCount, setDataCount ] = useState({
 		totalAppointments: 0,
 		totalPatients: 0,
@@ -245,6 +243,12 @@ function useDashboard(){
 			getCountDataDashboard()
 		}, 500)
 		ipcRenderer.setMaxListeners(50)
+		if (sessionStorage.getItem('user') === null) navigate('/')
+		setDataUser(
+			sessionStorage.getItem('user')
+				? JSON.parse(sessionStorage.getItem('user')).user_name
+				: '',
+		)
 	}, [])
 
 	useEffect(

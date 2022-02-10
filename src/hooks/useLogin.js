@@ -1,11 +1,9 @@
 import { useContext, useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import notificationContext from '@context/notificationContext'
 import { ipcRenderer } from 'electron'
-import { useCookies, Cookies } from 'react-cookie'
+import notificationContext from '@context/notificationContext'
 
 export const useLogin = () => {
-	const cookies = new Cookies()
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const formData = useRef(null)
@@ -18,7 +16,6 @@ export const useLogin = () => {
 	const handleSubmit = async e => {
 		try {
 			e.preventDefault()
-
 			const data = new FormData(formData.current)
 			const user_email = data.get('user_email')
 			const user_password = data.get('user_password')
@@ -44,15 +41,14 @@ export const useLogin = () => {
 			}
 			navigate('/dashboard')
 			const result_user = JSON.parse(result.user)
-			const data_user = {
+			const data_user = JSON.stringify({
 				user_email: result_user.user_email,
 				user_name: result_user.user_name,
 				user_role: result_user.user_role,
 				user_state: result_user.user_state,
 				_id: result_user._id,
-			}
-			cookies.remove('user')
-			cookies.set('user', data_user, { path: '/' })
+			})
+			sessionStorage.setItem('user', data_user)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Operación exitosa.',
@@ -68,7 +64,6 @@ export const useLogin = () => {
 			})
 		}
 	}
-
 	const changePasswordViewer = () =>
 		setStateForm({
 			...stateForm,
@@ -105,7 +100,7 @@ export const useLogin = () => {
 
 	useEffect(() => {
 		validateEmptyDatabase()
-		if (cookies.get('user') !== undefined) navigate('/dashboard')
+		if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
 	}, [])
 
 	return {

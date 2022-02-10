@@ -55,6 +55,7 @@ function createWindow(){
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
+			enableRemoteModule: true,
 		},
 	})
 	mainWindow.setIcon(path.join(__dirname, icons[process.platform]))

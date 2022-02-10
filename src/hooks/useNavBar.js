@@ -1,8 +1,8 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, session } from 'electron'
 import { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import dialogContext from '@context/dialogContext'
-import { Cookies } from 'react-cookie'
+import notificationContext from '@context/notificationContext'
 
 export const useNavBar = () => {
 	const { dialog, setDialog } = useContext(dialogContext)
@@ -81,13 +81,14 @@ export const useNavBar = () => {
 }
 
 export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
-	const cookies = new Cookies()
+	/* const cookies = new Cookies() */
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
 	const path = pathname.split('/')
-	const [ dataUser ] = useState({
-		user_name: cookies.get('user').user_name,
-		user_role: cookies.get('user').user_role,
+	const { setNotification } = useContext(notificationContext)
+	const [ dataUser, setDataUser ] = useState({
+		user_name: '',
+		user_role: '',
 	})
 
 	const changeValueSidebarOnBluer = () => {
@@ -97,10 +98,16 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		!openSideBar ? changeValueSidebar() : null
 	}
 
-	useEffect(() => {
-		const user = cookies.get('user')
-		if (user === undefined) navigate('/')
-	}, [])
+	const handleLogOut = () => {
+		navigate('/')
+		sessionStorage.removeItem('user')
+		setNotification({
+			isOpenNotification: true,
+			titleNotification: 'Sesión cerrada',
+			subTitleNotification: 'La sesión fuen cerrada.',
+			typeNotification: 'information',
+		})
+	}
 
 	const stateLinkDashboard = path[1] === 'dashboard' ? 'nav__link__active' : null
 	const stateLinkAppointment = path[1] === 'appointments' ? 'nav__link__active' : null
@@ -108,14 +115,33 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 	const stateLinkUsers = path[1] === 'users' ? 'nav__link__active' : null
 	const stateLinkSystem = path[1] === 'system' ? 'nav__link__active' : null
 
+	const getRole = role => {
+		return role === 'master-chief'
+			? 'Master Chief'
+			: role === 'secretary' ? 'Secretaria' : 'Doctor'
+	}
+
+	useEffect(() => {
+		if (sessionStorage.getItem('user') === null) navigate('/')
+		setDataUser({
+			user_name: sessionStorage.getItem('user')
+				? JSON.parse(sessionStorage.getItem('user')).user_name
+				: '',
+			user_role: sessionStorage.getItem('user')
+				? getRole(JSON.parse(sessionStorage.getItem('user')).user_role)
+				: '',
+		})
+	}, [])
+
 	return {
 		dataUser,
-		changeValueSidebarOnFocus,
-		changeValueSidebarOnBluer,
 		stateLinkDashboard,
 		stateLinkAppointment,
 		stateLinkPatient,
 		stateLinkUsers,
 		stateLinkSystem,
+		handleLogOut,
+		changeValueSidebarOnFocus,
+		changeValueSidebarOnBluer,
 	}
 }
