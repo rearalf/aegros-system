@@ -241,14 +241,13 @@ function useDashboard(){
 	useEffect(() => {
 		setTimeout(() => {
 			getCountDataDashboard()
+			setDataUser(
+				sessionStorage.getItem('user')
+					? JSON.parse(sessionStorage.getItem('user')).user_name
+					: '',
+			)
 		}, 500)
 		ipcRenderer.setMaxListeners(50)
-		if (sessionStorage.getItem('user') === null) navigate('/')
-		setDataUser(
-			sessionStorage.getItem('user')
-				? JSON.parse(sessionStorage.getItem('user')).user_name
-				: '',
-		)
 	}, [])
 
 	useEffect(

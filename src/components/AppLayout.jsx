@@ -7,7 +7,7 @@ export const AppLayout = ({ children, ClassName = '' }) => {
 	return (
 		<Fragment>
 			<SideBar openSideBar={openSideBar} changeValueSidebar={changeValueSidebar} />
-			<NavBar openSideBar={openSideBar} />
+			<NavBar openSideBar={openSideBar} changeValueSidebar={changeValueSidebar} />
 			<main className={`container ${ClassName}`} id="layout">
 				{children}
 			</main>

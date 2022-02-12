@@ -4,6 +4,9 @@ import logo64x64 from '@image/icons/logo64x64.png'
 import brand_nav from '@image/brand_nav.png'
 import aegros from '@image/aegros.png'
 import { useNavBar, useSideBar } from '@hooks/useNavBar'
+import { Avatar, IconButton, Tooltip } from '@mui/material'
+import { stringAvatar } from '@utils/utils'
+import { IoPeopleOutline } from 'react-icons/io5'
 import {
 	FiChevronRight,
 	FiCalendar,
@@ -12,6 +15,7 @@ import {
 	FiUsers,
 	FiCpu,
 	FiUser,
+	FiArrowRight,
 } from 'react-icons/fi'
 import {
 	VscChromeMinimize,
@@ -19,19 +23,25 @@ import {
 	VscChromeMaximize,
 	VscChromeRestore,
 } from 'react-icons/vsc'
-import { Avatar, IconButton } from '@mui/material'
-import { stringAvatar } from '@utils/utils'
 import '@styles/components/NavBar.scss'
 
-export const NavBar = ({ openSideBar }) => {
-	const { Closed, Maximized, Minimized, date } = useNavBar()
+export const NavBar = ({ openSideBar, changeValueSidebar }) => {
+	const { Closed, Maximized, Minimized, dateTime } = useNavBar()
+	const { date, hours, minutes, timeSystem } = dateTime
 
 	return (
 		<header className={`header ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}>
 			<nav className="navbar">
+				<Tooltip title="Abrir menu">
+					<IconButton
+						className="btn__icon navbar__button__icon"
+						onClick={changeValueSidebar}>
+						<FiArrowRight size={18} />
+					</IconButton>
+				</Tooltip>
 				<h3 className="navbar__center">
 					<FiCalendar size={20} />
-					{date}
+					{date} - {hours}:{minutes} {timeSystem}
 				</h3>
 				<div className="navbar__actions">
 					<IconButton className="right__side__button__icon" onClick={Minimized}>
@@ -67,13 +77,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 		stateLinkUsers,
 		stateLinkSystem,
 		handleLogOut,
-		changeValueSidebarOnBluer,
-		changeValueSidebarOnFocus,
-	} = useSideBar({ openSideBar, changeValueSidebar })
-	/* 
-	onBlur={changeValueSidebarOnBluer}
-	onFocus={changeValueSidebarOnFocus}
-	*/
+	} = useSideBar()
 	return (
 		<div className={`side__bar ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}>
 			<div className="navbar__brand">
@@ -103,7 +107,7 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 				</Link>
 				<Link className={`nav__link ${stateLinkUsers}`} to="/users">
 					<i className="nav__link__icon">
-						<FiUser size={18} />
+						<IoPeopleOutline size={20} />
 					</i>
 					<span className="nav__link__text">Usuarios</span>
 				</Link>
@@ -115,11 +119,13 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 				</Link>
 			</div>
 			<div className="side__bar__footer">
-				<IconButton
-					className="btn__icon side__bar__footer__action__side__bar"
-					onClick={changeValueSidebar}>
-					<FiChevronRight size={18} />
-				</IconButton>
+				<Tooltip title="Abrir menu">
+					<IconButton
+						className="btn__icon side__bar__footer__action__side__bar"
+						onClick={changeValueSidebar}>
+						<FiChevronRight size={18} />
+					</IconButton>
+				</Tooltip>
 				<div className="side__bar__footer__user">
 					<Avatar
 						className="side__bar__footer__user__avatar"
@@ -133,11 +139,13 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 							{dataUser.user_role}
 						</small>
 					</article>
-					<IconButton
-						className="btn__icon side__bar__footer__user__data__logout"
-						onClick={handleLogOut}>
-						<FiLogOut size={18} />
-					</IconButton>
+					<Tooltip title="Cerrar Sesión">
+						<IconButton
+							className="btn__icon side__bar__footer__user__data__logout"
+							onClick={handleLogOut}>
+							<FiLogOut size={18} />
+						</IconButton>
+					</Tooltip>
 				</div>
 			</div>
 		</div>
@@ -145,13 +153,17 @@ export const SideBar = ({ openSideBar, changeValueSidebar }) => {
 }
 
 export const NavBarPublic = () => {
-	const { Closed, Maximized, Minimized } = useNavBar()
+	const { Closed, Maximized, Minimized, loading } = useNavBar()
 	return (
 		<header className="header__public">
 			<nav className="navbar">
 				<div className="navbar__brand">
 					<span className="navbar__link__brand">
-						<img src={brand_nav} alt="Aegros system" className="image__brand" />
+						<img
+							src={brand_nav}
+							alt="Aegros"
+							className={`image__brand ${loading ? 'load_image' : null} `}
+						/>
 					</span>
 				</div>
 				<div className="navbar__center" />

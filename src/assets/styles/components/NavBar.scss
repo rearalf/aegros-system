@@ -11,6 +11,12 @@
 		display: flex;
 		justify-content: space-between;
 		height: 100%;
+		.navbar__button__icon {
+			margin-left: 10px;
+			align-self: center;
+			padding: 10px;
+			transition: transform .5s ease-in-out;
+		}
 		.navbar__center {
 			-webkit-app-region: drag;
 			flex: 1;
@@ -51,6 +57,11 @@
 	}
 	&.open__sidebar {
 		padding-left: 260px;
+		.navbar {
+			.navbar__button__icon {
+				transform: rotate(180deg);
+			}
+		}
 	}
 }
 
@@ -119,6 +130,7 @@
 			padding: 20px 15px;
 			display: flex;
 			align-items: center;
+			justify-content: center;
 			gap: 15px;
 			.side__bar__footer__user__data {
 				.side__bar__footer__user__data__name {
@@ -179,6 +191,9 @@
 			}
 		}
 		.side__bar__footer {
+			.side__bar__footer__user {
+				justify-content: space-around;
+			}
 			.side__bar__footer__action__side__bar {
 				transform: rotate(180deg);
 				justify-self: start;
@@ -205,6 +220,11 @@
 				display: flex;
 				.image__brand {
 					height: 30px;
+					opacity: 1;
+					transition: opacity .5s ease-in-out;
+				}
+				.load_image {
+					opacity: 0;
 				}
 			}
 		}

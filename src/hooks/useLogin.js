@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 
-export const useLogin = () => {
+const useLogin = () => {
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const formData = useRef(null)
+	const [ loading, setLoading ] = useState(true)
 	const [ stateForm, setStateForm ] = useState({
 		errroEmail: false,
 		errorPassword: false,
@@ -40,6 +41,7 @@ export const useLogin = () => {
 				}
 			}
 			navigate('/dashboard')
+			window.location.hash
 			const result_user = JSON.parse(result.user)
 			const data_user = JSON.stringify({
 				user_email: result_user.user_email,
@@ -64,6 +66,7 @@ export const useLogin = () => {
 			})
 		}
 	}
+
 	const changePasswordViewer = () =>
 		setStateForm({
 			...stateForm,
@@ -99,14 +102,23 @@ export const useLogin = () => {
 	}
 
 	useEffect(() => {
-		validateEmptyDatabase()
-		if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
+		setTimeout(() => {
+			validateEmptyDatabase()
+			setLoading(false)
+		}, 1000)
+		return () => {
+			ipcRenderer.setMaxListeners(100)
+			if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
+		}
 	}, [])
 
 	return {
-		handleSubmit,
 		formData,
 		stateForm,
+		loading,
+		handleSubmit,
 		changePasswordViewer,
 	}
 }
+
+export default useLogin

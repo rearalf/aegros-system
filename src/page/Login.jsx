@@ -1,22 +1,21 @@
 import React, { Fragment } from 'react'
 import { NavBarPublic } from '@components/NavBar'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
+import useLogin from '@hooks/useLogin'
+import { TextField, Button, IconButton } from '@mui/material'
+import { Loading } from '@components/Loading'
 import imageLogin from '@image/image-login.svg'
 import bigBrandWhite from '@image/big-brand-white.png'
-import { FiEye, FiEyeOff } from 'react-icons/fi'
-import { useLogin } from '@hooks/useLogin'
-import { Notification } from '@components/Notification'
-import { DialogComponent } from '@components/DialogComponent'
-import { TextField, Button, IconButton } from '@mui/material'
 import '@styles/page/Login.scss'
 
 export const Login = () => {
-	const { formData, handleSubmit, stateForm, changePasswordViewer } = useLogin()
+	const { formData, stateForm, loading, handleSubmit, changePasswordViewer } = useLogin()
 	const { errroEmail, errorPassword, showPassword } = stateForm
 	return (
 		<Fragment>
 			<NavBarPublic />
 			<main className="container login__container" id="layout">
-				<div className="left__side">
+				<div className={`left__side ${loading ? 'load__form' : null}`}>
 					<h1>Hola!!</h1>
 					<h2>Inicia Sesión</h2>
 					<form
@@ -57,8 +56,18 @@ export const Login = () => {
 					</div>
 				</div>
 				<div className="right__side">
-					<img src={bigBrandWhite} alt="Brand" className="big__brand__white" />
-					<img src={imageLogin} alt="Image doctors" className="image__login" />
+					<img
+						src={bigBrandWhite}
+						alt="Brand"
+						className={`big__brand__white ${loading ? 'load__image' : null}`}
+						loading="lazy"
+					/>
+					<img
+						src={imageLogin}
+						alt="Image doctors"
+						className={`image__login ${loading ? 'load__image' : null}`}
+						loading="lazy"
+					/>
 				</div>
 			</main>
 		</Fragment>

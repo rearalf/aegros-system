@@ -1,12 +1,29 @@
-import { ipcRenderer, session } from 'electron'
+import { ipcRenderer } from 'electron'
 import { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import dialogContext from '@context/dialogContext'
+import { format } from 'date-fns'
+import esLocale from 'date-fns/locale/es'
 import notificationContext from '@context/notificationContext'
 
 export const useNavBar = () => {
 	const { dialog, setDialog } = useContext(dialogContext)
+	const [ dateTime, setDateTime ] = useState({
+		hours: format(new Date(), 'h', {
+			locale: esLocale,
+		}),
+		minutes: format(new Date(), 'm', {
+			locale: esLocale,
+		}),
+		date: format(new Date(), 'dd / MMM / yyyy', {
+			locale: esLocale,
+		}),
+		timeSystem: format(new Date(), 'aaaa', {
+			locale: esLocale,
+		}),
+	})
 	const [ openSideBar, setOpenSideBar ] = useState(false)
+	const [ loading, setLoading ] = useState(true)
 	const Closed = () => {
 		setDialog({
 			...dialog,
@@ -51,37 +68,36 @@ export const useNavBar = () => {
 		}
 	}
 
-	const meses = new Array(
-		'Enero',
-		'Febrero',
-		'Marzo',
-		'Abril',
-		'Mayo',
-		'Junio',
-		'Julio',
-		'Agosto',
-		'Septiembre',
-		'Octubre',
-		'Noviembre',
-		'Diciembre',
-	)
-	const f = new Date()
-	const date = f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear()
-
 	const changeValueSidebar = () => setOpenSideBar(!openSideBar)
 
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setDateTime({
+				...dateTime,
+				hours: format(new Date(), 'h', {
+					locale: esLocale,
+				}),
+				minutes: format(new Date(), 'm', {
+					locale: esLocale,
+				}),
+			})
+			setLoading(false)
+		}, 1000)
+		return () => clearInterval(timer)
+	}, [])
+
 	return {
+		openSideBar,
+		dateTime,
+		loading,
 		Closed,
 		Minimized,
 		Maximized,
-		openSideBar,
-		date,
 		changeValueSidebar,
 	}
 }
 
-export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
-	/* const cookies = new Cookies() */
+export const useSideBar = () => {
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
 	const path = pathname.split('/')
@@ -90,13 +106,6 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		user_name: '',
 		user_role: '',
 	})
-
-	const changeValueSidebarOnBluer = () => {
-		openSideBar ? changeValueSidebar() : null
-	}
-	const changeValueSidebarOnFocus = () => {
-		!openSideBar ? changeValueSidebar() : null
-	}
 
 	const handleLogOut = () => {
 		navigate('/')
@@ -122,15 +131,19 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 	}
 
 	useEffect(() => {
-		if (sessionStorage.getItem('user') === null) navigate('/')
-		setDataUser({
-			user_name: sessionStorage.getItem('user')
-				? JSON.parse(sessionStorage.getItem('user')).user_name
-				: '',
-			user_role: sessionStorage.getItem('user')
-				? getRole(JSON.parse(sessionStorage.getItem('user')).user_role)
-				: '',
-		})
+		setTimeout(() => {
+			setDataUser({
+				user_name: sessionStorage.getItem('user')
+					? JSON.parse(sessionStorage.getItem('user')).user_name
+					: '',
+				user_role: sessionStorage.getItem('user')
+					? getRole(JSON.parse(sessionStorage.getItem('user')).user_role)
+					: '',
+			})
+		}, 500)
+		return () => {
+			if (sessionStorage.getItem('user') === null) navigate('/')
+		}
 	}, [])
 
 	return {
@@ -141,7 +154,5 @@ export const useSideBar = ({ openSideBar, changeValueSidebar }) => {
 		stateLinkUsers,
 		stateLinkSystem,
 		handleLogOut,
-		changeValueSidebarOnFocus,
-		changeValueSidebarOnBluer,
 	}
 }
