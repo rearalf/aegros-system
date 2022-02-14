@@ -65,7 +65,7 @@ function useDashboard(){
 				totalAppointmentsFinish,
 				appointmentsByMonth,
 			} = result
-			formatAppointmentsByMonth(appointmentsByMonth)
+			/* 	formatAppointmentsByMonth(appointmentsByMonth) */
 			setDataCount({
 				...dataCount,
 				totalAppointments,
@@ -247,7 +247,7 @@ function useDashboard(){
 					: '',
 			)
 		}, 500)
-		ipcRenderer.setMaxListeners(50)
+		ipcRenderer.setMaxListeners(75)
 	}, [])
 
 	useEffect(

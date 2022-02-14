@@ -15,13 +15,32 @@
 			background-color: $background_2;
 			box-shadow: $shadow_background_3;
 			display: grid;
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(1, 1fr);
 			gap: 35px;
 			.create__user__form__inputs__input {
 				position: relative;
 				.MuiFormHelperText-root {
 					position: absolute;
 					bottom: -25px;
+				}
+			}
+			.create__user__form__inputs__input__validate {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				padding: 0 10px;
+				.create__user__form__inputs__input__validate__data {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+					transition: color .5s ease-in-out;
+					&.char__check,
+					&.num__check,
+					&.more8__check,
+					&.uppercase__check,
+					&.lowercase__check {
+						color: $background_color_button_success;
+					}
 				}
 			}
 		}
@@ -35,6 +54,9 @@
 		.create__user__form {
 			justify-self: center;
 			width: 80%;
+			.create__user__form__inputs {
+				grid-template-columns: repeat(2, 1fr);
+			}
 		}
 	}
 	@media screen and (min-width: 1444px) {

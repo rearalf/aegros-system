@@ -4,26 +4,32 @@ import useCreateUser from '../hooks/useCreateUser'
 import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
 import { AppLayout } from '@components/AppLayout'
 import { Button, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material'
-import { FiEye, FiEyeOff, FiSave, FiXCircle } from 'react-icons/fi'
+import { FiCheckCircle, FiEye, FiEyeOff, FiSave, FiXCircle } from 'react-icons/fi'
 import '@styles/page/CreateUser.scss'
 
 const CreateUser = () => {
 	const {
 		userForm,
-		showPassword,
+		showPassword1,
+		showPassword2,
 		userFormError,
-		handleClickShowPassword,
+		userPasswordValid,
+		handleChangePassword,
+		handleClickShowPassword1,
+		handleClickShowPassword2,
 		handleOnchengeInput,
 		handleOnChangePhone,
 		handleOnSubmit,
 		handleCancel,
 	} = useCreateUser()
 
-	const { user_name, user_email, user_password, user_phone, user_role } = userForm
+	const { user_name, user_email, user_password, user_password2, user_phone, user_role } = userForm
+	const { uppercase, lowercase, num, char, more8 } = userPasswordValid
 	const {
 		user_name_error,
 		user_email_error,
 		user_password_error,
+		user_password2_error,
 		user_role_error,
 	} = userFormError
 	return (
@@ -69,30 +75,6 @@ const CreateUser = () => {
 						helperText={user_email_error ? 'Agrege un correo.' : null}
 						required
 					/>
-					<TextField
-						id="user_password"
-						name="user_password"
-						label="Contraseña"
-						type={showPassword ? 'text' : 'password'}
-						className="create__user__form__inputs__input"
-						onChange={handleOnchengeInput}
-						value={user_password}
-						error={user_password_error}
-						helperText={user_password_error ? 'Agrege una contraseña.' : null}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton
-										aria-label="toggle password visibility"
-										onClick={handleClickShowPassword}
-										edge="end">
-										{showPassword ? <FiEyeOff /> : <FiEye />}
-									</IconButton>
-								</InputAdornment>
-							),
-						}}
-						required
-					/>
 					<MuiPhoneNumber
 						label="Teléfono"
 						name="user_phone"
@@ -125,6 +107,86 @@ const CreateUser = () => {
 						<MenuItem value={'doctor'}>Doctor</MenuItem>
 						<MenuItem value={'master-chief'}>Jefe Maestro</MenuItem>
 					</TextField>
+					<TextField
+						id="user_password"
+						name="user_password"
+						label="Contraseña"
+						type={showPassword1 ? 'text' : 'password'}
+						className="create__user__form__inputs__input"
+						onChange={handleChangePassword}
+						value={user_password}
+						error={user_password_error}
+						helperText={user_password_error ? 'Agrege una contraseña.' : null}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword1}
+										edge="end">
+										{showPassword1 ? <FiEyeOff /> : <FiEye />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
+						required
+					/>
+					<TextField
+						id="user_password2"
+						name="user_password2"
+						label="Confirmar contraseña"
+						type={showPassword2 ? 'text' : 'password'}
+						className="create__user__form__inputs__input"
+						onChange={handleOnchengeInput}
+						value={user_password2}
+						error={user_password2_error}
+						helperText={user_password2_error ? 'Las contraseña no coinciden.' : null}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword2}
+										edge="end">
+										{showPassword2 ? <FiEyeOff /> : <FiEye />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
+						required
+					/>
+					<div className="create__user__form__inputs__input__validate">
+						<p
+							className={`create__user__form__inputs__input__validate__data  ${uppercase
+								? 'uppercase__check'
+								: ''}`}>
+							<FiCheckCircle /> Mayúsculas
+						</p>
+						<p
+							className={`create__user__form__inputs__input__validate__data  ${lowercase
+								? 'lowercase__check'
+								: ''}`}>
+							<FiCheckCircle /> Minúsculas
+						</p>
+						<p
+							className={`create__user__form__inputs__input__validate__data  ${char
+								? 'char__check'
+								: ''}`}>
+							<FiCheckCircle /> Caracteres especiales (!, @, #, $, %, ^, &, *)
+						</p>
+						<p
+							className={`create__user__form__inputs__input__validate__data  ${num
+								? 'num__check'
+								: ''}`}>
+							<FiCheckCircle /> Números (0-9)
+						</p>
+						<p
+							className={`create__user__form__inputs__input__validate__data  ${more8
+								? 'more8__check'
+								: ''}`}>
+							<FiCheckCircle /> 8+ Caracteres
+						</p>
+					</div>
 				</div>
 				<div className="create__user__form__buttons">
 					<Button
@@ -135,6 +197,7 @@ const CreateUser = () => {
 						<FiSave size={18} /> Guardar
 					</Button>
 					<Button
+						type="button"
 						variant="outlined"
 						color="error"
 						className="btn__error"

@@ -11,9 +11,9 @@ const getUsers = async (event, agrs) => {
 		console.log(error)
 		event.returnValue = {
 			success: false,
-			error_message: err.message,
-			error_code: err.code,
-			error: err,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
 		}
 	}
 }
@@ -29,9 +29,9 @@ const validateEmptyDatabase = async event => {
 		console.log(error)
 		event.returnValue = {
 			success: false,
-			error_message: err.message,
-			error_code: err.code,
-			error: err,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
 		}
 	}
 }
@@ -64,9 +64,9 @@ const signInUser = async (event, args) => {
 		console.log(error)
 		event.returnValue = {
 			success: false,
-			error_message: err.message,
-			error_code: err.code,
-			error: err,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
 		}
 	}
 }
@@ -77,17 +77,57 @@ const createUser = async (event, args) => {
 		const saveUser = await newUser.save()
 		event.returnValue = {
 			success: true,
-			saveUser: JSON.stringify(saveUser),
+			user: JSON.stringify(saveUser),
 		}
 	} catch (error) {
 		console.log(error)
+		if (error.errors !== undefined) {
+			const err = getErrorValue(error.errors)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		if (error.code !== undefined) {
+			const err = getErrorCode(error)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
 		event.returnValue = {
 			success: false,
-			error_message: err.message,
-			error_code: err.code,
-			error: err,
+			error: error,
 		}
 	}
+}
+
+const getErrorValue = error => {
+	let message = Object.values(error).map(el => el.message)
+	let fields = Object.getOwnPropertyNames(error).map(el => el)
+	return {
+		errorsMessage: message[0],
+		errorFields: fields[0],
+	}
+}
+
+const getErrorCode = error => {
+	const code = error.code
+	let errorsMessage = ''
+	let errorFields = ''
+	if (code === 11000) {
+		const keyValue = error.keyValue
+		const value = Object.values(keyValue)[0]
+		let fields = Object.getOwnPropertyNames(error).map(el => el)
+		errorsMessage = `El correo ${value} ya existe.`
+		errorFields = fields
+	}
+	else {
+		errorsMessage = 'Ocurrio un error.'
+	}
+	return { errorsMessage, errorFields }
 }
 
 module.exports = {

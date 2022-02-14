@@ -87,7 +87,7 @@ const useLogin = () => {
 				setNotification({
 					isOpenNotification: true,
 					titleNotification: 'Información',
-					subTitleNotification: 'No hay usuario en la base de datos.',
+					subTitleNotification: 'No hay usuarios en la base de datos.',
 					typeNotification: 'information',
 				})
 			}
@@ -106,8 +106,8 @@ const useLogin = () => {
 			validateEmptyDatabase()
 			setLoading(false)
 		}, 1000)
+		ipcRenderer.setMaxListeners(200)
 		return () => {
-			ipcRenderer.setMaxListeners(100)
 			if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
 		}
 	}, [])

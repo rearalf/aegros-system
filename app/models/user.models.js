@@ -5,27 +5,26 @@ const userSchema = new Schema(
 	{
 		user_name: {
 			type: String,
-			required: true,
+			required: [ true, 'El nombre es requerido.' ],
 		},
 		user_email: {
 			type: String,
 			trim: true,
 			lowercase: true,
-			required: true,
+			required: [ true, 'El correo es requerido.' ],
+			unique: true,
 		},
 		user_phone: {
 			type: String,
-			validate: {
-				validator: phone => {
-					return /\d{4}-\d{4}/.test(phone)
-				},
-				message: props => `${props.value} is not a valid phone number!`,
-			},
 		},
-		user_password: { type: String, required: true },
+		user_password: { type: String, required: [ true, 'La contraseña es requerida.' ] },
 		user_role: {
 			type: String,
-			enum: [ 'secretary', 'doctor', 'master-chief' ],
+			enum: {
+				values: [ 'secretary', 'doctor', 'master-chief' ],
+				message: 'Seleccione un rol valido.',
+			},
+			required: 'El rol es requerido.',
 		},
 		user_state: {
 			type: Boolean,
