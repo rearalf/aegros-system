@@ -16,22 +16,14 @@ const patientSchema = new Schema(
 		},
 		patient_gender: {
 			type: String,
-			required: true,
 			required: [ true, 'El sexo del paciente es requerido.' ],
 		},
 		patient_date_birth: {
 			type: Date,
-			required: true,
 			required: [ true, 'La fehca de nacimiento del paciente es requerida.' ],
 		},
 		patient_phone_number: {
 			type: String,
-			validate: {
-				validator: phone => {
-					return /\d{4}-\d{4}/.test(phone)
-				},
-				message: props => `${props.value} is not a valid phone number!`,
-			},
 		},
 		patient_weight: {
 			type: Number,
@@ -56,3 +48,4 @@ const patientSchema = new Schema(
 )
 
 module.exports = model('Patient', patientSchema)
+/* /\d{4}-\d{4}/.test(phone) */

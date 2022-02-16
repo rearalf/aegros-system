@@ -79,7 +79,7 @@ const useLogin = () => {
 			if (!result.success) {
 				console.log(result)
 				throw {
-					message: 'Ocurrio un error',
+					message: 'Ocurrio un error en conectarse con la base.',
 				}
 			}
 			if (result.totalUsers === 0) {
@@ -106,7 +106,7 @@ const useLogin = () => {
 			validateEmptyDatabase()
 			setLoading(false)
 		}, 1000)
-		ipcRenderer.setMaxListeners(200)
+		ipcRenderer.setMaxListeners(250)
 		return () => {
 			if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
 		}

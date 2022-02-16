@@ -23,6 +23,7 @@ export const Appointment = () => {
 		loading,
 		appointment,
 		patient,
+		breadCrumbs,
 		handleChangeObservation,
 		handleOpenDialog,
 		handleCancelAppointment,
@@ -43,6 +44,7 @@ export const Appointment = () => {
 	} = appointment
 	const {
 		patient_name,
+		patient_name_short,
 		patient_age,
 		patient_email,
 		patient_allergies,
@@ -52,18 +54,7 @@ export const Appointment = () => {
 	} = patient
 	return (
 		<AppLayout ClassName="Appointment">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Citas',
-						link_to: '/appointments',
-					},
-					{
-						link_name: patient_name ? `Cita de ${patient_name}` : '',
-						link_to: `/appointments/${appointment__id}`,
-					},
-				]}
-			/>
+			<BreadCrumbsComponent links={breadCrumbs} />
 			{loading ? (
 				<Loading />
 			) : (
@@ -114,7 +105,7 @@ export const Appointment = () => {
 								/>
 								<article className="appointment__information__patient__header__information">
 									<h2 className="appointment__information__patient__header__information__title">
-										{patient_name}
+										{patient_name_short}
 									</h2>
 									<p className="appointment__information__patient__header__information__subtitle">
 										{`${patient_age} años, ${patient_gender === 'man'
@@ -130,27 +121,36 @@ export const Appointment = () => {
 									</Tooltip>
 								</div>
 							</div>
-							<article className="appointment__information__patient__appointment">
-								<h3 className="appointment__information__patient__appointment__title">
-									Información del paciente
-								</h3>
-								<div className="appointment__information__patient__appointment__data">
-									<p className="appointment__information__patient__appointment__data__text">
-										<b>Teléfono: </b>
-										<Tooltip title="Llamar al paciente">
-											<a href={`tel:${patient_phone_number}`}>
-												{patient_phone_number}
-											</a>
-										</Tooltip>
-									</p>
-									<p className="appointment__information__patient__appointment__data__text">
-										<b>Email: </b>
-										<Tooltip title="Enviar un email al paciente">
-											<a href={`mailto:${patient_email}`}>{patient_email}</a>
-										</Tooltip>
-									</p>
-								</div>
-							</article>
+							{patient_phone_number &&
+							patient_phone_number && (
+								<article className="appointment__information__patient__appointment">
+									<h3 className="appointment__information__patient__appointment__title">
+										Información del paciente
+									</h3>
+									<div className="appointment__information__patient__appointment__data">
+										{patient_phone_number && (
+											<p className="appointment__information__patient__appointment__data__text">
+												<b>Teléfono: </b>
+												<Tooltip title="Llamar al paciente">
+													<a href={`tel:${patient_phone_number}`}>
+														{patient_phone_number}
+													</a>
+												</Tooltip>
+											</p>
+										)}
+										{patient_email && (
+											<p className="appointment__information__patient__appointment__data__text">
+												<b>Email: </b>
+												<Tooltip title="Enviar un email al paciente">
+													<a href={`mailto:${patient_email}`}>
+														{patient_email}
+													</a>
+												</Tooltip>
+											</p>
+										)}
+									</div>
+								</article>
+							)}
 							<article className="appointment__information__patient__appointment">
 								<h3 className="appointment__information__patient__appointment__title">
 									Información de la cita

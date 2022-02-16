@@ -4,6 +4,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router'
 import notificationContext from '@context/notificationContext'
 import dialogContext from '@context/dialogContext'
+import { nameSplit } from '@utils/utils'
 
 export const usePatient = ({ id }) => {
 	const navigate = useNavigate()
@@ -51,14 +52,7 @@ export const usePatient = ({ id }) => {
 				patient_result.patient_age = patient_age
 			}
 			/* Shorten name */
-			const shorten_name_split = patient_name.split(' ')
-			const shorten_name =
-				shorten_name_split.length === 4
-					? `${shorten_name_split[0]} ${shorten_name_split[2]}`
-					: shorten_name_split.length === 3
-						? `${shorten_name_split[0]} ${shorten_name_split[2]}`
-						: `${shorten_name_split[0]} ${shorten_name_split[1]}`
-			patient_result.shorten_name = shorten_name
+			patient_result.shorten_name = nameSplit(patient_name)
 			setPatient(patient_result)
 			setInputAllergies({
 				...inputAllergies,
@@ -217,6 +211,17 @@ export const usePatient = ({ id }) => {
 		}
 	}
 
+	const breadCrumbs = [
+		{
+			link_name: 'Pacientes',
+			link_to: '/patients',
+		},
+		{
+			link_name: loading ? 'Paciente' : patient.patient_name,
+			link_to: `/patients/patient/${id}`,
+		},
+	]
+
 	useEffect(
 		() => {
 			setLoading(true)
@@ -227,12 +232,7 @@ export const usePatient = ({ id }) => {
 		[ id ],
 	)
 
-	useEffect(
-		() => {
-			
-		},
-		[ inputStates.state__appointment ],
-	)
+	useEffect(() => {}, [ inputStates.state__appointment ])
 
 	return {
 		patient,
@@ -240,6 +240,7 @@ export const usePatient = ({ id }) => {
 		appointments,
 		inputAllergies,
 		inputStates,
+		breadCrumbs,
 		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,

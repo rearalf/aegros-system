@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import format from 'date-fns/format'
 import esLocale from 'date-fns/locale/es'
+import { getNext12MonthNamesWithYear } from '@utils/utils'
 
 function useDashboard(){
 	const { setNotification } = useContext(notificationContext)
@@ -20,11 +21,11 @@ function useDashboard(){
 	const [ appointments, setAppointments ] = useState([])
 	const [ loading, setLoading ] = useState(true)
 	const [ dataBarChart, setDataBarChart ] = useState({
-		labels: [],
+		labels: getNext12MonthNamesWithYear(),
 		datasets: [
 			{
 				label: 'Citas por mes',
-				data: [],
+				data: getNext12MonthNamesWithYear(),
 				borderColor: 'rgb(12, 98, 218)',
 				backgroundColor: 'rgba(12, 98, 218,.5)',
 				borderWidth: 1,
@@ -65,7 +66,7 @@ function useDashboard(){
 				totalAppointmentsFinish,
 				appointmentsByMonth,
 			} = result
-			/* 	formatAppointmentsByMonth(appointmentsByMonth) */
+			formatAppointmentsByMonth(appointmentsByMonth)
 			setDataCount({
 				...dataCount,
 				totalAppointments,
@@ -204,34 +205,36 @@ function useDashboard(){
 	}
 
 	const formatAppointmentsByMonth = value => {
-		const { data } = value
-		if (data !== {}) {
-			const numbers = Object.values(data)
-			const names = Object.getOwnPropertyNames(data)
-			const counts = []
-			names.map((name, i) => {
-				let object = {}
-				object.name = name
-				object.number = numbers[i]
-				counts.push(object)
-			})
-			const namesSort = counts.map(count => count.name)
-			const numberSort = counts.map(count => count.number)
-			setDataBarChart({
-				...dataBarChart,
-				labels: namesSort,
-				datasets: [
-					{
-						label: 'Citas por mes',
-						data: numberSort,
-						borderColor: 'rgb(12, 98, 218)',
-						backgroundColor: 'rgba(12, 98, 218,.5)',
-						borderWidth: 1,
-						barPercentage: 1,
-						hoverBackgroundColor: 'rgb(12 98 218)',
-					},
-				],
-			})
+		if (value !== undefined) {
+			const { data } = value
+			if (data !== {}) {
+				const numbers = Object.values(data)
+				const names = Object.getOwnPropertyNames(data)
+				const counts = []
+				names.map((name, i) => {
+					let object = {}
+					object.name = name
+					object.number = numbers[i]
+					counts.push(object)
+				})
+				const namesSort = counts.map(count => count.name)
+				const numberSort = counts.map(count => count.number)
+				setDataBarChart({
+					...dataBarChart,
+					labels: namesSort,
+					datasets: [
+						{
+							label: 'Citas por mes',
+							data: numberSort,
+							borderColor: 'rgb(12, 98, 218)',
+							backgroundColor: 'rgba(12, 98, 218,.5)',
+							borderWidth: 1,
+							barPercentage: 1,
+							hoverBackgroundColor: 'rgb(12 98 218)',
+						},
+					],
+				})
+			}
 		}
 		return null
 	}

@@ -25,10 +25,14 @@ import '@styles/page/Appointments.scss'
 
 export const Appointments = () => {
 	const {
-		loading,
 		appointments,
 		appointmnetSearch,
 		pagesAndLimit,
+		validaPagination,
+		validForm,
+		validLoading,
+		validTotalAppointments,
+		classValidationFormShow,
 		handleChangePage,
 		handleChangeInput,
 		handleSearchAppointmets,
@@ -45,20 +49,11 @@ export const Appointments = () => {
 		totalPages,
 		currentPage,
 		limit,
-		loadingSort,
 		sortStatus,
 		sortBy,
 		asc,
 	} = pagesAndLimit
-	const class_validation_form = show_search_form
-		? 'appointment__params__search__form__show'
-		: null
-	const validaPagination =
-		loading &&
-		loadingSort &&
-		appointments.length &&
-		totalPages > 1 &&
-		!patient_search.length > 0
+
 	const tableAppointment = () => {
 		return (
 			<TableContainer className="table__basic appointment__table" component={Paper}>
@@ -132,7 +127,7 @@ export const Appointments = () => {
 					</Button>
 				</Link>
 			</header>
-			{loading && appointments.length > 0 ? (
+			{validForm && (
 				<div className="appointment__params">
 					<div className="appointment__params__search">
 						{!show_search_form && (
@@ -154,7 +149,7 @@ export const Appointments = () => {
 							</Tooltip>
 						)}
 						<form
-							className={`appointment__params__search__form ${class_validation_form}`}
+							className={`appointment__params__search__form ${classValidationFormShow}`}
 							onSubmit={handleSearchAppointmets}>
 							<TextField
 								id="patient_name"
@@ -225,17 +220,15 @@ export const Appointments = () => {
 						</Tooltip>
 					</div>
 				</div>
-			) : null}
-			{loading && loadingSort ? appointments.length ? (
+			)}
+			{validLoading ? appointments.length ? (
 				tableAppointment()
 			) : (
 				<h3>No hay citas</h3>
 			) : (
 				<Loading />
 			)}
-			{loading &&
-			loadingSort &&
-			appointments.length > 0 && (
+			{validTotalAppointments && (
 				<div className="appointments__total__appointment">
 					<p className="appointments__total__appointment__text">
 						Total de citas: <b>{totalAppointments}</b>

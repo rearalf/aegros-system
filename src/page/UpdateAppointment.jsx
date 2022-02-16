@@ -26,6 +26,7 @@ const UpdateAppointment = () => {
 	} = useUpdateAppointment(id_appointment)
 	const {
 		patient_name,
+		patient_name_short,
 		patient_age,
 		patient_gender,
 		patient_email,
@@ -42,7 +43,7 @@ const UpdateAppointment = () => {
 						link_to: '/appointments',
 					},
 					{
-						link_name: patient_name ? `Cita de ${patient_name}` : '',
+						link_name: patient_name ? `Cita de ${patient_name_short}` : '',
 						link_to: `/appointments/${id_appointment}`,
 					},
 					{
@@ -66,7 +67,7 @@ const UpdateAppointment = () => {
 							/>
 							<article className="update__appointment__section__patient__peronal__information">
 								<h2 className="update__appointment__section__patient__peronal__information__name">
-									{patient_name}
+									{patient_name_short}
 								</h2>
 								<p className="update__appointment__section__patient__peronal__information__additional">
 									{`${patient_age} años, ${patient_gender === 'man'
@@ -76,14 +77,20 @@ const UpdateAppointment = () => {
 							</article>
 						</div>
 						<div className="update__appointment__section__patient__data">
-							<p className="patient__section__personal__information__data__header__extra__contacts__contact">
-								<FiPhone size={18} />
-								<a href={`tel:${patient_phone_number}`}>{patient_phone_number}</a>
-							</p>
-							<p className="patient__section__personal__information__data__header__extra__contacts__contact">
-								<FiMail size={18} />
-								<a href={`mailto:${patient_email}`}>{patient_email}</a>
-							</p>
+							{patient_phone_number && (
+								<p className="patient__section__personal__information__data__header__extra__contacts__contact">
+									<FiPhone size={18} />
+									<a href={`tel:${patient_phone_number}`}>
+										{patient_phone_number}
+									</a>
+								</p>
+							)}
+							{patient_email && (
+								<p className="patient__section__personal__information__data__header__extra__contacts__contact">
+									<FiMail size={18} />
+									<a href={`mailto:${patient_email}`}>{patient_email}</a>
+								</p>
+							)}
 						</div>
 					</div>
 					<section className="update__appointment__section__schedule">

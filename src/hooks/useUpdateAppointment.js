@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
-import { roundDate } from '../utils/utils'
+import { nameSplit, roundDate, getAge } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import format from 'date-fns/format'
@@ -13,6 +13,7 @@ function useUpdateAppointment(id_appointment){
 	const [ appointmentsToday, setAppointmentsToday ] = useState([])
 	const [ patient, setPatient ] = useState({
 		patient_name: '',
+		patient_name_short: '',
 		patient_age: 0,
 	})
 	const [ loading, setLoading ] = useState(true)
@@ -29,28 +30,12 @@ function useUpdateAppointment(id_appointment){
 			}
 			const appointment_result = JSON.parse(result.appointment)
 			const patient_result = JSON.parse(result.patient)
-			const { patient_date_birth } = patient_result
-			/* Calculate age */
-			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-			if (
-				new Date(patient_date_birth).getMonth() === 0 ||
-				new Date(patient_date_birth).getMonth() === 1 ||
-				new Date(patient_date_birth).getMonth() === 2
-			) {
-				const patient_age = resultAge.split(' ')[1] - 1
-				patient_result.patient_age = patient_age
-			}
-			else {
-				const patient_age = resultAge.split(' ')[1]
-				patient_result.patient_age = patient_age
-			}
+			formatPatient(patient_result)
 			setAppointment(appointment_result)
-			setPatient(patient_result)
 			setLoading(!loading)
 		} catch (error) {
 			navigate(-1)
 			setLoading(false)
-			setLoading(!loading)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
@@ -58,6 +43,14 @@ function useUpdateAppointment(id_appointment){
 				typeNotification: 'error',
 			})
 		}
+	}
+
+	const formatPatient = data => {
+		const { patient_date_birth, patient_name } = data
+		const result_age = formatDistanceToNow(new Date(patient_date_birth))
+		data.patient_age = getAge(result_age, patient_date_birth)
+		data.patient_name_short = nameSplit(patient_name)
+		setPatient(data)
 	}
 
 	const handleChangeInpuDate = value => {

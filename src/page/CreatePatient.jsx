@@ -25,11 +25,11 @@ export const CreatePatient = () => {
 	const {
 		loading,
 		PatientData,
-		validationData,
+		validData,
 		onChangeInput,
 		onChangeDate,
 		onChangePhone,
-		handleCreatePatient,
+		handleOnSubmit,
 		handleCanceled,
 	} = patient
 
@@ -47,14 +47,15 @@ export const CreatePatient = () => {
 	const {
 		maxDate,
 		minDate,
-		error_name,
-		error_email,
-		error_gender,
-		error_date_birth,
-		error_phone_number,
-		error_weight,
-		error_height,
-	} = validationData
+		patient_name_error,
+		patient_date_birth_error,
+		patient_gender_error,
+		patient_email_error,
+		patient_allergies_error,
+		patient_phone_error,
+		patient_weight_error,
+		patient_height_error,
+	} = validData
 	const linksToBreadCrumbsComponent = id_patient
 		? [
 				{
@@ -97,7 +98,7 @@ export const CreatePatient = () => {
 			{loading ? (
 				<Loading />
 			) : (
-				<form className="create__patient__content" onSubmit={handleCreatePatient}>
+				<form className="create__patient__content" onSubmit={handleOnSubmit}>
 					<div className="create__patient__form__main__information">
 						<TextField
 							id="patient_name"
@@ -107,34 +108,13 @@ export const CreatePatient = () => {
 							className="create__patient__form__inputs__input"
 							onChange={onChangeInput}
 							value={patient_name}
-							error={error_name}
+							error={patient_name_error}
 							InputProps={{
 								endAdornment: (
 									<InputAdornment position="end">
-										<i>{error_name ? <FiAlertCircle /> : null}</i>
+										<i>{patient_name_error ? <FiAlertCircle /> : null}</i>
 									</InputAdornment>
 								),
-							}}
-							required
-						/>
-						<TextField
-							id="patient_email"
-							name="patient_email"
-							label="Correo"
-							type="email"
-							placeholder="correo@caliente.com"
-							className="create__patient__form__inputs__input"
-							onChange={onChangeInput}
-							value={patient_email}
-							error={error_email}
-							InputProps={{
-								endAdornment: error_email ? (
-									<InputAdornment position="end">
-										<i>
-											<FiAlertCircle />
-										</i>
-									</InputAdornment>
-								) : null,
 							}}
 							required
 						/>
@@ -149,35 +129,17 @@ export const CreatePatient = () => {
 								minDate={minDate}
 								toolbarPlaceholder="Mes/Día/Año"
 								renderInput={params => (
-									<TextField {...params} helperText="mm/dd/yyyy" required />
+									<TextField
+										{...params}
+										id="patient_date_birth"
+										name="patient_date_birth"
+										helperText="mm/dd/yyyy"
+										error={patient_date_birth_error}
+										required
+									/>
 								)}
 							/>
 						</LocalizationProvider>
-						<MuiPhoneNumber
-							label="Teléfono"
-							name="patient_phone_number"
-							id="patient_phone_number"
-							defaultCountry={'sv'}
-							onlyCountries={[ 'sv' ]}
-							variant="outlined"
-							disableDropdown
-							disableCountryCode
-							placeholder="0000-0000"
-							className="create__patient__form__inputs__input"
-							value={patient_phone_number}
-							onChange={onChangePhone}
-							error={error_phone_number}
-							InputProps={{
-								endAdornment: error_phone_number ? (
-									<InputAdornment position="end">
-										<i>
-											<FiAlertCircle />
-										</i>
-									</InputAdornment>
-								) : null,
-							}}
-							required
-						/>
 						<TextField
 							id="patient_gender"
 							name="patient_gender"
@@ -186,9 +148,9 @@ export const CreatePatient = () => {
 							value={patient_gender}
 							className="create__patient__form__inputs__input"
 							select
-							error={error_gender}
+							error={patient_gender_error}
 							InputProps={{
-								endAdornment: error_gender ? (
+								endAdornment: patient_gender_error ? (
 									<InputAdornment position="end">
 										<i>
 											<FiAlertCircle />
@@ -205,6 +167,50 @@ export const CreatePatient = () => {
 							<MenuItem value={'other'}>Otros</MenuItem>
 						</TextField>
 						<TextField
+							id="patient_email"
+							name="patient_email"
+							label="Correo"
+							type="email"
+							placeholder="correo@caliente.com"
+							className="create__patient__form__inputs__input"
+							onChange={onChangeInput}
+							value={patient_email}
+							error={patient_email_error}
+							InputProps={{
+								endAdornment: patient_email_error ? (
+									<InputAdornment position="end">
+										<i>
+											<FiAlertCircle />
+										</i>
+									</InputAdornment>
+								) : null,
+							}}
+						/>
+						<MuiPhoneNumber
+							label="Teléfono"
+							name="patient_phone_number"
+							id="patient_phone_number"
+							defaultCountry={'sv'}
+							onlyCountries={[ 'sv' ]}
+							variant="outlined"
+							disableDropdown
+							disableCountryCode
+							placeholder="0000-0000"
+							className="create__patient__form__inputs__input"
+							value={patient_phone_number}
+							onChange={onChangePhone}
+							error={patient_phone_error}
+							InputProps={{
+								endAdornment: patient_phone_error ? (
+									<InputAdornment position="end">
+										<i>
+											<FiAlertCircle />
+										</i>
+									</InputAdornment>
+								) : null,
+							}}
+						/>
+						<TextField
 							id="patient_allergies"
 							name="patient_allergies"
 							label="Alergias"
@@ -214,6 +220,7 @@ export const CreatePatient = () => {
 							multiline
 							rows={4}
 							maxRows={3}
+							error={patient_allergies_error}
 						/>
 					</div>
 					<div className="create__patient__form__secondary__information">
@@ -227,7 +234,7 @@ export const CreatePatient = () => {
 								endAdornment: (
 									<InputAdornment position="end">
 										lb
-										{error_weight ? (
+										{patient_weight_error ? (
 											<i>
 												<FiAlertCircle />
 											</i>
@@ -235,7 +242,7 @@ export const CreatePatient = () => {
 									</InputAdornment>
 								),
 							}}
-							error={error_weight}
+							error={patient_weight_error}
 							onChange={onChangeInput}
 							value={patient_weight}
 						/>
@@ -249,7 +256,7 @@ export const CreatePatient = () => {
 								endAdornment: (
 									<InputAdornment position="end">
 										m
-										{error_height ? (
+										{patient_height_error ? (
 											<i>
 												<FiAlertCircle />
 											</i>
@@ -257,7 +264,7 @@ export const CreatePatient = () => {
 									</InputAdornment>
 								),
 							}}
-							error={error_height}
+							error={patient_height_error}
 							onChange={onChangeInput}
 							value={patient_height}
 						/>
@@ -268,7 +275,7 @@ export const CreatePatient = () => {
 							variant="contained"
 							color="success"
 							className="btn__success"
-							onClick={handleCreatePatient}>
+							onClick={handleOnSubmit}>
 							<FiSave size={18} /> Guardar
 						</Button>
 						<Button

@@ -46,12 +46,13 @@ const icons = {
 
 function createWindow(){
 	mainWindow = new BrowserWindow({
-		width: 1024,
+		width: 1200,
 		height: 768,
 		minWidth: 768,
 		minHeight: 668,
 		frame: false,
 		show: false,
+		title: 'Aegros',
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,

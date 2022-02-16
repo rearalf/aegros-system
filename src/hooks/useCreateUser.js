@@ -257,38 +257,3 @@ function useCreateUser(){
 }
 
 export default useCreateUser
-
-/* 			
-			if (result.error !== undefined) {
-					if (result.hasOwnProperty('error_code')) {
-						if (result.error_code === 11000) {
-							setUserFormError({
-								...userFormError,
-								user_email_error: true,
-							})
-							throw {
-								title: 'Error',
-								message: `El correo ${Object.values(
-									result.error_keyValue,
-								)[0]} ya existe`,
-								type: 'error',
-							}
-						}
-					}
-					else {
-						let errors = Object.values(result.error).map(el => el.message)
-						let fields = Object.getOwnPropertyNames(result.error).map(el => el)
-						if (fields.length > 0) {
-							setUserFormError({
-								...userFormError,
-								[`${fields[0]}_error`]: true,
-							})
-							throw {
-								title: 'Advertencia',
-								message: errors[0],
-								type: 'warning',
-							}
-						}
-					}
-				}
-*/

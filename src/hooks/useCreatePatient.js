@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
 import { capitlizeString, validateEmails } from '@utils/utils'
+import { nameSplit } from '@utils/utils'
 
 export const useCreatePatient = () => {
 	const navigate = useNavigate()
@@ -20,17 +21,17 @@ export const useCreatePatient = () => {
 		patient_weight: '',
 		patient_height: '',
 	})
-	const [ validationData, setValidationData ] = useState({
+	const [ validData, setValidData ] = useState({
 		minDate: subYears(new Date(), 100),
 		maxDate: subYears(new Date(), 1),
-		error_name: false,
-		error_email: false,
-		error_gender: false,
-		error_allgergies: false,
-		error_date_birth: false,
-		error_phone_number: false,
-		error_weight: false,
-		error_height: false,
+		patient_name_error: false,
+		patient_date_birth_error: false,
+		patient_gender_error: false,
+		patient_email_error: false,
+		patient_allergies_error: false,
+		patient_phone_number_error: false,
+		patient_weight_error: false,
+		patient_height_error: false,
 	})
 
 	/* Changes for input */
@@ -48,15 +49,23 @@ export const useCreatePatient = () => {
 	/* Validation numbers for weight and height */
 	const validateNumbers = (number, name) => {
 		if (number <= 0) {
-			if (name === 'patient_weight') errorMessageInputs('error_weight', true)
-			if (name === 'patient_height') errorMessageInputs('error_height', true)
-			return false
+			setValidData({
+				...validData,
+				[`${name}_error`]: true,
+			})
 		}
 		else {
-			if (name === 'patient_weight') errorMessageInputs('error_weight', false)
-			if (name === 'patient_height') errorMessageInputs('error_height', false)
+			setValidData({
+				...validData,
+				[`${name}_error`]: false,
+			})
 		}
-		return true
+		if (number.length === 0) {
+			setValidData({
+				...validData,
+				[`${name}_error`]: false,
+			})
+		}
 	}
 
 	/* Changes for date */
@@ -66,117 +75,122 @@ export const useCreatePatient = () => {
 				...PatientData,
 				patient_date_birth: format(value, 'MM/dd/yyyy'),
 			})
-			errorMessageInputs('error_date_birth', false)
 		} catch (error) {
-			console.log(error)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
 				subTitleNotification: 'Fecha no valida',
 				typeNotification: 'error',
 			})
-			errorMessageInputs('error_date_birth', true)
 		}
 	}
 
 	/* Changes for Phone number */
-	const onChangePhone = value => {
-		value.length === 0
-			? errorMessageInputs('error_phone_number', true)
-			: errorMessageInputs('error_phone_number', false)
+	const onChangePhone = value =>
 		setPatientData({
 			...PatientData,
 			patient_phone_number: value,
 		})
-	}
 
-	/* input validation for error message */
-	const errorMessageInputs = (name, state) =>
-		setValidationData({
-			...validationData,
-			[name]: state,
-		})
-
-	const handleCreatePatient = async e => {
+	const handleOnSubmit = async e => {
 		try {
 			e.preventDefault()
+			const {
+				patient_name,
+				patient_date_birth,
+				patient_gender,
+				patient_email,
+				patient_phone_number,
+				patient_weight,
+				patient_height,
+			} = PatientData
 			/* Validation */
-			if (PatientData.patient_name === '')
+			if (patient_name === '')
 				throw {
-					name: 'error_name',
+					title: 'Error',
+					type: 'error',
 					message: 'Dede de agregar el nombre del paciente.',
 				}
-			if (PatientData.patient_email === '')
+			if (patient_date_birth === '')
 				throw {
-					name: 'error_email',
-					message: 'Debe de agregar un correo.',
-				}
-			/* Validate for email */
-			const emailValid = validateEmails(PatientData.patient_email)
-			if (!emailValid) {
-				throw {
-					name: 'error_email',
-					message: 'Email no valido',
-				}
-			}
-			if (PatientData.patient_gender === '')
-				throw {
-					name: 'error_gender',
-					message: 'Debe de seleccionar un genero.',
-				}
-			if (PatientData.patient_phone_number === '')
-				throw {
-					name: 'error_phone_number',
-					message: 'Debe de agregar un número de teléfono.',
-				}
-			if (PatientData.patient_date_birth === '' || validationData.error_date_birth === true)
-				throw {
-					name: 'error_date_birth',
+					title: 'Error',
+					type: 'error',
 					message: 'Debe de seleccionar un la fecha de nacimiento.',
 				}
-			if (PatientData.patient_weight !== '' && PatientData.patient_weight < 0) {
+			if (patient_gender === '')
 				throw {
-					name: 'error_weight',
+					title: 'Error',
+					type: 'error',
+					message: 'Debe de seleccionar un genero.',
+				}
+			if (patient_email !== '') {
+				/* Validate for email */
+				const emailValid = validateEmails(PatientData.patient_email)
+				if (!emailValid) {
+					throw {
+						title: 'Error',
+						type: 'error',
+						message: 'El correo no es valido',
+					}
+				}
+			}
+			if (patient_phone_number !== '' && /\d{4}-\d{4}/.test(patient_phone_number))
+				throw {
+					title: 'Error',
+					type: 'error',
+					message: 'El número de teléfono no es valido.',
+				}
+			if (patient_weight !== '' && patient_weight < 0) {
+				throw {
+					title: 'Error',
+					type: 'error',
 					message: 'Debe de agregar un peso valido.',
 				}
 			}
-			if (PatientData.patient_height !== '' && PatientData.patient_height < 0) {
+			if (patient_height !== '' && patient_height < 0) {
 				throw {
-					name: 'error_height',
+					title: 'Error',
+					type: 'error',
 					message: 'Debe de agregar una altura valida.',
 				}
 			}
-
 			const patient_data = {
-				...PatientData,
-				patient_name: capitlizeString(PatientData.patient_name),
+				patient_name: capitlizeString(patient_name),
+				patient_date_birth,
+				patient_gender,
+				patient_email,
+				patient_phone_number,
+				patient_weight,
+				patient_height,
 			}
 			const result = await ipcRenderer.sendSync('create-patient-main', patient_data)
 			if (!result.success) {
 				console.log(result)
+				setValidData({
+					...validData,
+					[`${result.errorFields}_error`]: true,
+				})
 				throw {
-					message: 'Ocurrio un error',
+					title: 'Error',
+					type: 'error',
+					message: result.errorsMessage,
 				}
 			}
-			const patient = JSON.parse(result.patien)
+			const patient = JSON.parse(result.patient)
 			navigate(`/patients/patient/${patient._id}`)
-			/* Notification */
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Operación exitosa.',
-				subTitleNotification: `Paciente ${patient.patient_name} creado.`,
+				subTitleNotification: `Paciente ${nameSplit(patient.patient_name)} creado.`,
 				typeNotification: 'success',
 			})
 		} catch (error) {
 			console.log(error)
-			/* Function for show error in inputs */
-			errorMessageInputs(error.name, true)
-			/* Notification */
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Error',
+				titleNotification: error.title ? error.title : 'Error',
 				subTitleNotification: error.message,
-				typeNotification: 'error',
+				typeNotification: error.type ? error.type : 'error',
 			})
 		}
 	}
@@ -192,13 +206,13 @@ export const useCreatePatient = () => {
 	}
 
 	return {
+		PatientData,
+		validData,
+		loading,
 		onChangeInput,
 		onChangeDate,
 		onChangePhone,
-		PatientData,
-		handleCreatePatient,
+		handleOnSubmit,
 		handleCanceled,
-		validationData,
-		loading,
 	}
 }

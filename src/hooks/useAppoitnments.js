@@ -59,12 +59,12 @@ function useAppointments(){
 				const { appointment_date, appointment_state, createdAt, patient, _id } = data
 				const format_appointment_date = format(
 					new Date(appointment_date),
-					'dd / MMM / yyyy - h:m bbbb',
+					'dd / MMMM / yyyy - h:m bbbb',
 					{
 						locale: esLocale,
 					},
 				)
-				const format_created = formatDistanceToNow(new Date(createdAt), {
+				const format_created = format(new Date(createdAt), 'dd / MMMM / yyyy', {
 					locale: esLocale,
 				})
 				return {
@@ -78,7 +78,7 @@ function useAppointments(){
 			})
 			return result
 		}
-		return null
+		return appointments
 	}
 
 	const handleChangeInput = e =>
@@ -230,11 +230,28 @@ function useAppointments(){
 		],
 	)
 
+	const validLoading = loading && pagesAndLimit.loadingSort
+	const validaPagination =
+		validLoading &&
+		appointments.length &&
+		pagesAndLimit.totalPages > 1 &&
+		!patient_search.length > 0
+	const validForm = loading && appointments.length > 0
+	const validTotalAppointments = validLoading && appointments.length > 0
+	const classValidationFormShow = appointmnetSearch.show_search_form
+		? 'appointment__params__search__form__show'
+		: null
+
 	return {
 		loading,
 		appointments,
 		appointmnetSearch,
 		pagesAndLimit,
+		validaPagination,
+		validForm,
+		validLoading,
+		validTotalAppointments,
+		classValidationFormShow,
 		handleChangePage,
 		handleChangeInput,
 		handleSearchAppointmets,

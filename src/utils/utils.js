@@ -1,39 +1,39 @@
 function stringToColor(string){
-	let hash = 0
-	let i
-
+	let hash = 0,
+		color = '#'
 	/* eslint-disable no-bitwise */
-	for (i = 0; i < string.length; i += 1) {
+	for (let i = 0; i < string.length; i += 1) {
 		hash = string.charCodeAt(i) + ((hash << 5) - hash)
 	}
-
-	let color = '#'
-
-	for (i = 0; i < 3; i += 1) {
+	for (let i = 0; i < 3; i += 1) {
 		const value = (hash >> (i * 8)) & 0xff
 		color += `00${value.toString(16)}`.substr(-2)
 	}
 	/* eslint-enable no-bitwise */
-
 	return color
 }
 
 export function stringAvatar(name){
 	if (name === undefined) return
 	if (name.length === 0) return
-	const nameSplit = name.split(' ')
-	if (nameSplit.length === 4 || nameSplit.length === 3)
-		return {
-			sx: {
-				bgcolor: stringToColor(name),
-			},
-			children: `${nameSplit[0][0]}${nameSplit[2][0]}`,
-		}
+	const NameSplit = nameSplit(name)
 	return {
 		sx: {
 			bgcolor: stringToColor(name),
 		},
-		children: `${nameSplit[0][0]}${nameSplit[1][0]}`,
+		children: `${NameSplit.split(' ')[0][0]}${NameSplit.split(' ')[1][0]}`,
+	}
+}
+
+export function nameSplit(name){
+	if (name === undefined) return
+	if (name.length === 0) return
+	const nameSplit = name.split(' ')
+	if (nameSplit.length === 4 || nameSplit.length === 3) {
+		return `${nameSplit[0]} ${nameSplit[2]}`
+	}
+	else {
+		return `${nameSplit[0]} ${nameSplit[1]}`
 	}
 }
 
@@ -56,6 +56,31 @@ export function capitlizeString(word){
 	})
 	wordSeparation = wordSeparation.join(' ')
 	return wordSeparation
+}
+
+export function getNext12MonthNamesWithYear(){
+	const MONTHS = []
+	const NOW = new Date()
+	const MONTHS_ARRAY = [
+		'Enero',
+		'Febrero',
+		'Marzo',
+		'Abril',
+		'Mayo',
+		'Junio',
+		'Julio',
+		'Agosto',
+		'Septiembre',
+		'Octubre',
+		'Noviembre',
+		'Diciembre',
+	]
+	NOW.setDate(1)
+	for (let i = 0; i <= 12; i++) {
+		MONTHS.push(MONTHS_ARRAY[NOW.getMonth()] + '-' + NOW.getFullYear())
+		NOW.setMonth(NOW.getMonth() - 1)
+	}
+	return MONTHS
 }
 
 export function roundDate(){
@@ -91,4 +116,17 @@ export function passwordValidation(password){
 	password.length >= 8 ? (valid.more8 = true) : (valid.more8 = false)
 
 	return valid
+}
+
+export function getAge(age, date){
+	if (
+		new Date(date).getMonth() === 0 ||
+		new Date(date).getMonth() === 1 ||
+		new Date(date).getMonth() === 2
+	) {
+		return age.split(' ')[1] - 1
+	}
+	else {
+		return age.split(' ')[1]
+	}
 }

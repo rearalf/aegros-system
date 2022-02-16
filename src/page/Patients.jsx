@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FiActivity, FiUserPlus, FiSearch, FiX, FiFrown, FiCalendar } from 'react-icons/fi'
-import { format, formatDistanceToNow } from 'date-fns'
 import { AppLayout } from '@components/AppLayout'
 import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
 import { usePatients } from '@hooks/usePatients'
@@ -27,27 +26,24 @@ import '@styles/page/Patients.scss'
 export const Patients = () => {
 	const {
 		patients,
-		loading,
 		patientSearch,
+		pagesAndLimit,
+		validLoading,
+		validaPagination,
+		validationPatientParams,
+		validTotalPatients,
+		classValidationInputSearch,
 		onChangeInputSearch,
 		handleSearchPatients,
 		onChangeStateShowSearch,
 		handleResetPatients,
-		pagesAndLimit,
 		handleChangePage,
 		handleChangeLimit,
 		handleChangeAsc,
 		handleChangeSortBy,
 	} = usePatients()
-	const { patient_name, show_patient_form, patients_search } = patientSearch
-	const { currentPage, limit, totalPage, sortBy, asc, loadingSort, totalPatients } = pagesAndLimit
-
-	const validaPagination =
-		loading && loadingSort && patients.length && totalPage > 1 && !patients_search.length > 0
-
-	const validationPatientParams = loading && patients.length
-
-	const classValidationInputSearch = show_patient_form ? 'patients__search__form__show' : null
+	const { patient_name, show_patient_form } = patientSearch
+	const { currentPage, limit, totalPage, sortBy, asc, totalPatients } = pagesAndLimit
 
 	const TableBodyPatient = () => {
 		return (
@@ -228,16 +224,14 @@ export const Patients = () => {
 					</div>
 				</div>
 			) : null}
-			{loading && loadingSort ? patients.length ? (
+			{validLoading ? patients.length ? (
 				TableBodyPatient()
 			) : (
 				<h3>No hay pacientes</h3>
 			) : (
 				<Loading />
 			)}
-			{loading &&
-			loadingSort &&
-			patients.length > 0 && (
+			{validTotalPatients && (
 				<div className="patients__total">
 					<p>Total de pacientes: {totalPatients}</p>
 				</div>

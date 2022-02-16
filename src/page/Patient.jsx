@@ -32,6 +32,7 @@ export const Patient = () => {
 		appointments,
 		inputAllergies,
 		inputStates,
+		breadCrumbs,
 		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,
@@ -45,6 +46,7 @@ export const Patient = () => {
 	const { state__appointment } = inputStates
 	const {
 		patient_name,
+		shorten_name,
 		patient_gender,
 		patient_age,
 		patient_phone_number,
@@ -144,18 +146,7 @@ export const Patient = () => {
 
 	return (
 		<AppLayout ClassName="Patient">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Pacientes',
-						link_to: '/patients',
-					},
-					{
-						link_name: patient_name === '' ? 'Paciente' : patient_name,
-						link_to: `/patients/patient/${params.id}`,
-					},
-				]}
-			/>
+			<BreadCrumbsComponent links={breadCrumbs} />
 			{loading ? (
 				<Loading />
 			) : (
@@ -169,7 +160,7 @@ export const Patient = () => {
 								/>
 								<article className="patient__section__personal__information__data__header__data">
 									<h1 className="patient__section__personal__information__data__header__data__title">
-										{patient_name}
+										{shorten_name}
 									</h1>
 									<p className="patient__section__personal__information__data__header__data__sub">
 										{`${patient_age} años, ${patient_gender === 'man'
@@ -180,13 +171,17 @@ export const Patient = () => {
 							</div>
 							<div className="patient__section__personal__information__data__header__extra">
 								<div className="patient__section__personal__information__data__header__extra__contacts">
-									<p className="patient__section__personal__information__data__header__extra__contacts__contact">
-										<FiPhone size={18} /> {patient_phone_number}
-									</p>
-									<p className="patient__section__personal__information__data__header__extra__contacts__contact">
-										<FiMail size={18} />{' '}
-										<a href={`mailto:${patient_email}`}>{patient_email}</a>
-									</p>
+									{patient_email && (
+										<p className="patient__section__personal__information__data__header__extra__contacts__contact">
+											<FiMail size={18} />
+											<a href={`mailto:${patient_email}`}>{patient_email}</a>
+										</p>
+									)}
+									{patient_phone_number && (
+										<p className="patient__section__personal__information__data__header__extra__contacts__contact">
+											<FiPhone size={18} /> {patient_phone_number}
+										</p>
+									)}
 								</div>
 								<div className="patient__section__personal__information__data__header__extra__information">
 									{patient_height && (

@@ -91,7 +91,7 @@ export const usePatients = () => {
 			})
 			return result
 		}
-		return null
+		return patients
 	}
 
 	const onChangeInputSearch = e => {
@@ -224,11 +224,28 @@ export const usePatients = () => {
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)
 
+	const validLoading = loading && pagesAndLimit.loadingSort
+	const validaPagination =
+		validLoading &&
+		patients.length &&
+		pagesAndLimit.totalPage > 1 &&
+		!patients_search.length > 0
+	const validationPatientParams = loading && patients.length
+	const validTotalPatients = validLoading && patients.length > 0
+	const classValidationInputSearch = patientSearch.show_patient_form
+		? 'patients__search__form__show'
+		: null
+
 	return {
 		patients,
 		loading,
 		patientSearch,
 		pagesAndLimit,
+		validLoading,
+		validaPagination,
+		validationPatientParams,
+		validTotalPatients,
+		classValidationInputSearch,
 		onChangeInputSearch,
 		handleSearchPatients,
 		onChangeStateShowSearch,

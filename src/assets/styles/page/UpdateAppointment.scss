@@ -64,11 +64,12 @@
 	@media screen and (min-width: 1024px) {
 		.update__appointment__section {
 			grid-template-areas: "patient schedule" "buttons schedule";
-			grid-template-columns: 300px 1fr;
+			grid-template-columns: 350px 1fr;
 			grid-template-rows: 300px 1fr;
 			.update__appointment__section__patient {
 				justify-self: start;
 				align-self: start;
+				height: 200px;
 			}
 			.button__group {
 				justify-self: center;
