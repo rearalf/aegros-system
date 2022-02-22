@@ -6,7 +6,7 @@ import { format, subYears } from 'date-fns'
 import { capitlizeString, validateEmails } from '@utils/utils'
 import { nameSplit } from '@utils/utils'
 
-export const useCreatePatient = () => {
+function useCreatePatient(){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
@@ -177,7 +177,7 @@ export const useCreatePatient = () => {
 				}
 			}
 			const patient = JSON.parse(result.patient)
-			navigate(`/patients/patient/${patient._id}`)
+			navigate(`/private/patients/${patient._id}`)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Operación exitosa.',
@@ -216,3 +216,5 @@ export const useCreatePatient = () => {
 		handleCanceled,
 	}
 }
+
+export default useCreatePatient

@@ -1,14 +1,14 @@
 import React from 'react'
 import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
 import { Dialog, Button, Slide } from '@mui/material'
-import { useDialog } from '@hooks/useDialog'
+import useDialog from '@hooks/useDialog'
 import '@styles/components/DialogComponent.scss'
 
 const Transition = React.forwardRef(function Transition(props, ref){
 	return <Slide direction="up" ref={ref} {...props} />
 })
 
-export const DialogComponent = () => {
+const DialogComponent = () => {
 	const {
 		handleAgree,
 		handleDisagree,
@@ -55,3 +55,5 @@ export const DialogComponent = () => {
 		</Dialog>
 	)
 }
+
+export default DialogComponent

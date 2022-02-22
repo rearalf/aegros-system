@@ -118,15 +118,8 @@ export function passwordValidation(password){
 	return valid
 }
 
-export function getAge(age, date){
-	if (
-		new Date(date).getMonth() === 0 ||
-		new Date(date).getMonth() === 1 ||
-		new Date(date).getMonth() === 2
-	) {
-		return age.split(' ')[1] - 1
-	}
-	else {
-		return age.split(' ')[1]
-	}
+export function getAge(patient_date_birth){
+	const date_birth = new Date(patient_date_birth)
+	const today = new Date()
+	return parseInt((today - date_birth) / (1000 * 60 * 60 * 24 * 365))
 }

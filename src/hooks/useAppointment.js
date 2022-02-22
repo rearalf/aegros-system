@@ -6,7 +6,7 @@ import { format, formatDistanceToNow } from 'date-fns'
 import { nameSplit } from '@utils/utils'
 import esLocale from 'date-fns/locale/es'
 
-const useAppointment = id => {
+function useAppointment(id){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const [ appointment, setAppointment ] = useState({
@@ -209,11 +209,11 @@ const useAppointment = id => {
 	const breadCrumbs = [
 		{
 			link_name: 'Citas',
-			link_to: '/appointments',
+			link_to: '/private/appointments',
 		},
 		{
 			link_name: patient.patient_name ? `Cita de ${patient.patient_name_short}` : '',
-			link_to: `/appointments/${appointment.id}`,
+			link_to: `/private/appointments/${appointment.id}`,
 		},
 	]
 

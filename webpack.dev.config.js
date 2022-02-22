@@ -1,7 +1,7 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { spawn } = require('child_process');
+const webpack = require('webpack')
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { spawn } = require('child_process')
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -45,6 +45,8 @@ module.exports = {
 			'@context': path.resolve(__dirname, 'src/context'),
 			'@hooks': path.resolve(__dirname, 'src/hooks'),
 			'@page': path.resolve(__dirname, 'src/page'),
+			'@router': path.resolve(__dirname, 'src/router'),
+			'@layout': path.resolve(__dirname, 'src/layout'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
 		},
 	},
@@ -60,7 +62,7 @@ module.exports = {
 		before() {
 			spawn('electron', [ '.' ], { shell: true, env: process.env, stdio: 'inherit' })
 				.on('close', code => process.exit(0))
-				.on('error', spawnError => console.error(spawnError));
+				.on('error', spawnError => console.error(spawnError))
 		},
 	},
-};
+}

@@ -1,0 +1,16 @@
+@import '../variables.sass';
+
+.empty__data {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 50px;
+	height: 100%;
+	border-radius: 5px;
+	background-color: $background_3;
+	.empty__data__image {
+		width: 100%;
+		height: 300px;
+	}
+}

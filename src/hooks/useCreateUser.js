@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { capitlizeString, validateEmails, passwordValidation } from '@utils/utils'
 import { ipcRenderer } from 'electron'
@@ -197,7 +197,7 @@ function useCreateUser(){
 				subTitleNotification: `Usuario ${user_result.user_name} creado.`,
 				typeNotification: 'success',
 			})
-			navigate('/users')
+			navigate('/private/users')
 			setUserFormError({
 				user_name_error: false,
 				user_email_error: false,
@@ -231,14 +231,6 @@ function useCreateUser(){
 			typeNotification: 'information',
 		})
 	}
-
-	useEffect(() => {
-		ipcRenderer.setMaxListeners(60)
-		console.log(ipcRenderer.eventNames())
-		return () => {
-			console.log(ipcRenderer.eventNames())
-		}
-	}, [])
 
 	return {
 		userForm,

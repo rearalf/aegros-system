@@ -1,21 +1,20 @@
 import React from 'react'
-import { AppLayout } from '@components/AppLayout'
+import { shell } from 'electron'
 import Logo from '@image/icons/logo64x64.png'
 import packages from '../../package.json'
 import '@styles/page/System.scss'
-import { shell } from 'electron'
 
 const System = () => {
 	const openUrl = url => shell.openExternal(url)
 	return (
-		<AppLayout ClassName="system">
+		<main className="container system" id="layout">
 			<header className="system__header">
 				<h2 className="system__header__title">Información del sistema</h2>
 			</header>
 			<section className="system__content">
 				<article className="system__content__name">
 					<img src={Logo} alt="Logo" className="system__content__name__logo" />
-					<h1 className="system__content__name__title">Aegros System</h1>
+					<h1 className="system__content__name__title">Aegros</h1>
 				</article>
 				<article className="system__content__version">
 					<h3 className="system__content__version__title">
@@ -48,7 +47,7 @@ const System = () => {
 					</h3>
 				</article>
 			</section>
-		</AppLayout>
+		</main>
 	)
 }
 

@@ -162,20 +162,6 @@
 					border-radius: 10px;
 				}
 			}
-			.dashboard__appointments__schedule__empty {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				gap: 50px;
-				height: 100%;
-				border-radius: 5px;
-				background-color: $background_3;
-				.dashboard__appointments__schedule__empty__image {
-					width: 100%;
-					height: 300px;
-				}
-			}
 		}
 		.dashboard__charts {
 			padding: 25px;
@@ -260,46 +246,3 @@
 		}
 	}
 }
-
-/* 
-.dashboard__content {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 30px;
-		:is(.dashboard__average__patient__visit, .dashboard__patient__by__gender, .dashboard__latest__patients, .dashboard__appointments__today) {
-			padding: 25px;
-			background-color: $background_2;
-			box-shadow: $shadow_background_3;
-			border-radius: 5px;
-		}
-		.dashboard__latest__patients {
-			display: flex;
-			flex-direction: column;
-			gap: 25px;
-			.dashboard__latest__patients__list {
-				display: flex;
-				flex-direction: column;
-				gap: 15px;
-			}
-		}
-		.dashboard__appointments__today {
-			height: 350px;
-			.dashboard__appointments__today__header {
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: 25px;
-				.dashboard__appointments__today__header__all__appointments {
-					display: flex;
-					align-items: center;
-					justify-self: end;
-					align-self: flex-end;
-				}
-			}
-			.dashboard__appointments__today__list {
-				display: flex;
-				align-items: center;
-				gap: 40px;
-			}
-		}
-	}
-*/

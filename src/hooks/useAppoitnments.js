@@ -33,7 +33,6 @@ function useAppointments(){
 			const appointments_result = JSON.parse(result.appointments)
 			const result_format = formatAppointmet(appointments_result)
 			setAppointments(result_format)
-			setLoading(true)
 			setPagesAndLimit({
 				...pagesAndLimit,
 				totalAppointments: result.totalAppointments,
@@ -41,6 +40,7 @@ function useAppointments(){
 				currentPage: result.currentPage,
 				loadingSort: true,
 			})
+			setLoading(true)
 		} catch (error) {
 			setLoading(true)
 			setNotification({
@@ -127,14 +127,17 @@ function useAppointments(){
 				}
 			}
 			const result_format = formatAppointmet(JSON.parse(result.appointments))
-			result_format === null
-				? setNotification({
-						isOpenNotification: true,
-						titleNotification: 'Información',
-						subTitleNotification: 'No existe pacientes con ese nombre.',
-						typeNotification: 'information',
-					})
-				: setAppointments(result_format)
+			if (result_format === null) {
+				setNotification({
+					isOpenNotification: true,
+					titleNotification: 'Información',
+					subTitleNotification: 'No existe pacientes con ese nombre.',
+					typeNotification: 'information',
+				})
+			}
+			else {
+				setAppointments(result_format)
+			}
 			setLoading(true)
 		} catch (error) {
 			setLoading(true)
@@ -213,6 +216,24 @@ function useAppointments(){
 		})
 	}
 
+	const linkBreadCrumbs = [
+		{
+			link_name: 'Citas',
+			link_to: '/private/appointments',
+		},
+	]
+
+	const validForm = loading && pagesAndLimit.totalAppointments !== 0
+	const validLoading = loading && pagesAndLimit.loadingSort
+	const classValidationFormShow = appointmnetSearch.show_search_form
+		? 'appointment__params__search__form__show'
+		: null
+	const validaPagination =
+		validLoading &&
+		appointments.length &&
+		pagesAndLimit.totalPages > 1 &&
+		!appointmnetSearch.patient_search.length > 0
+
 	useEffect(
 		() => {
 			setLoading(false)
@@ -230,18 +251,6 @@ function useAppointments(){
 		],
 	)
 
-	const validLoading = loading && pagesAndLimit.loadingSort
-	const validaPagination =
-		validLoading &&
-		appointments.length &&
-		pagesAndLimit.totalPages > 1 &&
-		!patient_search.length > 0
-	const validForm = loading && appointments.length > 0
-	const validTotalAppointments = validLoading && appointments.length > 0
-	const classValidationFormShow = appointmnetSearch.show_search_form
-		? 'appointment__params__search__form__show'
-		: null
-
 	return {
 		loading,
 		appointments,
@@ -250,8 +259,8 @@ function useAppointments(){
 		validaPagination,
 		validForm,
 		validLoading,
-		validTotalAppointments,
 		classValidationFormShow,
+		linkBreadCrumbs,
 		handleChangePage,
 		handleChangeInput,
 		handleSearchAppointmets,

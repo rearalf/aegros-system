@@ -1,6 +1,6 @@
 {
 	"appId": "com.thatisuday.aegros-system",
-	"productName": "Aegros system",
+	"productName": "Aegros",
 	"copyright": "Copyright © year ${author}",
 	"directories": {
 		"app": ".",

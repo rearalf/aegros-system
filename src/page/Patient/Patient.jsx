@@ -1,14 +1,11 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import { usePatient } from '@hooks/usePatient'
-import { AppLayout } from '@components/AppLayout'
-import { AvatarComponent } from '@components/AvatarComponent'
+import usePatient from '@hooks/usePatient'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
 import image__empty from '@image/no-data.svg'
-import { Loading } from '@components/Loading'
 import { format } from 'date-fns'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
+import { BreadCrumbsComponent, AvatarComponent, Loading } from '@components'
 import { Button, TextField, IconButton, Tooltip, MenuItem } from '@mui/material'
 import {
 	FiPhone,
@@ -23,7 +20,7 @@ import {
 } from 'react-icons/fi'
 import '@styles/page/Patient.scss'
 
-export const Patient = () => {
+const Patient = () => {
 	const params = useParams()
 	const { id } = params
 	const {
@@ -33,6 +30,7 @@ export const Patient = () => {
 		inputAllergies,
 		inputStates,
 		breadCrumbs,
+		titleTooltip,
 		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,
@@ -56,9 +54,6 @@ export const Patient = () => {
 		patient_state,
 		_id,
 	} = patient
-
-	const titleTooltip = state_input_allergies ? 'Activar edición' : 'Desactivar edición'
-
 	const showAppointments = () =>
 		appointments.map(({ _id, appointment_date, appointment_state, createdAt }) => {
 			const appointment_date__format = format(
@@ -95,7 +90,7 @@ export const Patient = () => {
 						</div>
 						<div className="patient__section__apointment__appointments__article__parting_line" />
 						<Tooltip title="Ver cita">
-							<Link to={`/appointments/${_id}`}>
+							<Link to={`/private/appointments/${_id}`}>
 								<IconButton className="btn__icon">
 									<FiExternalLink size={18} />
 								</IconButton>
@@ -133,7 +128,7 @@ export const Patient = () => {
 						</div>
 						<div className="patient__section__apointment__appointments__article__parting_line" />
 						<Tooltip title="Ver cita">
-							<Link to="/patients">
+							<Link to="/private/patients">
 								<IconButton className="btn__icon">
 									<FiExternalLink size={18} />
 								</IconButton>
@@ -143,9 +138,8 @@ export const Patient = () => {
 				)
 			}
 		})
-
 	return (
-		<AppLayout ClassName="Patient">
+		<main className="container Patient" id="layout">
 			<BreadCrumbsComponent links={breadCrumbs} />
 			{loading ? (
 				<Loading />
@@ -197,7 +191,7 @@ export const Patient = () => {
 								</div>
 							</div>
 							<div className="patient__section__personal__information__data__actions">
-								<Link to={`/patients/create-patient/${_id}`}>
+								<Link to={`/private/patients/update-patient/${_id}`}>
 									<Tooltip title="Editar datos">
 										<Button
 											variant="contained"
@@ -277,7 +271,7 @@ export const Patient = () => {
 						)}
 						<div className="patient__section__apointment__header">
 							<h2>Citas</h2>
-							<Link to={`/appointments/creat-appointment/${id}`}>
+							<Link to={`/private/appointments/creat-appointment/${id}`}>
 								<Button variant="contained" className="btn_basic">
 									<FiCalendar size={18} /> Nueva cita
 								</Button>
@@ -319,6 +313,8 @@ export const Patient = () => {
 					</section>
 				</section>
 			)}
-		</AppLayout>
+		</main>
 	)
 }
+
+export default Patient

@@ -6,7 +6,7 @@ import notificationContext from '@context/notificationContext'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import format from 'date-fns/format'
 
-function useUpdateAppointment(id_appointment){
+function useUpdateAppointment(id){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const [ appointment, setAppointment ] = useState({})
@@ -22,7 +22,7 @@ function useUpdateAppointment(id_appointment){
 	const getAppointment = async () => {
 		try {
 			const result = await ipcRenderer.sendSync('get-appointment-main', {
-				id: id_appointment,
+				id,
 			})
 			if (!result.success) {
 				console.log(result)
@@ -48,7 +48,7 @@ function useUpdateAppointment(id_appointment){
 	const formatPatient = data => {
 		const { patient_date_birth, patient_name } = data
 		const result_age = formatDistanceToNow(new Date(patient_date_birth))
-		data.patient_age = getAge(result_age, patient_date_birth)
+		data.patient_age = getAge(patient_date_birth)
 		data.patient_name_short = nameSplit(patient_name)
 		setPatient(data)
 	}
@@ -82,10 +82,10 @@ function useUpdateAppointment(id_appointment){
 				}
 			}
 			const result = await ipcRenderer.sendSync('update-appointment-date-main', {
-				id: id_appointment,
+				id,
 				appointment_date,
 			})
-			navigate(`/appointments/${id_appointment}`)
+			navigate(`/private/appointments/${id}`)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Operación exitosa.',
@@ -103,7 +103,7 @@ function useUpdateAppointment(id_appointment){
 	}
 
 	const handleCancelUpdate = () => {
-		navigate(`/appointments/${id_appointment}`)
+		navigate(-1)
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
@@ -137,6 +137,22 @@ function useUpdateAppointment(id_appointment){
 		}
 	}
 
+	const link = '/private/appointments'
+	const linksBreadCrumbs = [
+		{
+			link_name: 'Citas',
+			link_to: link,
+		},
+		{
+			link_name: patient.patient_name ? `Cita de ${patient.patient_name_short}` : '',
+			link_to: `${link}/${id}`,
+		},
+		{
+			link_name: 'Modificar fecha de cita',
+			link_to: `${link}/update-appointment/${id}`,
+		},
+	]
+
 	useEffect(() => {
 		setLoading(!loading)
 		getAppointment()
@@ -156,6 +172,7 @@ function useUpdateAppointment(id_appointment){
 		appointment,
 		patient,
 		appointmentsToday,
+		linksBreadCrumbs,
 		handleChangeInpuDate,
 		handleUpdateAppointmentDate,
 		handleCancelUpdate,

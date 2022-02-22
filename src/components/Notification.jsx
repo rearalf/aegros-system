@@ -1,10 +1,10 @@
 import React from 'react'
 import { FiAlertCircle, FiAlertTriangle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
-import { useNotification } from '@hooks/useNotification'
+import useNotification from '@hooks/useNotification'
 import { CircularProgress } from '@mui/material'
 import '@styles/components/Notification.scss'
 
-export const Notification = () => {
+const Notification = () => {
 	const {
 		changeValueIsOpen,
 		isOpenNotification,
@@ -47,3 +47,5 @@ export const Notification = () => {
 		</div>
 	)
 }
+
+export default Notification

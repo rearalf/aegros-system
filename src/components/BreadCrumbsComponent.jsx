@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import { FiChevronRight } from 'react-icons/fi'
 import '@styles/components/BreadCrumbsComponent.scss'
 
-export const BreadCrumbsComponent = ({
+const BreadCrumbsComponent = ({
 	links = [
 		{
-			link_name: 'Dashboard',
-			link_to: '/Dashboard',
+			link_name: 'Inicio',
+			link_to: '/private/',
 		},
 	],
 }) => {
@@ -30,3 +30,5 @@ export const BreadCrumbsComponent = ({
 		</Breadcrumbs>
 	)
 }
+
+export default BreadCrumbsComponent

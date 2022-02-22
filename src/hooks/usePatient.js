@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router'
+import { getAge } from '@utils/utils'
+import { nameSplit } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 import dialogContext from '@context/dialogContext'
-import { nameSplit } from '@utils/utils'
 
-export const usePatient = ({ id }) => {
+function usePatient({ id }){
 	const navigate = useNavigate()
 	/* Context */
 	const { dialog, setDialog } = useContext(dialogContext)
@@ -38,19 +38,7 @@ export const usePatient = ({ id }) => {
 			const patient_result = JSON.parse(result.patient_result)
 			const { patient_date_birth, patient_name, patient_allergies } = patient_result
 			/* Calculate age */
-			const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-			if (
-				new Date(patient_date_birth).getMonth() === 0 ||
-				new Date(patient_date_birth).getMonth() === 1 ||
-				new Date(patient_date_birth).getMonth() === 2
-			) {
-				const patient_age = resultAge.split(' ')[1] - 1
-				patient_result.patient_age = patient_age
-			}
-			else {
-				const patient_age = resultAge.split(' ')[1]
-				patient_result.patient_age = patient_age
-			}
+			patient_result.patient_age = getAge(patient_date_birth)
 			/* Shorten name */
 			patient_result.shorten_name = nameSplit(patient_name)
 			setPatient(patient_result)
@@ -214,13 +202,16 @@ export const usePatient = ({ id }) => {
 	const breadCrumbs = [
 		{
 			link_name: 'Pacientes',
-			link_to: '/patients',
+			link_to: '/private/patients',
 		},
 		{
 			link_name: loading ? 'Paciente' : patient.patient_name,
-			link_to: `/patients/patient/${id}`,
+			link_to: `/private/patients/${id}`,
 		},
 	]
+	const titleTooltip = inputAllergies.state_input_allergies
+		? 'Activar edición'
+		: 'Desactivar edición'
 
 	useEffect(
 		() => {
@@ -241,6 +232,7 @@ export const usePatient = ({ id }) => {
 		inputAllergies,
 		inputStates,
 		breadCrumbs,
+		titleTooltip,
 		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,
@@ -249,3 +241,5 @@ export const usePatient = ({ id }) => {
 		handleDeletePatient,
 	}
 }
+
+export default usePatient

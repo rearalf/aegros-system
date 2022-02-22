@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { format, formatDistanceToNow } from 'date-fns'
+import { format } from 'date-fns'
+import { getAge } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 import esLocale from 'date-fns/locale/es'
 
-export const usePatients = () => {
+function usePatients(){
 	const { setNotification } = useContext(notificationContext)
 	const [ patients, setPatients ] = useState([])
 	const [ loading, setLoading ] = useState(true)
@@ -34,7 +35,6 @@ export const usePatients = () => {
 			const resultPatients = JSON.parse(patients)
 			const format_patients = formatPatients(resultPatients)
 			setPatients(format_patients)
-			setLoading(true)
 			setPagesAndLimit({
 				...pagesAndLimit,
 				totalPage,
@@ -42,6 +42,7 @@ export const usePatients = () => {
 				totalPatients,
 				loadingSort: true,
 			})
+			setLoading(true)
 		} catch (error) {
 			setLoading(true)
 			setNotification({
@@ -64,21 +65,10 @@ export const usePatients = () => {
 					patient_phone_number,
 					patient_state,
 				} = data
-
-				const formatDate = format(new Date(patient_date_birth), 'dd - MMM - yyyy', {
+				const formatDate = format(new Date(patient_date_birth), 'dd - MMMM - yyyy', {
 					locale: esLocale,
 				})
-				const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-				const patient_age_format = resultAge.split(' ')
-				let validateAge = false
-				if (
-					new Date(patient_date_birth).getMonth() === 0 ||
-					new Date(patient_date_birth).getMonth() === 1 ||
-					new Date(patient_date_birth).getMonth() === 2
-				) {
-					validateAge = true
-				}
-				const patient_age = validateAge ? patient_age_format[1] - 1 : patient_age_format[1]
+				const patient_age = getAge(patient_date_birth)
 				return {
 					_id,
 					patient_name,
@@ -213,6 +203,24 @@ export const usePatients = () => {
 		})
 	}
 
+	const linkBreadCrumbs = [
+		{
+			link_name: 'Pacientes',
+			link_to: '/private/patients',
+		},
+	]
+
+	const validLoading = loading && pagesAndLimit.loadingSort
+	const validationPatientParams = loading && pagesAndLimit.totalPatients !== 0
+	const classValidationInputSearch = patientSearch.show_patient_form
+		? 'patients__search__form__show'
+		: null
+	const validaPagination =
+		validLoading &&
+		patients.length &&
+		pagesAndLimit.totalPage > 1 &&
+		!patientSearch.patients_search.length
+
 	useEffect(
 		() => {
 			setLoading(false)
@@ -224,18 +232,6 @@ export const usePatients = () => {
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)
 
-	const validLoading = loading && pagesAndLimit.loadingSort
-	const validaPagination =
-		validLoading &&
-		patients.length &&
-		pagesAndLimit.totalPage > 1 &&
-		!patients_search.length > 0
-	const validationPatientParams = loading && patients.length
-	const validTotalPatients = validLoading && patients.length > 0
-	const classValidationInputSearch = patientSearch.show_patient_form
-		? 'patients__search__form__show'
-		: null
-
 	return {
 		patients,
 		loading,
@@ -244,8 +240,8 @@ export const usePatients = () => {
 		validLoading,
 		validaPagination,
 		validationPatientParams,
-		validTotalPatients,
 		classValidationInputSearch,
+		linkBreadCrumbs,
 		onChangeInputSearch,
 		handleSearchPatients,
 		onChangeStateShowSearch,
@@ -256,3 +252,5 @@ export const usePatients = () => {
 		handleChangeSortBy,
 	}
 }
+
+export default usePatients

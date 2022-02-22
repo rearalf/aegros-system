@@ -16,9 +16,11 @@
 		flex-direction: column;
 		text-align: center;
 		justify-self: center;
+		min-width: 400px;
 		.system__content__name {
 			display: flex;
 			align-items: center;
+			justify-content: center;
 			gap: 25px;
 			padding-bottom: 15px;
 			border-bottom: 1px solid $line_color;

@@ -1,29 +1,27 @@
 import React, { Suspense } from 'react'
 import { useParams } from 'react-router-dom'
-import { AppLayout } from '@components/AppLayout'
-import { Loading } from '@components/Loading'
-import useUpdateAppointment from '@hooks/useUpdateAppointment'
-import { AvatarComponent } from '@components/AvatarComponent'
+import { Loading, AvatarComponent, BreadCrumbsComponent } from '@components'
 import { FiMail, FiPhone, FiSave, FiXCircle } from 'react-icons/fi'
 import { Button, TextField } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
+import useUpdateAppointment from '@hooks/useUpdateAppointment'
 const ScheduleOneDay = React.lazy(() => import('@components/ScheduleOneDay'))
 import '@styles/page/UpdateAppointment.scss'
 
 const UpdateAppointment = () => {
-	const { id_appointment } = useParams()
+	const { id } = useParams()
 	const {
 		loading,
 		loadingSchedule,
 		appointment,
 		patient,
 		appointmentsToday,
+		linksBreadCrumbs,
 		handleChangeInpuDate,
 		handleUpdateAppointmentDate,
 		handleCancelUpdate,
-	} = useUpdateAppointment(id_appointment)
+	} = useUpdateAppointment(id)
 	const {
 		patient_name,
 		patient_name_short,
@@ -35,23 +33,8 @@ const UpdateAppointment = () => {
 	const { appointment_date } = appointment
 
 	return (
-		<AppLayout ClassName="UpdateAppointment">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Citas',
-						link_to: '/appointments',
-					},
-					{
-						link_name: patient_name ? `Cita de ${patient_name_short}` : '',
-						link_to: `/appointments/${id_appointment}`,
-					},
-					{
-						link_name: 'Modificar fecha de cita',
-						link_to: '/appointments',
-					},
-				]}
-			/>
+		<main className="container UpdateAppointment" id="layout">
+			<BreadCrumbsComponent links={linksBreadCrumbs} />
 			<header className="update__appointment__header">
 				<h1 className="update__appointment__header__title">Modificar fecha de la cita</h1>
 			</header>
@@ -114,7 +97,7 @@ const UpdateAppointment = () => {
 								appointment_date__schedule={appointment_date}
 								handleDateAppointment={handleChangeInpuDate}
 								listAppointmentsToday={appointmentsToday}
-								id_appointment={id_appointment}
+								id_appointment={id}
 								loadingSchedule={loadingSchedule}
 							/>
 						</Suspense>
@@ -138,7 +121,7 @@ const UpdateAppointment = () => {
 					</div>
 				</div>
 			)}
-		</AppLayout>
+		</main>
 	)
 }
 

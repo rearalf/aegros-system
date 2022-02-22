@@ -1,11 +1,8 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { AppLayout } from '@components/AppLayout'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
-import { AvatarComponent } from '@components/AvatarComponent'
-import { Loading } from '@components/Loading'
-import useAppointment from '../hooks/useAppointment'
 import { format } from 'date-fns'
+import useAppointment from '@hooks/useAppointment'
+import { Loading, AvatarComponent, BreadCrumbsComponent } from '@components'
 import { Button, IconButton, TextField, Tooltip } from '@mui/material'
 import {
 	FiExternalLink,
@@ -17,7 +14,7 @@ import {
 } from 'react-icons/fi'
 import '@styles/page/Appointment.scss'
 
-export const Appointment = () => {
+const Appointment = () => {
 	const { appointment__id } = useParams()
 	const {
 		loading,
@@ -53,7 +50,7 @@ export const Appointment = () => {
 		appointments,
 	} = patient
 	return (
-		<AppLayout ClassName="Appointment">
+		<main className="container Appointment" id="layout">
 			<BreadCrumbsComponent links={breadCrumbs} />
 			{loading ? (
 				<Loading />
@@ -63,7 +60,7 @@ export const Appointment = () => {
 						<h1>Cita</h1>
 						{appointment_state === 'Activa' && (
 							<div className="appointment__header__button_group">
-								<Link to={`/appointments/update-appointment/${_id}`}>
+								<Link to={`/private/appointments/update-appointment/${_id}`}>
 									<Button
 										variant="contained"
 										className="btn_basic"
@@ -115,7 +112,7 @@ export const Appointment = () => {
 								</article>
 								<div className="appointment__information__patient__header__profile">
 									<Tooltip title="Ver perfil del paciente">
-										<Link to={`/patients/patient/${patient._id}`}>
+										<Link to={`/private/patients/${patient._id}`}>
 											<FiActivity />
 										</Link>
 									</Tooltip>
@@ -281,6 +278,8 @@ export const Appointment = () => {
 					</section>
 				</React.Fragment>
 			)}
-		</AppLayout>
+		</main>
 	)
 }
+
+export default Appointment

@@ -1,19 +1,17 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import useUpdatePatient from '@hooks/useUpdatePatient'
-import { useCreatePatient } from '@hooks/useCreatePatient'
-import { AppLayout } from '@components/AppLayout'
+import useCreatePatient from '@hooks/useCreatePatient'
 import { FiAlertCircle, FiSave, FiXCircle } from 'react-icons/fi'
 import { Button, InputAdornment, MenuItem, TextField } from '@mui/material'
-import { BreadCrumbsComponent } from '../components/BreadCrumbsComponent'
+import { BreadCrumbsComponent, Loading } from '@components'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DatePicker from '@mui/lab/DatePicker'
 import MuiPhoneNumber from 'material-ui-phone-number'
-import { Loading } from '@components/Loading'
 import '@styles/page/CreatePatient.scss'
 
-export const CreatePatient = () => {
+const CreatePatient = () => {
 	const { id_patient } = useParams()
 	let patient = {}
 	if (id_patient) {
@@ -60,29 +58,29 @@ export const CreatePatient = () => {
 		? [
 				{
 					link_name: 'Pacientes',
-					link_to: '/patients',
+					link_to: '/private/patients',
 				},
 				{
 					link_name: patient_name_static,
-					link_to: `/patients/patient/${id_patient}`,
+					link_to: `/private/patients/${id_patient}`,
 				},
 				{
 					link_name: `Actualizar datos de ${patient_name_static}`,
-					link_to: '/patients/create-patient',
+					link_to: `/private/patients/update-patient/${id_patient}`,
 				},
 			]
 		: [
 				{
 					link_name: 'Pacientes',
-					link_to: '/patients',
+					link_to: '/private/patients',
 				},
 				{
 					link_name: 'Crear paciente',
-					link_to: '/patients/create-patient',
+					link_to: '/private/patients/create-patient',
 				},
 			]
 	return (
-		<AppLayout ClassName="create__patient">
+		<main className="container create__patient" id="layout">
 			{!loading && <BreadCrumbsComponent links={linksToBreadCrumbsComponent} />}
 			{!loading && (
 				<header className="create__patient__header">
@@ -288,6 +286,8 @@ export const CreatePatient = () => {
 					</div>
 				</form>
 			)}
-		</AppLayout>
+		</main>
 	)
 }
+
+export default CreatePatient

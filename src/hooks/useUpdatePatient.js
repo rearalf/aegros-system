@@ -5,7 +5,7 @@ import notificationContext from '@context/notificationContext'
 import { format, subYears } from 'date-fns'
 import { capitlizeString, nameSplit, validateEmails } from '@utils/utils'
 
-const useUpdatePatient = ({ id }) => {
+function useUpdatePatient({ id }){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
@@ -228,7 +228,7 @@ const useUpdatePatient = ({ id }) => {
 				}
 			}
 			const patient = JSON.parse(result.patient)
-			navigate(`/patients/patient/${id}`)
+			navigate(`/private/patients/${id}`)
 			/* Notification */
 			setNotification({
 				isOpenNotification: true,

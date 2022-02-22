@@ -1,8 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { useParams } from 'react-router'
-import { AppLayout } from '@components/AppLayout'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
-import { useCreateAppointment } from '@hooks/useCreateAppointment'
+import BreadCrumbsComponent from '@components/BreadCrumbsComponent'
+import useCreateAppointment from '@hooks/useCreateAppointment'
 import { Button, IconButton, TextField, Dialog, Tooltip } from '@mui/material'
 import { FiLogIn, FiSave, FiXCircle, FiX, FiCheckCircle, FiActivity } from 'react-icons/fi'
 import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/lab'
@@ -10,7 +9,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 const ScheduleOneDay = lazy(() => import('@components/ScheduleOneDay'))
 import '@styles/page/CreateAppointment.scss'
 
-export const CreateAppointment = () => {
+const CreateAppointment = () => {
 	const { patient_id } = useParams()
 	const {
 		patient,
@@ -18,6 +17,7 @@ export const CreateAppointment = () => {
 		appointment,
 		dialog,
 		appointmentsToday,
+		linksBreadCrumbs,
 		handleChangeInput,
 		handleChangeInpuDate,
 		handleFindPatient,
@@ -32,16 +32,7 @@ export const CreateAppointment = () => {
 	})
 	const { patient_name, patient_state_form, _id } = patient
 	const { appointment_date, appointment_reason } = appointment
-	const linksBreadCrumbs = [
-		{
-			link_name: 'Citas',
-			link_to: '/appointments',
-		},
-		{
-			link_name: 'Crear cita',
-			link_to: '/appointments/creat-appointment/',
-		},
-	]
+
 	const DialogCreateAppointment = () => (
 		<Dialog open={dialog} className="create__appointment__dialog">
 			<div className="create__appointment__dialog__header">
@@ -108,7 +99,7 @@ export const CreateAppointment = () => {
 		</Dialog>
 	)
 	return (
-		<AppLayout ClassName="CreateAppointment">
+		<main className="container CreateAppointment" id="layout">
 			<BreadCrumbsComponent links={linksBreadCrumbs} />
 			<header className="create__appointment__header">
 				<h1 className="create__appointment__header__title">Crear Cita</h1>
@@ -226,6 +217,8 @@ export const CreateAppointment = () => {
 				)}
 			</section>
 			{DialogCreateAppointment()}
-		</AppLayout>
+		</main>
 	)
 }
+
+export default CreateAppointment

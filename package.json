@@ -1,7 +1,7 @@
 {
-	"name": "aegros-system",
-	"version": "0.3.0",
-	"description": "Aegros system helps you manage your clients' appointments",
+	"name": "aegros",
+	"version": "0.5.0",
+	"description": "Aegros is an application that helps you manage your patients' appointments",
 	"private": false,
 	"main": "./app/index.js",
 	"scripts": {
@@ -33,9 +33,7 @@
 		"npm": ">=5.0.0",
 		"yarn": ">=1.0.0"
 	},
-	"browserslist": [
-		"last 4 versions"
-	],
+	"browserslist": [ "last 4 versions" ],
 	"author": {
 		"name": "Ricardo Alf",
 		"url": "https://github.com/rearalf"

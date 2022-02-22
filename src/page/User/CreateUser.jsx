@@ -1,8 +1,7 @@
 import React from 'react'
 import MuiPhoneNumber from 'material-ui-phone-number'
-import useCreateUser from '../hooks/useCreateUser'
-import { BreadCrumbsComponent } from '@components/BreadCrumbsComponent'
-import { AppLayout } from '@components/AppLayout'
+import useCreateUser from '@hooks/useCreateUser'
+import BreadCrumbsComponent from '@components/BreadCrumbsComponent'
 import { Button, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material'
 import { FiCheckCircle, FiEye, FiEyeOff, FiSave, FiXCircle } from 'react-icons/fi'
 import '@styles/page/CreateUser.scss'
@@ -33,16 +32,16 @@ const CreateUser = () => {
 		user_role_error,
 	} = userFormError
 	return (
-		<AppLayout ClassName="create__user">
+		<main className="container create__user" id="layout">
 			<BreadCrumbsComponent
 				links={[
 					{
 						link_name: 'Usuarios',
-						link_to: '/users',
+						link_to: '/private/users',
 					},
 					{
 						link_name: 'Crear usuario',
-						link_to: '/users/create-user',
+						link_to: '/private/users/create-user',
 					},
 				]}
 			/>
@@ -206,7 +205,7 @@ const CreateUser = () => {
 					</Button>
 				</div>
 			</form>
-		</AppLayout>
+		</main>
 	)
 }
 

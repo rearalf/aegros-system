@@ -73,10 +73,21 @@
 		.MuiTableBody-root
 		tr
 		td:first-child {
-		text-transform: capitalize;
 		&:hover a div {
 			color: $color_text_link_hover;
 		}
+	}
+	.table__basic.table__patients.MuiTableContainer-root
+		.MuiTable-root
+		.MuiTableBody-root
+		tr
+		td:nth-child(5),
+	.table__basic.table__patients.MuiTableContainer-root
+		.MuiTable-root
+		.MuiTableBody-root
+		tr
+		td:nth-child(4) {
+		text-transform: inherit;
 	}
 	.table__basic.table__patients {
 		.table__patients__row__disabled a div {

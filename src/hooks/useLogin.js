@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import notificationContext from '@context/notificationContext'
 
-const useLogin = () => {
+function useLogin(){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const formData = useRef(null)
@@ -40,7 +40,7 @@ const useLogin = () => {
 					message: 'Contraseña incorrecto.',
 				}
 			}
-			navigate('/dashboard')
+			navigate('private/')
 			window.location.hash
 			const result_user = JSON.parse(result.user)
 			const data_user = JSON.stringify({
@@ -106,10 +106,7 @@ const useLogin = () => {
 			validateEmptyDatabase()
 			setLoading(false)
 		}, 1000)
-		ipcRenderer.setMaxListeners(250)
-		return () => {
-			if (sessionStorage.getItem('user') !== null) navigate('/dashboard')
-		}
+		if (sessionStorage.getItem('user') !== null) navigate('private')
 	}, [])
 
 	return {

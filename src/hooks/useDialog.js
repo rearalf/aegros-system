@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import dialogContext from '@context/dialogContext'
 
-export const useDialog = () => {
+function useDialog(){
 	const { dialog, setDialog } = useContext(dialogContext)
 	const {
 		isOpenDialog,
@@ -41,3 +41,5 @@ export const useDialog = () => {
 		textButtonDialogDisagree,
 	}
 }
+
+export default useDialog

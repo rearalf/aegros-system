@@ -1,7 +1,7 @@
 import React from 'react'
 import '@styles/components/Loading.scss'
 
-export const Loading = () => {
+const Loading = () => {
 	return (
 		<div className="Loading">
 			<div className="circle" />
@@ -14,3 +14,5 @@ export const Loading = () => {
 		</div>
 	)
 }
+
+export default Loading

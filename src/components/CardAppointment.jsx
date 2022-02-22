@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { IconButton, Tooltip } from '@mui/material'
 import { FiExternalLink } from 'react-icons/fi'
-import { AvatarComponent } from '@components/AvatarComponent'
+import { AvatarComponent } from '@components'
 import '@styles/components/CardAppointment.scss'
 
 const CardAppointment = ({
@@ -44,7 +44,7 @@ const CardAppointment = ({
 			</div>
 			<Tooltip title="Ver cita">
 				<Link
-					to={`/appointments/${_id}`}
+					to={`/private/appointments/${_id}`}
 					className="dashboard__appointments__schedule__appointment__link">
 					<IconButton className="btn__icon">
 						<FiExternalLink size={18} />

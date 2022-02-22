@@ -5,7 +5,7 @@ import { ipcRenderer } from 'electron'
 import { roundDate } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 
-export const useCreateAppointment = ({ patient_id }) => {
+function useCreateAppointment({ patient_id }){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const [ appointment, setAppointment ] = useState({
@@ -197,7 +197,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 				const { appointment, patient } = args
 				const appointment_result = JSON.parse(appointment)
 				const patient_result = JSON.parse(patient)
-				navigate(`/appointments/${appointment_result._id}`)
+				navigate(`/private/appointments/${appointment_result._id}`)
 				console.log({
 					appointment_result,
 					patient_result,
@@ -250,6 +250,17 @@ export const useCreateAppointment = ({ patient_id }) => {
 		}
 	}
 
+	const linksBreadCrumbs = [
+		{
+			link_name: 'Citas',
+			link_to: '/private/appointments',
+		},
+		{
+			link_name: 'Crear cita',
+			link_to: '/private/appointments/creat-appointment/',
+		},
+	]
+
 	useEffect(
 		() => {
 			patient_id !== undefined && getPatient({ id: patient_id })
@@ -270,6 +281,7 @@ export const useCreateAppointment = ({ patient_id }) => {
 		appointment,
 		dialog,
 		appointmentsToday,
+		linksBreadCrumbs,
 		handleChangeInput,
 		handleFindPatient,
 		handleFoundPatient,
@@ -281,3 +293,5 @@ export const useCreateAppointment = ({ patient_id }) => {
 		handleOpenDialogCreateAppointment,
 	}
 }
+
+export default useCreateAppointment
