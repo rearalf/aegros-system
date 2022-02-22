@@ -9,6 +9,7 @@ function useNewUser(){
 	const { setNotification } = useContext(notificationContext)
 	const [ showPassword1, setShowPassword1 ] = useState(false)
 	const [ showPassword2, setShowPassword2 ] = useState(false)
+	const [ loading, setLoading ] = useState(true)
 	const [ userForm, setUserForm ] = useState({
 		user_name: 'Master Chief',
 		user_email: '',
@@ -213,6 +214,7 @@ function useNewUser(){
 	useEffect(() => {
 		setTimeout(() => {
 			validateEmptyDatabase()
+			setLoading(false)
 		}, 1000)
 		ipcRenderer.setMaxListeners(50)
 		return () => {
@@ -226,6 +228,7 @@ function useNewUser(){
 		showPassword2,
 		userFormError,
 		userPasswordValid,
+		loading,
 		handleChangePassword,
 		handleClickShowPassword1,
 		handleClickShowPassword2,

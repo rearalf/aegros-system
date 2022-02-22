@@ -13,6 +13,7 @@ const NewUser = () => {
 		showPassword2,
 		userFormError,
 		userPasswordValid,
+		loading,
 		handleChangePassword,
 		handleClickShowPassword1,
 		handleClickShowPassword2,
@@ -25,10 +26,18 @@ const NewUser = () => {
 	return (
 		<main className="container new__user" id="layout">
 			<div className="new__user__left__side">
-				<img src={bigBrandWhite} alt="Brand" className="big__brand__white" />
-				<img src={imageNewUser} alt="Image doctors" className="image_new_user" />
+				<img
+					src={bigBrandWhite}
+					alt="Brand"
+					className={`big__brand__white ${loading ? 'load__image' : null}`}
+				/>
+				<img
+					src={imageNewUser}
+					alt="Image doctors"
+					className={`image_new_user ${loading ? 'load__image' : null}`}
+				/>
 			</div>
-			<div className="new__user__right__side">
+			<div className={`new__user__right__side ${loading ? 'load__form' : ''}`}>
 				<h1>Nuevo usuario</h1>
 				<form className="right__side__form" onSubmit={handleOnSubmit}>
 					<div className="right__side__form__inputs">
