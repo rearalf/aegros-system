@@ -10,7 +10,7 @@ function useUsers(){
 		currentPage: 1,
 		limit: 10,
 		totalUser: 0,
-		totalPage: 0,
+		totalPages: 1,
 		sortBy: 'user_name',
 		asc: true,
 		loadingSort: true,
@@ -23,11 +23,11 @@ function useUsers(){
 				console.log(result)
 				throw 'Ocurrio un error'
 			}
-			const { users, totalPage, totalUser, currentPage } = result
+			const { users, totalPages, totalUser, currentPage } = result
 			setUsers(JSON.parse(users))
 			setPagesAndLimit({
 				...pagesAndLimit,
-				totalPage,
+				totalPages,
 				currentPage,
 				totalUser,
 				loadingSort: false,
@@ -44,19 +44,28 @@ function useUsers(){
 		}
 	}
 
+	const handleChangePage = (e, pageNumber) => {
+		setLoading(true)
+		setPagesAndLimit({
+			...pagesAndLimit,
+			currentPage: pageNumber,
+			loadingSort: true,
+		})
+	}
+
 	const validLoading = loading && pagesAndLimit.loadingSort
 	const validUsers = users.length === 0
 	const validShowContent = validLoading ? 'hide' : ''
 	const validShowTable = !validLoading && users.length === 0 ? 'hide__it' : ''
+	const validaPagination = !validLoading
+		? !validUsers && pagesAndLimit.totalPages > 1 ? '' : 'hide__it'
+		: ''
 
 	useEffect(
 		() => {
 			setTimeout(() => {
 				getUsers()
-			}, 1000)
-			return () => {
-				console.log('first')
-			}
+			}, 500)
 		},
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
 	)
@@ -68,6 +77,8 @@ function useUsers(){
 		validLoading,
 		validShowContent,
 		validShowTable,
+		validaPagination,
+		handleChangePage,
 	}
 }
 

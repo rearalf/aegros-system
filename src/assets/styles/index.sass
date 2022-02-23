@@ -226,6 +226,9 @@ textarea::-webkit-scrollbar-track
     display: flex
     justify-content: center
     margin: 25px 0
+    transition: opacity .5s ease-in-out
+    &.hide__it
+        display: none
     .MuiPagination-ul .MuiButtonBase-root
         border-color: $background_color_button_basic
         transition: box-shadow .5s ease-in-out

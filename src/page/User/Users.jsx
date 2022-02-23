@@ -7,16 +7,19 @@ import { Loading } from '@components'
 import UsersTable from './components/UsersTable'
 import useUsers from '@hooks/useUsers'
 import EmptyData from '@components/EmptyData'
+import UsersPagination from './components/UsersPagination'
 import '@styles/page/Users.scss'
 
 const Users = () => {
 	const {
 		users,
+		pagesAndLimit,
 		validUsers,
 		validLoading,
 		validShowContent,
 		validShowTable,
-		pagesAndLimit,
+		validaPagination,
+		handleChangePage,
 	} = useUsers()
 	return (
 		<main className="container users" id="layout">
@@ -42,6 +45,12 @@ const Users = () => {
 			<div className={`users__total ${validShowContent}`}>
 				<p>Total de usuarios: {pagesAndLimit.totalUser}</p>
 			</div>
+			<UsersPagination
+				{...pagesAndLimit}
+				validaPagination={validaPagination}
+				loading={validShowContent}
+				handleChangePage={handleChangePage}
+			/>
 		</main>
 	)
 }
