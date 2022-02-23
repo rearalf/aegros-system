@@ -89,7 +89,7 @@ const PatientsTable = ({ patients = [] }) => {
 									</Tooltip>
 									<Tooltip title="Ver más">
 										<Link to={`${_id}`}>
-											<IconButton className="btn__icon bnt__edit">
+											<IconButton className="btn__icon">
 												<FiActivity size={18} />
 											</IconButton>
 										</Link>

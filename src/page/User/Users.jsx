@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom'
 import { BreadCrumbsComponent } from '@components'
 import { Button } from '@mui/material'
 import { FiUserPlus } from 'react-icons/fi'
+import { Loading } from '@components'
+import UsersTable from './components/UsersTable'
+import useUsers from '@hooks/useUsers'
 import '@styles/page/Users.scss'
 
 const Users = () => {
+	const { users, validLoading, pagesAndLimit } = useUsers()
 	return (
-		<main className="container Users" id="layout">
+		<main className="container users" id="layout">
 			<BreadCrumbsComponent
 				links={[
 					{
@@ -24,6 +28,11 @@ const Users = () => {
 					</Button>
 				</Link>
 			</header>
+			{validLoading ? <Loading /> : null}
+			<UsersTable users={users}  loading={validLoading} />
+			<div className={`users__total ${validLoading ? 'hide' : ''}`}>
+				<p>Total de usuarios: {pagesAndLimit.totalUser}</p>
+			</div>
 		</main>
 	)
 }

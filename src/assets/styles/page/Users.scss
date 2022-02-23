@@ -1,8 +1,31 @@
-.Users {
+@import '../variables.sass';
+
+.users {
 	.users__header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: 25px;
+	}
+	.table__basic.table__users {
+		margin-bottom: 25px;
+		transition: opacity .5s ease-in-out;
+		.MuiTable-root .MuiTableBody-root tr td:nth-child(2) {
+			text-transform: inherit;
+		}
+		.table__users__row__disabled a div {
+			color: $border_color_button_error;
+			display: flex;
+			gap: 5px;
+			align-items: center;
+		}
+		.link:hover {
+			color: $color_text_link_hover;
+		}
+	}
+	.users__total {
+		display: flex;
+		justify-content: flex-end;
+		transition: opacity .5s ease-in-out;
 	}
 }

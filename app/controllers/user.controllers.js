@@ -1,11 +1,49 @@
 const userModels = require('../models/user.models')
 
-const getUsers = async (event, agrs) => {
+const getUsers = async (event, args) => {
 	try {
-		const users = await userModels.find()
+		const { limit, currentPage, user_name, sortBy, asc } = args
+		if (user_name) {
+			const users = await userModels
+				.find({
+					user_name: {
+						$regex: '.*' + user_name + '*.',
+					},
+				})
+				.lean()
+				.limit(limit)
+				.skip((currentPage - 1) * limit)
+				.sort({
+					[sortBy]: asc ? 1 : -1,
+				})
+			const totalUser = await userModels.countDocuments().catch(error => {
+				throw error
+			})
+			event.returnValue = {
+				success: true,
+				users: JSON.stringify(users),
+				totalUser,
+				totalPages: Math.ceil(totalUser / limit),
+				currentPage,
+			}
+		}
+		const users = await userModels
+			.find()
+			.lean()
+			.limit(limit)
+			.skip((currentPage - 1) * limit)
+			.sort({
+				[sortBy]: asc ? 1 : -1,
+			})
+		const totalUser = await userModels.countDocuments().catch(error => {
+			throw error
+		})
 		event.returnValue = {
 			success: true,
 			users: JSON.stringify(users),
+			totalUser,
+			totalPages: Math.ceil(totalUser / limit),
+			currentPage,
 		}
 	} catch (error) {
 		console.log(error)
