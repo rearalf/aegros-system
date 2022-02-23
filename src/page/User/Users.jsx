@@ -6,10 +6,18 @@ import { FiUserPlus } from 'react-icons/fi'
 import { Loading } from '@components'
 import UsersTable from './components/UsersTable'
 import useUsers from '@hooks/useUsers'
+import EmptyData from '@components/EmptyData'
 import '@styles/page/Users.scss'
 
 const Users = () => {
-	const { users, validLoading, pagesAndLimit } = useUsers()
+	const {
+		users,
+		validUsers,
+		validLoading,
+		validShowContent,
+		validShowTable,
+		pagesAndLimit,
+	} = useUsers()
 	return (
 		<main className="container users" id="layout">
 			<BreadCrumbsComponent
@@ -29,8 +37,9 @@ const Users = () => {
 				</Link>
 			</header>
 			{validLoading ? <Loading /> : null}
-			<UsersTable users={users}  loading={validLoading} />
-			<div className={`users__total ${validLoading ? 'hide' : ''}`}>
+			<UsersTable users={users} loading={validShowContent} validShowTable={validShowTable} />
+			{validUsers && <EmptyData loading={validLoading} title="No hay usuarios en la base." />}
+			<div className={`users__total ${validShowContent}`}>
 				<p>Total de usuarios: {pagesAndLimit.totalUser}</p>
 			</div>
 		</main>

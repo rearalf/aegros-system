@@ -24,7 +24,6 @@ function useUsers(){
 				throw 'Ocurrio un error'
 			}
 			const { users, totalPage, totalUser, currentPage } = result
-			console.log(JSON.parse(users))
 			setUsers(JSON.parse(users))
 			setPagesAndLimit({
 				...pagesAndLimit,
@@ -46,6 +45,9 @@ function useUsers(){
 	}
 
 	const validLoading = loading && pagesAndLimit.loadingSort
+	const validUsers = users.length === 0
+	const validShowContent = validLoading ? 'hide' : ''
+	const validShowTable = !validLoading && users.length === 0 ? 'hide__it' : ''
 
 	useEffect(
 		() => {
@@ -60,10 +62,12 @@ function useUsers(){
 	)
 
 	return {
-		loading,
-		validLoading,
 		users,
 		pagesAndLimit,
+		validUsers,
+		validLoading,
+		validShowContent,
+		validShowTable,
 	}
 }
 
