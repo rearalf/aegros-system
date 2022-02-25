@@ -10,6 +10,61 @@
 	.empty__data {
 		margin-bottom: 50px;
 	}
+	.users__params {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 25px;
+		padding: 25px;
+		border-radius: 5px;
+		margin-bottom: 25px;
+		transition: opacity .5s ease-in-out;
+		box-shadow: $shadow_background_3;
+		background-color: $background_2;
+		.users__params__search {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			.users__params__search__form {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				transition: all .2s ease-in-out;
+				width: 0;
+				opacity: 0;
+				visibility: hidden;
+				.users__params__search__form__input {
+					width: 300px;
+					.MuiOutlinedInput-input {
+						padding-left: 10px;
+						padding-right: 10px;
+					}
+					.MuiIconButton-root.btn__icon {
+						transition: opacity .5s ease-in-out;
+					}
+				}
+				.btn__icon__basic {
+					transition: opacity .5s ease-in-out;
+				}
+				&.users__params__search__form__show {
+					width: 475px;
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+		.users__params__sort {
+			display: grid;
+			grid-template-columns: 1fr 1fr auto;
+			gap: 15px;
+			.users__params__sort__number,
+			.users__params__sort__role {
+				position: relative;
+				width: 200px;
+			}
+		}
+	}
 	.table__basic.table__users {
 		margin-bottom: 50px;
 		transition: opacity .5s ease-in-out;
@@ -30,5 +85,21 @@
 		display: flex;
 		justify-content: flex-end;
 		transition: opacity .5s ease-in-out;
+	}
+	@media screen and (min-width: 1250px) {
+		.users__params {
+			flex-direction: row;
+			justify-content: space-between;
+			.users__params__sort {
+				.users__params__sort__number,
+				.users__params__sort__role {
+					.MuiFormHelperText-root {
+						position: absolute;
+						bottom: -20px;
+						margin: 0;
+					}
+				}
+			}
+		}
 	}
 }

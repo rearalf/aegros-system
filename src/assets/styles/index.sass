@@ -76,6 +76,7 @@ button:focus-visible, a:focus-visible
     color: $color_text_button_basic
     padding: 10px
     border-radius: 5px
+    transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
     &:hover
         box-shadow: $box_shadow_button_basic
         background: $background_color_button_basic_hover
@@ -125,8 +126,9 @@ button:focus-visible, a:focus-visible
 
 .hide
     opacity: 0
+    visibility: hidden
 .hide__it
-    display: none
+    display: none!important
 
 /** Inputs **/
 .MuiFormControl-root .MuiInputLabel-root

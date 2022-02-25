@@ -15,6 +15,11 @@ function useUsers(){
 		asc: true,
 		loadingSort: true,
 	})
+	const [ userSearch, setUserSearch ] = useState({
+		user_name: '',
+		users_search: [],
+		show_users_form: false,
+	})
 
 	const getUsers = async () => {
 		try {
@@ -44,12 +49,136 @@ function useUsers(){
 		}
 	}
 
+	const handleSearchUser = async e => {
+		try {
+			e.preventDefault()
+			handleLoading()
+			if (!userSearch.user_name)
+				throw {
+					message: 'No deje el campo vacío.',
+					type: 'information',
+					title: 'Información',
+				}
+			if (userSearch.user_name.length < 5)
+				throw {
+					message: 'Debe de agregar más información.',
+					type: 'information',
+					title: 'Información',
+				}
+			const result = await ipcRenderer.sendSync('get-users-main', {
+				limit: pagesAndLimit.limit,
+				currentPage: pagesAndLimit.currentPage,
+				user_name: userSearch.user_name,
+			})
+			if (!result.success) {
+				console.log(result)
+				throw {
+					message: 'Ocurrio un error al buscar.',
+				}
+			}
+			setLoading(false)
+			setPagesAndLimit({
+				...pagesAndLimit,
+				loadingSort: !pagesAndLimit.loadingSort,
+			})
+			console.log(result)
+			setUsers(JSON.parse(result.users))
+			setUserSearch({
+				...userSearch,
+				users_search: JSON.parse(result.users),
+			})
+			setLoading(false)
+			setPagesAndLimit({
+				...pagesAndLimit,
+				loadingSort: !pagesAndLimit.loadingSort,
+			})
+		} catch (error) {
+			setLoading(false)
+			setPagesAndLimit({
+				...pagesAndLimit,
+				loadingSort: !pagesAndLimit.loadingSort,
+			})
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: error.title ? error.title : 'Error',
+				subTitleNotification: error.message,
+				typeNotification: error.type ? error.type : 'error',
+			})
+		}
+	}
+
+	const handleChangeStateForm = () =>
+		setUserSearch({
+			...userSearch,
+			show_users_form: !userSearch.show_users_form,
+		})
+
+	const handeChangeInput = e =>
+		setUserSearch({
+			...userSearch,
+			user_name: e.target.value,
+		})
+
+	const handleResetSearch = () => {
+		handleLoading()
+		handleResetUserSearch()
+		setTimeout(() => {
+			getUsers()
+		}, 500)
+	}
+
+	const handleLoading = () => {
+		setLoading(!loading)
+		setPagesAndLimit({
+			...pagesAndLimit,
+			loadingSort: !pagesAndLimit.loadingSort,
+		})
+	}
+
+	const handleResetUserSearch = () => {
+		setUserSearch({
+			user_name: '',
+			users_search: [],
+			show_users_form: false,
+		})
+	}
+
 	const handleChangePage = (e, pageNumber) => {
-		setLoading(true)
+		handleLoading()
 		setPagesAndLimit({
 			...pagesAndLimit,
 			currentPage: pageNumber,
 			loadingSort: true,
+		})
+	}
+
+	const handleChangeLimit = e => {
+		handleLoading()
+		handleResetUserSearch()
+		setPagesAndLimit({
+			...pagesAndLimit,
+			limit: e.target.value,
+			currentPage: 1,
+		})
+	}
+
+	const handleChangeSortBy = e => {
+		handleLoading()
+		handleResetUserSearch()
+		setPagesAndLimit({
+			...pagesAndLimit,
+			sortBy: e.target.value,
+			currentPage: 1,
+		})
+	}
+
+	const handleChangeAsc = e => {
+		handleLoading()
+		handleResetUserSearch()
+		setPagesAndLimit({
+			...pagesAndLimit,
+			asc: e.target.checked,
+			currentPage: 1,
 		})
 	}
 
@@ -60,6 +189,7 @@ function useUsers(){
 	const validaPagination = !validLoading
 		? !validUsers && pagesAndLimit.totalPages > 1 ? '' : 'hide__it'
 		: ''
+	const classFormShow = userSearch.show_users_form ? 'users__params__search__form__show' : ''
 
 	useEffect(
 		() => {
@@ -73,12 +203,21 @@ function useUsers(){
 	return {
 		users,
 		pagesAndLimit,
+		userSearch,
 		validUsers,
 		validLoading,
 		validShowContent,
 		validShowTable,
 		validaPagination,
+		classFormShow,
 		handleChangePage,
+		handleChangeStateForm,
+		handeChangeInput,
+		handleSearchUser,
+		handleResetSearch,
+		handleChangeLimit,
+		handleChangeSortBy,
+		handleChangeAsc,
 	}
 }
 

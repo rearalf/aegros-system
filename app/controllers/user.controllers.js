@@ -30,7 +30,7 @@ const getUsers = async (event, args) => {
 		const users = await userModels
 			.find()
 			.lean()
-			.limit(limit)
+			.limit(limit * 1)
 			.skip((currentPage - 1) * limit)
 			.sort({
 				[sortBy]: asc ? 1 : -1,
