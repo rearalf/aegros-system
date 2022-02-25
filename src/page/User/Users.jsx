@@ -21,6 +21,7 @@ const Users = () => {
 		validShowTable,
 		validaPagination,
 		classFormShow,
+		validUserPerfil,
 		handleChangePage,
 		handeChangeInput,
 		handleChangeStateForm,
@@ -63,7 +64,7 @@ const Users = () => {
 				loading={validShowContent}
 				validShow={validShowTable}
 			/>
-			<UsersTable users={users} loading={validShowContent} validShowTable={validShowTable} />
+			<UsersTable users={users} loading={validShowContent} validShowTable={validShowTable} id_user={validUserPerfil} />
 			{validUsers && <EmptyData loading={validLoading} title="No hay usuarios en la base." />}
 			<div className={`users__total ${validShowContent}`}>
 				<p>Total de usuarios: {pagesAndLimit.totalUser}</p>

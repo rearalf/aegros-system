@@ -123,3 +123,7 @@ export function getAge(patient_date_birth){
 	const today = new Date()
 	return parseInt((today - date_birth) / (1000 * 60 * 60 * 24 * 365))
 }
+
+export function getRole(role){
+	return role === 'master-chief' ? 'Master Chief' : role === 'secretary' ? 'Secretaria' : 'Doctor'
+}

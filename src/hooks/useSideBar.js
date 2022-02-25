@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getRole } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 
 function useSideBar(){
@@ -29,11 +30,23 @@ function useSideBar(){
 	const stateLinkUsers = path[2] === 'users' ? 'nav__link__active' : null
 	const stateLinkSystem = path[2] === 'system' ? 'nav__link__active' : null
 
-	const getRole = role => {
-		return role === 'master-chief'
-			? 'Master Chief'
-			: role === 'secretary' ? 'Secretaria' : 'Doctor'
-	}
+	useEffect(
+		() => {
+			return () => {
+				window.scroll(0, 0)
+				if (sessionStorage.getItem('user') === null) {
+					navigate('/')
+					setNotification({
+						isOpenNotification: true,
+						titleNotification: 'Sesión cerrada',
+						subTitleNotification: 'La sesión se cerró inesperadamente.',
+						typeNotification: 'warning',
+					})
+				}
+			}
+		},
+		[ pathname ],
+	)
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -46,10 +59,6 @@ function useSideBar(){
 					: '',
 			})
 		}, 500)
-		console.log(path)
-		return () => {
-			if (sessionStorage.getItem('user') === null) navigate('/')
-		}
 	}, [])
 
 	return {

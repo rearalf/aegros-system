@@ -81,7 +81,6 @@ function useUsers(){
 				...pagesAndLimit,
 				loadingSort: !pagesAndLimit.loadingSort,
 			})
-			console.log(result)
 			setUsers(JSON.parse(result.users))
 			setUserSearch({
 				...userSearch,
@@ -190,6 +189,7 @@ function useUsers(){
 		? !validUsers && pagesAndLimit.totalPages > 1 ? '' : 'hide__it'
 		: ''
 	const classFormShow = userSearch.show_users_form ? 'users__params__search__form__show' : ''
+	const validUserPerfil = JSON.parse(sessionStorage.getItem('user'))._id
 
 	useEffect(
 		() => {
@@ -210,6 +210,7 @@ function useUsers(){
 		validShowTable,
 		validaPagination,
 		classFormShow,
+		validUserPerfil,
 		handleChangePage,
 		handleChangeStateForm,
 		handeChangeInput,

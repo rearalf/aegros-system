@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FiActivity, FiFrown } from 'react-icons/fi'
+import { getRole } from '@utils/utils'
 import {
 	IconButton,
 	Paper,
@@ -13,7 +14,7 @@ import {
 	Tooltip,
 } from '@mui/material'
 
-const UsersTable = ({ users = [], loading, validShowTable }) => (
+const UsersTable = ({ users = [], loading, validShowTable, id_user }) => (
 	<TableContainer
 		className={`table__basic table__users ${loading} ${validShowTable}`}
 		component={Paper}>
@@ -50,15 +51,19 @@ const UsersTable = ({ users = [], loading, validShowTable }) => (
 								</a>
 							</Tooltip>
 						</TableCell>
-						<TableCell align="center">{user_role}</TableCell>
+						<TableCell align="center">{getRole(user_role)}</TableCell>
 						<TableCell align="center" className="table__users__row__actions">
-							<Tooltip title="Ver más">
-								<Link to={`${_id}`}>
-									<IconButton className="btn__icon">
-										<FiActivity size={18} />
-									</IconButton>
-								</Link>
-							</Tooltip>
+							{id_user === _id ? (
+								''
+							) : (
+								<Tooltip title="Ver más">
+									<Link to={`${_id}`}>
+										<IconButton className="btn__icon">
+											<FiActivity size={18} />
+										</IconButton>
+									</Link>
+								</Tooltip>
+							)}
 						</TableCell>
 					</TableRow>
 				))}
