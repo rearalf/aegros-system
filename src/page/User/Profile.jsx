@@ -7,19 +7,12 @@ import useProfile from '@hooks/useProfile'
 import '@styles/page/Profile.scss'
 
 const Profile = () => {
-	const { userData, loading, validShowContent } = useProfile()
+	const { userData, loading, validShowContent, BreadCrumbs, titleParams } = useProfile()
 	return (
 		<main className="container profile" id="layout">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Perfil',
-						link_to: '/private/profile',
-					},
-				]}
-			/>
+			<BreadCrumbsComponent links={BreadCrumbs} />
 			<header className="profile__header">
-				<h1>Perfil</h1>
+				<h1>{titleParams}</h1>
 			</header>
 			{loading ? <Loading /> : null}
 			<section className={`profile__contents ${validShowContent}`}>

@@ -4,8 +4,10 @@ import notificationContext from '@context/notificationContext'
 import { format } from 'date-fns'
 import esLocale from 'date-fns/locale/es'
 import { getRole } from '@utils/utils'
+import { useParams } from 'react-router-dom'
 
 function useProfile(){
+	const params = useParams()
 	const { setNotification } = useContext(notificationContext)
 	const [ loading, setLoading ] = useState(true)
 	const [ userData, setUserData ] = useState({
@@ -20,7 +22,8 @@ function useProfile(){
 
 	const getUserData = () => {
 		try {
-			const id = JSON.parse(sessionStorage.getItem('user'))._id
+			const id =
+				params.id === undefined ? JSON.parse(sessionStorage.getItem('user'))._id : params.id
 			const result = ipcRenderer.sendSync('get-user-main', { id })
 			if (!result.success) {
 				console.log(result)
@@ -62,6 +65,25 @@ function useProfile(){
 	}
 
 	const validShowContent = loading ? 'hide' : ''
+	const BreadCrumbs =
+		params.id === undefined
+			? [
+					{
+						link_name: 'Tu perfil',
+						link_to: '/private/profile',
+					},
+				]
+			: [
+					{
+						link_name: 'Usuarios',
+						link_to: '/private/users',
+					},
+					{
+						link_name: `Perfil de ${userData.user_name}`,
+						link_to: `/private/users/${params.id}`,
+					},
+				]
+	const titleParams = params.id === undefined ? 'Tu perfil' : `Perfil de ${userData.user_name}`
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -73,6 +95,8 @@ function useProfile(){
 		userData,
 		loading,
 		validShowContent,
+		BreadCrumbs,
+		titleParams,
 	}
 }
 

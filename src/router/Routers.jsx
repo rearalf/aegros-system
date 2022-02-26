@@ -45,6 +45,7 @@ const Routers = () => (
 				<Route path="users" element={<UserTemplate />}>
 					<Route index element={<Users />} />
 					<Route path="create-user" element={<CreateUser />} />
+					<Route path=":id" element={<Profile />} />
 				</Route>
 				<Route path="profile" element={<Profile />} />
 				<Route path="system" element={<System />} />
