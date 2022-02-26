@@ -29,6 +29,7 @@ function useSideBar(){
 	const stateLinkPatient = path[2] === 'patients' ? 'nav__link__active' : null
 	const stateLinkUsers = path[2] === 'users' ? 'nav__link__active' : null
 	const stateLinkSystem = path[2] === 'system' ? 'nav__link__active' : null
+	const stateLinkProfile = path[2] === 'profile' ? 'nav__link__active' : null
 
 	useEffect(
 		() => {
@@ -39,8 +40,8 @@ function useSideBar(){
 					setNotification({
 						isOpenNotification: true,
 						titleNotification: 'Sesión cerrada',
-						subTitleNotification: 'La sesión se cerró inesperadamente.',
-						typeNotification: 'warning',
+						subTitleNotification: 'La sesión fuen cerrada.',
+						typeNotification: 'information',
 					})
 				}
 			}
@@ -68,6 +69,7 @@ function useSideBar(){
 		stateLinkPatient,
 		stateLinkUsers,
 		stateLinkSystem,
+		stateLinkProfile,
 		handleLogOut,
 	}
 }

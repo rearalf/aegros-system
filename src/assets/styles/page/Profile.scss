@@ -1,0 +1,78 @@
+@import '../variables.sass';
+
+.profile {
+	.profile__header {
+		margin-bottom: 25px;
+	}
+	.profile__contents {
+		display: grid;
+		transition: opacity .5s ease-in-out;
+		gap: 25px;
+		:is(.profile__contents__dates, .profile__contents__person) {
+			padding: 25px;
+			border-radius: 5px;
+			box-shadow: $shadow_background_3;
+			background-color: $background_2;
+		}
+		.profile__contents__person {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			gap: 25px;
+			:is(.profile__contents__person__password, .profile__contents__person__edit) {
+				position: absolute;
+				right: 25px;
+				&:hover {
+					color: $color_text_link_hover;
+				}
+			}
+			.profile__contents__person__password {
+				top: 65px;
+			}
+			.profile__contents__person__information {
+				display: flex;
+				gap: 25px;
+				.profile__contents__person__information__avatar {
+					width: 75px;
+					height: 75px;
+					font-size: 35px;
+					font-weight: 700;
+				}
+			}
+			.profile__contents__person__contacts {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				.profile__contents__person__contacts__title {
+					margin-bottom: 5px;
+				}
+				.profile__contents__person__contacts__text {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					&:hover {
+						color: $color_text_link_hover;
+					}
+				}
+			}
+		}
+		.profile__contents__dates {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			.profile__contents__dates__date {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				p {
+					text-transform: capitalize;
+				}
+			}
+		}
+	}
+	@media screen and (min-width: 1024px) {
+		.profile__contents {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+}

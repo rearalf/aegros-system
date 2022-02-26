@@ -15,6 +15,7 @@ import UpdateAppointment from '@page/Appointment/UpdateAppointment'
 import UserTemplate from '@page/User/index'
 import Users from '@page/User/Users'
 import CreateUser from '@page/User/CreateUser'
+import Profile from '@page/User/Profile'
 import System from '@page/System'
 import PublicLayout from '@layout/PublicLayout'
 import PrivateLayout from '@layout/PrivateLayout'
@@ -45,6 +46,7 @@ const Routers = () => (
 					<Route index element={<Users />} />
 					<Route path="create-user" element={<CreateUser />} />
 				</Route>
+				<Route path="profile" element={<Profile />} />
 				<Route path="system" element={<System />} />
 				<Route path="*" element={<Dashboard />} />
 			</Route>

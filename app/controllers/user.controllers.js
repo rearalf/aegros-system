@@ -142,6 +142,39 @@ const createUser = async (event, args) => {
 	}
 }
 
+const getUser = async (event, args) => {
+	try {
+		const { id } = args
+		const user = await userModels.findById(id).lean()
+		event.returnValue = {
+			success: true,
+			user: JSON.stringify(user),
+		}
+	} catch (error) {
+		console.log(error)
+		if (error.errors !== undefined) {
+			const err = getErrorValue(error.errors)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		if (error.code !== undefined) {
+			const err = getErrorCode(error)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		event.returnValue = {
+			success: false,
+			error: error,
+		}
+	}
+}
+
 const getErrorValue = error => {
 	let message = Object.values(error).map(el => el.message)
 	let fields = Object.getOwnPropertyNames(error).map(el => el)
@@ -170,6 +203,7 @@ const getErrorCode = error => {
 
 module.exports = {
 	getUsers,
+	getUser,
 	validateEmptyDatabase,
 	createUser,
 	signInUser,

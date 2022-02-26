@@ -6,7 +6,15 @@ import aegros from '@image/aegros.png'
 import useSideBar from '@hooks/useSideBar'
 import { stringAvatar } from '@utils/utils'
 import { IoPeopleOutline } from 'react-icons/io5'
-import { FiChevronRight, FiCalendar, FiHome, FiLogOut, FiUsers, FiCpu } from 'react-icons/fi'
+import {
+	FiChevronRight,
+	FiCalendar,
+	FiHome,
+	FiLogOut,
+	FiUsers,
+	FiCpu,
+	FiUser,
+} from 'react-icons/fi'
 import '@styles/components/SideBar.scss'
 
 const SideBar = ({ openSideBar, changeValueSidebar }) => {
@@ -17,6 +25,7 @@ const SideBar = ({ openSideBar, changeValueSidebar }) => {
 		stateLinkPatient,
 		stateLinkUsers,
 		stateLinkSystem,
+		stateLinkProfile,
 		handleLogOut,
 	} = useSideBar()
 	return (
@@ -58,9 +67,15 @@ const SideBar = ({ openSideBar, changeValueSidebar }) => {
 					</i>
 					<span className="nav__link__text">Sistema</span>
 				</Link>
+				<Link className={`nav__link ${stateLinkProfile}`} to="/private/profile">
+					<i className="nav__link__icon">
+						<FiUser size={20} />
+					</i>
+					<span className="nav__link__text">Perfil</span>
+				</Link>
 			</div>
 			<div className="side__bar__footer">
-				<Tooltip title="Abrir menu">
+				<Tooltip title={openSideBar ? 'Cerrar menu' : 'Abrir menu'}>
 					<IconButton
 						className="btn__icon side__bar__footer__action__side__bar"
 						onClick={changeValueSidebar}>
