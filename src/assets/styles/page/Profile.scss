@@ -19,7 +19,21 @@
 			display: flex;
 			flex-direction: column;
 			gap: 25px;
-			:is(.profile__contents__person__password, .profile__contents__person__edit) {
+			.profile__contents__person__actions {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				right: 25px;
+				gap: 10px;
+				.profile__contents__person__actions__button {
+					color: $color_icons;
+					padding: 5px;
+					&:hover {
+						color: $color_text_link_hover;
+					}
+				}
+			}
+			/* :is(.profile__contents__person__password, .profile__contents__person__edit, .profile__contents__person__delete) {
 				position: absolute;
 				right: 25px;
 				&:hover {
@@ -29,6 +43,9 @@
 			.profile__contents__person__password {
 				top: 65px;
 			}
+			.profile__contents__person__delete {
+				top: 65px;
+			} */
 			.profile__contents__person__information {
 				display: flex;
 				gap: 25px;

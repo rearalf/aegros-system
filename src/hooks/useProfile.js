@@ -38,7 +38,6 @@ function useProfile(){
 				updatedAt,
 				createdAt,
 			} = JSON.parse(result.user)
-			console.log(JSON.parse(result.user))
 			setUserData({
 				user_name,
 				user_state,
@@ -64,26 +63,29 @@ function useProfile(){
 		}
 	}
 
+	const getRoleUser = sessionStorage.getItem('role')
 	const validShowContent = loading ? 'hide' : ''
-	const BreadCrumbs =
-		params.id === undefined
-			? [
-					{
-						link_name: 'Tu perfil',
-						link_to: '/private/profile',
-					},
-				]
-			: [
-					{
-						link_name: 'Usuarios',
-						link_to: '/private/users',
-					},
-					{
-						link_name: `Perfil de ${userData.user_name}`,
-						link_to: `/private/users/${params.id}`,
-					},
-				]
-	const titleParams = params.id === undefined ? 'Tu perfil' : `Perfil de ${userData.user_name}`
+	const idExists = params.id === undefined
+	const titleParams = idExists ? 'Tu perfil' : `Perfil de ${userData.user_name}`
+	const validUserState = idExists ? '' : 'hide__it'
+	const enableOrDisable = !idExists && getRoleUser === 'master-chief' ? '' : 'hide__it'
+	const BreadCrumbs = idExists
+		? [
+				{
+					link_name: 'Tu perfil',
+					link_to: '/private/profile',
+				},
+			]
+		: [
+				{
+					link_name: 'Usuarios',
+					link_to: '/private/users',
+				},
+				{
+					link_name: `Perfil de ${userData.user_name}`,
+					link_to: `/private/users/${params.id}`,
+				},
+			]
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -95,6 +97,8 @@ function useProfile(){
 		userData,
 		loading,
 		validShowContent,
+		enableOrDisable,
+		validUserState,
 		BreadCrumbs,
 		titleParams,
 	}
