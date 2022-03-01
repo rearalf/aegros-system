@@ -175,6 +175,43 @@ const getUser = async (event, args) => {
 	}
 }
 
+const updateUser = async (event, args) => {
+	try {
+		const { id, data } = args
+		const user = await userModels
+			.findByIdAndUpdate(id, data, {
+				returnOriginal: false,
+			})
+			.exec()
+		event.returnValue = {
+			success: true,
+			user: JSON.stringify(user),
+		}
+	} catch (error) {
+		console.log(error)
+		if (error.errors !== undefined) {
+			const err = getErrorValue(error.errors)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		if (error.code !== undefined) {
+			const err = getErrorCode(error)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		event.returnValue = {
+			success: false,
+			error: error,
+		}
+	}
+}
+
 const getErrorValue = error => {
 	let message = Object.values(error).map(el => el.message)
 	let fields = Object.getOwnPropertyNames(error).map(el => el)
@@ -207,4 +244,5 @@ module.exports = {
 	validateEmptyDatabase,
 	createUser,
 	signInUser,
+	updateUser,
 }

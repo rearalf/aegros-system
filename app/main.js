@@ -29,6 +29,7 @@ const {
 	validateEmptyDatabase,
 	signInUser,
 	getUser,
+	updateUser,
 } = require('./controllers/user.controllers')
 
 let mainWindow
@@ -141,6 +142,7 @@ function createWindow(){
 	ipcMain.on('get-users-main', getUsers)
 	ipcMain.on('get-user-main', getUser)
 	ipcMain.on('create-user-main', createUser)
+	ipcMain.on('update-user-main', updateUser)
 	ipcMain.on('sign-in-user-main', signInUser)
 
 	ipcMain.on('test-main', async (event, args) => {

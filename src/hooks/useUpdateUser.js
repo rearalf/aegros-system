@@ -19,7 +19,6 @@ function useUpdateUser(){
 		try {
 			const result = ipcRenderer.sendSync('get-user-main', { id: params.id })
 			if (!result.success) throw 'Ocurrió un error obteniendo los datos.'
-			console.log(JSON.parse(result.user))
 			const { user_name, user_email, user_phone } = JSON.parse(result.user)
 			setUserData({
 				...userData,
@@ -93,7 +92,19 @@ function useUpdateUser(){
 			const user_data = {
 				user_name: capitlizeString(user_name),
 				user_email,
-				user_phone: userForm.user_phone,
+				user_phone,
+			}
+			const result = ipcRenderer.sendSync('update-user-main', {
+				id: params.id,
+				data: user_data,
+			})
+			if (!result.success) {
+				console.log(result)
+				throw {
+					title: 'Error',
+					message: result.errorsMessage,
+					type: 'error',
+				}
 			}
 			setNotification({
 				isOpenNotification: true,
