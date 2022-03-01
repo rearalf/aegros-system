@@ -40,9 +40,16 @@ function useLogin(){
 					message: 'Contraseña incorrecto.',
 				}
 			}
+			const result_user = JSON.parse(result.user)
+			if (!result_user.user_state) {
+				throw {
+					message: 'Su cuenta está deshabilitada.',
+					type: 'warning',
+					title: 'Advertencia.',
+				}
+			}
 			navigate('private/')
 			window.location.hash
-			const result_user = JSON.parse(result.user)
 			const data_user = JSON.stringify({
 				user_email: result_user.user_email,
 				user_name: result_user.user_name,
@@ -50,6 +57,7 @@ function useLogin(){
 				user_state: result_user.user_state,
 				_id: result_user._id,
 			})
+			console.log(result_user.user_state)
 			sessionStorage.setItem('role', result_user.user_role)
 			sessionStorage.setItem('user', data_user)
 			setNotification({
@@ -61,9 +69,9 @@ function useLogin(){
 		} catch (error) {
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: 'Error',
+				titleNotification: error.title ? error.title : 'Error',
 				subTitleNotification: error.message,
-				typeNotification: 'error',
+				typeNotification: error.type ? error.type : 'error',
 			})
 		}
 	}

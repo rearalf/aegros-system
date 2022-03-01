@@ -16,6 +16,7 @@ function useSideBar(){
 	const handleLogOut = () => {
 		navigate('/')
 		sessionStorage.removeItem('user')
+		sessionStorage.removeItem('role')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Sesión cerrada',

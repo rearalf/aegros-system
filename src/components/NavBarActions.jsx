@@ -36,6 +36,8 @@ const NavBarActions = () => {
 			handleAgreeDialog: () => {},
 			handleDisagreeDialog: () => {
 				ipcRenderer.send('closed')
+				sessionStorage.removeItem('user')
+				sessionStorage.removeItem('role')
 			},
 		})
 	}
