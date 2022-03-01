@@ -19,6 +19,7 @@ import Profile from '@page/User/Profile'
 import System from '@page/System'
 import PublicLayout from '@layout/PublicLayout'
 import PrivateLayout from '@layout/PrivateLayout'
+import UpdateUser from '@page/User/UpdateUser'
 
 const Routers = () => (
 	<HashRouter>
@@ -45,6 +46,7 @@ const Routers = () => (
 				<Route path="users" element={<UserTemplate />}>
 					<Route index element={<Users />} />
 					<Route path="create-user" element={<CreateUser />} />
+					<Route path="update-user/:id" element={<UpdateUser />} />
 					<Route path=":id" element={<Profile />} />
 				</Route>
 				<Route path="profile" element={<Profile />} />

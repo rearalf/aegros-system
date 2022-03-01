@@ -37,8 +37,10 @@ function useProfile(){
 				user_phone,
 				updatedAt,
 				createdAt,
+				_id,
 			} = JSON.parse(result.user)
 			setUserData({
+				_id,
 				user_name,
 				user_state,
 				user_role: getRole(user_role),

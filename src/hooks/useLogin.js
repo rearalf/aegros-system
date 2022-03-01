@@ -57,7 +57,6 @@ function useLogin(){
 				user_state: result_user.user_state,
 				_id: result_user._id,
 			})
-			console.log(result_user.user_state)
 			sessionStorage.setItem('role', result_user.user_role)
 			sessionStorage.setItem('user', data_user)
 			setNotification({
