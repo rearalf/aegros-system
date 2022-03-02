@@ -20,7 +20,7 @@ const UpdateUser = () => {
 		<main className="container update__user" id="layout">
 			<BreadCrumbsComponent links={breadCrumbsLinks} />
 			{validShowContent ? <Loading /> : null}
-			<header className={`update__user__header ${validShowContent}`}>
+			<header className="update__user__header">
 				<h1>Actualiza tus datos</h1>
 			</header>
 			<form className={`update__user__form ${validShowContent}`} onSubmit={handleOnSubmit}>

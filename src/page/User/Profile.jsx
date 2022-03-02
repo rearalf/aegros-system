@@ -28,14 +28,14 @@ const Profile = () => {
 					<div className="profile__contents__person__actions">
 						<Tooltip title="Editar datos">
 							<Link
-								to={`/private/users/update-user/${userData._id}`}
+								to={`/private/profile/update-user/${userData._id}`}
 								className={`profile__contents__person__actions__button profile__contents__person__edit ${validUserState}`}>
 								<FiEdit size={18} />
 							</Link>
 						</Tooltip>
 						<Tooltip title="Cambiar contraseña">
 							<Link
-								to={`/private/profile`}
+								to={`/private/profile/change-password/${userData._id}`}
 								className={`profile__contents__person__actions__button profile__contents__person__password  ${validUserState}`}>
 								<FiKey size={18} />
 							</Link>
