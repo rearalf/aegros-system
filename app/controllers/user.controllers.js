@@ -79,23 +79,26 @@ const signInUser = async (event, args) => {
 		const { user_email, user_password } = args
 		const user = await userModels.findOne({ user_email }).exec()
 		const success = true
-		if (!user)
+		if (!user) {
 			event.returnValue = {
 				success,
 				userFind: 0,
 			}
-		const match = await user.matchPassword(user_password)
-		if (match) {
-			event.returnValue = {
-				success,
-				userFind: 2,
-				user: JSON.stringify(user),
-			}
 		}
 		else {
-			event.returnValue = {
-				success,
-				userFind: 1,
+			const match = await user.matchPassword(user_password)
+			if (match) {
+				event.returnValue = {
+					success,
+					userFind: 2,
+					user: JSON.stringify(user),
+				}
+			}
+			else {
+				event.returnValue = {
+					success,
+					userFind: 1,
+				}
 			}
 		}
 	} catch (error) {
@@ -212,6 +215,63 @@ const updateUser = async (event, args) => {
 	}
 }
 
+const changePassword = async (event, args) => {
+	try {
+		const { id, current_password, new_password } = args
+		const user = await userModels.findById(id)
+		if (user) {
+			const validCurrentPassword = await user.matchPassword(current_password)
+			if (validCurrentPassword) {
+				const user_password = await user.hashPassword(new_password)
+				const updateUser = await userModels
+					.findByIdAndUpdate(
+						id,
+						{
+							user_password,
+						},
+						{ returnOriginal: false },
+					)
+					.exec()
+				event.returnValue = {
+					success: true,
+					userFind: 2,
+					user: JSON.stringify(updateUser),
+				}
+			}
+			event.returnValue = {
+				success: true,
+				userFind: 1,
+			}
+		}
+		event.returnValue = {
+			success: true,
+			userFind: 0,
+		}
+	} catch (error) {
+		console.log(error)
+		if (error.errors !== undefined) {
+			const err = getErrorValue(error.errors)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		if (error.code !== undefined) {
+			const err = getErrorCode(error)
+			event.returnValue = {
+				success: false,
+				errorsMessage: err.errorsMessage,
+				errorFields: err.errorFields,
+			}
+		}
+		event.returnValue = {
+			success: false,
+			error: error,
+		}
+	}
+}
+
 const getErrorValue = error => {
 	let message = Object.values(error).map(el => el.message)
 	let fields = Object.getOwnPropertyNames(error).map(el => el)
@@ -245,4 +305,5 @@ module.exports = {
 	createUser,
 	signInUser,
 	updateUser,
+	changePassword,
 }

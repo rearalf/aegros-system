@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
+import { useParams } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
+import { nameSplit, getRole } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 import { format } from 'date-fns'
 import esLocale from 'date-fns/locale/es'
-import { getRole } from '@utils/utils'
-import { useParams } from 'react-router-dom'
 
 function useProfile(){
 	const params = useParams()
@@ -12,6 +12,7 @@ function useProfile(){
 	const [ loading, setLoading ] = useState(true)
 	const [ userData, setUserData ] = useState({
 		user_name: '',
+		user_name_short: '',
 		user_state: '',
 		user_role: '',
 		user_email: '',
@@ -42,6 +43,7 @@ function useProfile(){
 			setUserData({
 				_id,
 				user_name,
+				user_name_short: nameSplit(user_name),
 				user_state,
 				user_role: getRole(user_role),
 				user_email,

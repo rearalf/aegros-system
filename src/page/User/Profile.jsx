@@ -64,9 +64,11 @@ const Profile = () => {
 							name={userData.user_name}
 						/>
 						<article className="profile__contents__person__information__data">
-							<h2 className="profile__contents__person__information__data__title">
-								{userData.user_name}
-							</h2>
+							<Tooltip title={userData.user_name}>
+								<h2 className="profile__contents__person__information__data__title">
+									{userData.user_name_short}
+								</h2>
+							</Tooltip>
 							<h3 className="profile__contents__person__information__data__role">
 								{userData.user_role}
 							</h3>

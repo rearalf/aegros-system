@@ -30,6 +30,7 @@ const {
 	signInUser,
 	getUser,
 	updateUser,
+	changePassword,
 } = require('./controllers/user.controllers')
 
 let mainWindow
@@ -143,6 +144,7 @@ function createWindow(){
 	ipcMain.on('get-user-main', getUser)
 	ipcMain.on('create-user-main', createUser)
 	ipcMain.on('update-user-main', updateUser)
+	ipcMain.on('change-password-main', changePassword)
 	ipcMain.on('sign-in-user-main', signInUser)
 
 	ipcMain.on('test-main', async (event, args) => {

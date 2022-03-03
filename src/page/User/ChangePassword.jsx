@@ -80,7 +80,7 @@ const ChangePassword = () => {
 					/>
 					<TextField
 						type={showPassword.password2_show ? 'text' : 'password'}
-						label="Confirmar contraseña"
+						label="Confirmar nueva contraseña"
 						name="password2"
 						id="password2"
 						className="change__password__form__inputs__input new__password2"

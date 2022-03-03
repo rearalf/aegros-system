@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import notificationContext from '@context/notificationContext'
+import { useNavigate, useParams } from 'react-router-dom'
+import { ipcRenderer } from 'electron'
 import { passwordValidation } from '@utils/utils'
+import notificationContext from '@context/notificationContext'
 
 function useChangePassword(){
 	const navigate = useNavigate()
+	const params = useParams()
 	const { setNotification } = useContext(notificationContext)
 	const [ loading, setLoading ] = useState(true)
 	const [ userPasswords, setUserPasswords ] = useState({
@@ -49,7 +51,83 @@ function useChangePassword(){
 	const handleOnSubmit = e => {
 		try {
 			e.preventDefault()
-		} catch (error) {}
+			const { current_password, password1, password2 } = userPasswords
+			if (current_password === password1)
+				throw {
+					type: 'warning',
+					title: 'Advertencia.',
+					message: 'La contraseña no debe ser igual que la anterior.',
+				}
+			if (password1 !== password2)
+				throw {
+					type: 'warning',
+					title: 'Advertencia.',
+					message: 'Las nuevas contraseñas no coinciden.',
+				}
+			if (!userPasswordValid.uppercase)
+				throw {
+					title: 'Advertencia.',
+					message: 'La contraseña no tiene mayúsculas.',
+					type: 'warning',
+				}
+			if (!userPasswordValid.lowercase)
+				throw {
+					title: 'Advertencia.',
+					message: 'La contraseña no tiene minúsculas.',
+					type: 'warning',
+				}
+			if (!userPasswordValid.num)
+				throw {
+					title: 'Advertencia.',
+					message: 'La contraseña no tiene números.',
+					type: 'warning',
+				}
+			if (!userPasswordValid.char)
+				throw {
+					title: 'Advertencia.',
+					message: 'La contraseña no tiene caracteres especiales.',
+					type: 'warning',
+				}
+			if (!userPasswordValid.more8)
+				throw {
+					title: 'Advertencia.',
+					message: 'La contraseña no tiene más de 8 caracteres.',
+					type: 'warning',
+				}
+			const userData = {
+				id: params.id,
+				current_password,
+				new_password: password1,
+			}
+			const result = ipcRenderer.sendSync('change-password-main', userData)
+			if (!result.success) {
+				throw {
+					message: 'Ocurrio un error.',
+				}
+			}
+			if (result.userFind === 0)
+				throw {
+					message: 'El usuario no fue encontrado.',
+				}
+			if (result.userFind === 1)
+				throw {
+					message: 'La contraseña actual no es correocta.',
+				}
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: 'Operación exitosa.',
+				subTitleNotification: 'Tu contraseña fue modificados',
+				typeNotification: 'success',
+			})
+			navigate(-1)
+		} catch (error) {
+			setNotification({
+				isOpenNotification: true,
+				titleNotification: error.title ? error.title : 'Error.',
+				subTitleNotification: error.message,
+				typeNotification: error.type ? error.type : 'error',
+			})
+		}
 	}
 
 	const handleCancel = () => {

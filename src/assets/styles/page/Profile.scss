@@ -33,19 +33,6 @@
 					}
 				}
 			}
-			/* :is(.profile__contents__person__password, .profile__contents__person__edit, .profile__contents__person__delete) {
-				position: absolute;
-				right: 25px;
-				&:hover {
-					color: $color_text_link_hover;
-				}
-			}
-			.profile__contents__person__password {
-				top: 65px;
-			}
-			.profile__contents__person__delete {
-				top: 65px;
-			} */
 			.profile__contents__person__information {
 				display: flex;
 				gap: 25px;
@@ -54,6 +41,10 @@
 					height: 75px;
 					font-size: 35px;
 					font-weight: 700;
+				}
+				.profile__contents__person__information__data
+					.profile__contents__person__information__data__title {
+					cursor: help;
 				}
 			}
 			.profile__contents__person__contacts {
