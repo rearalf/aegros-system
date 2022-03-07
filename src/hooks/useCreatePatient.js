@@ -1,29 +1,31 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
+import { nameSplit, capitlizeString, validateEmails } from '@utils/utils'
+import { formatDate, subYearsDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
-import { format, subYears } from 'date-fns'
-import { capitlizeString, validateEmails } from '@utils/utils'
-import { nameSplit } from '@utils/utils'
 
 function useCreatePatient(){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
-	const [ loading, setLoading ] = useState(false)
-	const [ PatientData, setPatientData ] = useState({
+	const [ loading, setLoading ] = useState(true)
+	const [ patientData, setPatientData ] = useState({
 		patient_name: '',
 		patient_email: '',
 		patient_gender: '',
 		patient_allergies: '',
-		patient_date_birth: format(subYears(new Date(), 1), 'MM/dd/yyyy'),
+		patient_date_birth: formatDate({
+			date: subYearsDate(new Date(), 1),
+			formatDate: 'MM/dd/yyyy',
+		}),
 		patient_phone_number: '',
 		patient_weight: '',
 		patient_height: '',
 	})
 	const [ validData, setValidData ] = useState({
-		minDate: subYears(new Date(), 100),
-		maxDate: subYears(new Date(), 1),
+		minDate: subYearsDate(new Date(), 100),
+		maxDate: subYearsDate(new Date(), 1),
 		patient_name_error: false,
 		patient_date_birth_error: false,
 		patient_gender_error: false,
@@ -41,7 +43,7 @@ function useCreatePatient(){
 		if (e.target.type === 'number') validateNumbers(value, name)
 		/* Change state */
 		setPatientData({
-			...PatientData,
+			...patientData,
 			[name]: value,
 		})
 	}
@@ -72,8 +74,8 @@ function useCreatePatient(){
 	const onChangeDate = value => {
 		try {
 			setPatientData({
-				...PatientData,
-				patient_date_birth: format(value, 'MM/dd/yyyy'),
+				...patientData,
+				patient_date_birth: formatDate({ date: value, formatDate: 'MM/dd/yyyy' }),
 			})
 		} catch (error) {
 			setNotification({
@@ -88,7 +90,7 @@ function useCreatePatient(){
 	/* Changes for Phone number */
 	const onChangePhone = value =>
 		setPatientData({
-			...PatientData,
+			...patientData,
 			patient_phone_number: value,
 		})
 
@@ -103,7 +105,7 @@ function useCreatePatient(){
 				patient_phone_number,
 				patient_weight,
 				patient_height,
-			} = PatientData
+			} = patientData
 			/* Validation */
 			if (patient_name === '')
 				throw {
@@ -125,7 +127,7 @@ function useCreatePatient(){
 				}
 			if (patient_email !== '') {
 				/* Validate for email */
-				const emailValid = validateEmails(PatientData.patient_email)
+				const emailValid = validateEmails(patientData.patient_email)
 				if (!emailValid) {
 					throw {
 						title: 'Error',
@@ -196,7 +198,7 @@ function useCreatePatient(){
 	}
 
 	const handleCanceled = () => {
-		navigate(-1)
+		navigate('/private/patients')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
@@ -205,10 +207,26 @@ function useCreatePatient(){
 		})
 	}
 
+	const validShowContent = loading ? 'hide' : ''
+	const breadCrumbsLink = [
+		{
+			link_name: 'Pacientes',
+			link_to: '/private/patients',
+		},
+		{
+			link_name: 'Crear paciente',
+			link_to: '/private/patients/create-patient',
+		},
+	]
+
+	useEffect(() => setTimeout(() => setLoading(false), 1000), [])
+
 	return {
-		PatientData,
+		patientData,
 		validData,
 		loading,
+		breadCrumbsLink,
+		validShowContent,
 		onChangeInput,
 		onChangeDate,
 		onChangePhone,

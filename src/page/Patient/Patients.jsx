@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { FiUserPlus } from 'react-icons/fi'
 import { Button } from '@mui/material'
-import { BreadCrumbsComponent, Loading } from '@components'
+import { BreadCrumbsComponent, Loading, EmptyData } from '@components'
 import usePatients from '@hooks/usePatients'
 import PatientsParams from './components/PatientsParams'
 import PatientsTable from './components/PatientsTable'
@@ -16,22 +16,24 @@ const Patients = () => {
 		pagesAndLimit,
 		validLoading,
 		validaPagination,
-		validationPatientParams,
-		classValidationInputSearch,
-		linkBreadCrumbs,
-		onChangeInputSearch,
+		validPatients,
+		classFormShow,
+		breadCrumbsLinks,
+		validShowContent,
+		validShowTable,
+		validAditional,
+		handleResetSearch,
+		handleChangeInput,
+		handleChangeStateForm,
 		handleSearchPatients,
-		onChangeStateShowSearch,
-		handleResetPatients,
 		handleChangePage,
 		handleChangeLimit,
 		handleChangeAsc,
 		handleChangeSortBy,
 	} = usePatients()
-
 	return (
 		<main className="container Patients" id="layout">
-			<BreadCrumbsComponent links={linkBreadCrumbs} />
+			<BreadCrumbsComponent links={breadCrumbsLinks} />
 			<header className="patients__header">
 				<h1>Pacientes</h1>
 				<Link to="create-patient">
@@ -40,29 +42,38 @@ const Patients = () => {
 					</Button>
 				</Link>
 			</header>
+			{validLoading ? <Loading /> : null}
 			<PatientsParams
 				patientSearch={patientSearch}
 				pagesAndLimit={pagesAndLimit}
-				classValidationInputSearch={classValidationInputSearch}
-				onChangeInputSearch={onChangeInputSearch}
+				classFormShow={classFormShow}
+				loading={validShowContent}
+				validShow={validShowTable}
+				validAditional={validAditional}
+				handleResetSearch={handleResetSearch}
+				handleChangeInput={handleChangeInput}
+				handleChangeStateForm={handleChangeStateForm}
 				handleSearchPatients={handleSearchPatients}
-				onChangeStateShowSearch={onChangeStateShowSearch}
-				handleResetPatients={handleResetPatients}
 				handleChangeLimit={handleChangeLimit}
 				handleChangeAsc={handleChangeAsc}
 				handleChangeSortBy={handleChangeSortBy}
-				validationPatientParams={validationPatientParams}
 			/>
-			{validLoading ? <PatientsTable patients={patients} /> : <Loading />}
-			{validLoading && (
-				<div className="patients__total">
-					<p>Total de pacientes: {pagesAndLimit.totalPatients}</p>
-				</div>
+			<PatientsTable
+				patients={patients}
+				loading={validShowContent}
+				validShowTable={validShowTable}
+			/>
+			{validPatients && (
+				<EmptyData loading={validLoading} title="No hay pacientes en la base." />
 			)}
+			<div className={`patients__total ${validShowContent}`}>
+				<p>Total de pacientes: {pagesAndLimit.totalPatients}</p>
+			</div>
 			<PatientsPagination
-				validaPagination={validaPagination}
 				{...pagesAndLimit}
 				handleChangePage={handleChangePage}
+				validaPagination={validaPagination}
+				loading={validShowContent}
 			/>
 		</main>
 	)

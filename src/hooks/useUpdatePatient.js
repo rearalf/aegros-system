@@ -1,28 +1,32 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
-import notificationContext from '@context/notificationContext'
-import { format, subYears } from 'date-fns'
 import { capitlizeString, nameSplit, validateEmails } from '@utils/utils'
+import { formatDate, subYearsDate } from '@utils/FormatDate'
+import notificationContext from '@context/notificationContext'
 
 function useUpdatePatient({ id }){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
-	const [ loading, setLoading ] = useState(false)
-	const [ PatientData, setPatientData ] = useState({
+	const [ loading, setLoading ] = useState(true)
+	const [ patientData, setPatientData ] = useState({
 		patient_name: '',
+		patient_short_name: '',
 		patient_email: '',
 		patient_gender: '',
 		patient_allergies: '',
-		patient_date_birth: format(subYears(new Date(), 1), 'MM/dd/yyyy'),
+		patient_date_birth: formatDate({
+			date: subYearsDate(new Date(), 1),
+			formatDate: 'MM/dd/yyyy',
+		}),
 		patient_phone_number: '',
 		patient_weight: '',
 		patient_height: '',
 	})
 	const [ validData, setValidData ] = useState({
-		minDate: subYears(new Date(), 100),
-		maxDate: subYears(new Date(), 1),
+		minDate: subYearsDate(new Date(), 100),
+		maxDate: subYearsDate(new Date(), 1),
 		patient_name_error: false,
 		patient_date_birth_error: false,
 		patient_gender_error: false,
@@ -40,7 +44,7 @@ function useUpdatePatient({ id }){
 		if (e.target.type === 'number') validateNumbers(value, name)
 		/* Change state */
 		setPatientData({
-			...PatientData,
+			...patientData,
 			[name]: value,
 		})
 	}
@@ -71,8 +75,8 @@ function useUpdatePatient({ id }){
 	const onChangeDate = value => {
 		try {
 			setPatientData({
-				...PatientData,
-				patient_date_birth: format(value, 'MM/dd/yyyy'),
+				...patientData,
+				patient_date_birth: formatDate({ date: value, formatDate: 'MM/dd/yyyy' }),
 			})
 		} catch (error) {
 			setNotification({
@@ -87,7 +91,7 @@ function useUpdatePatient({ id }){
 	/* Changes for Phone number */
 	const onChangePhone = value =>
 		setPatientData({
-			...PatientData,
+			...patientData,
 			patient_phone_number: value,
 		})
 
@@ -116,20 +120,24 @@ function useUpdatePatient({ id }){
 			} = patient
 			/* Insert Data Patient */
 			setPatientData({
-				...PatientData,
+				...patientData,
 				patient_name,
 				patient_email,
 				patient_gender,
 				patient_phone_number,
 				patient_allergies: patient_allergies ? patient_allergies : '',
-				patient_date_birth: format(new Date(patient_date_birth), 'MM/dd/yyyy'),
+				patient_date_birth: formatDate({
+					date: patient_date_birth,
+					formatDate: 'MM/dd/yyyy',
+				}),
 				patient_weight: patient_weight ? patient_weight : '',
 				patient_height: patient_height ? patient_height : '',
-				patient_name_static: nameSplit(patient_name),
+				patient_short_name: nameSplit(patient_name),
 			})
 			setLoading(false)
 		} catch (error) {
-			navigate(-1)
+			setLoading(false)
+			navigate(`/private/patients/${id}`)
 			console.log(error)
 			setNotification({
 				isOpenNotification: true,
@@ -151,7 +159,8 @@ function useUpdatePatient({ id }){
 				patient_phone_number,
 				patient_weight,
 				patient_height,
-			} = PatientData
+				patient_allergies,
+			} = patientData
 			/* Validation */
 			if (patient_name === '')
 				throw {
@@ -173,7 +182,7 @@ function useUpdatePatient({ id }){
 				}
 			if (patient_email !== '') {
 				/* Validate for email */
-				const emailValid = validateEmails(PatientData.patient_email)
+				const emailValid = validateEmails(patientData.patient_email)
 				if (!emailValid) {
 					throw {
 						title: 'Error',
@@ -210,6 +219,7 @@ function useUpdatePatient({ id }){
 				patient_phone_number,
 				patient_weight,
 				patient_height,
+				patient_allergies,
 			}
 			const result = await ipcRenderer.sendSync('update-patient-main', {
 				id,
@@ -248,29 +258,41 @@ function useUpdatePatient({ id }){
 	}
 
 	const handleCanceled = () => {
+		navigate(`/private/patients/${id}`)
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
 			subTitleNotification: `Se cancelo modificar los datos del paciente.`,
 			typeNotification: 'information',
 		})
-		navigate(-1)
 	}
 
-	useEffect(
-		() => {
-			setLoading(true)
-			setTimeout(() => {
-				getPatientData()
-			}, 1000)
+	const validShowContent = loading ? 'hide' : ''
+	const breadCrumbsLink = [
+		{
+			link_name: 'Pacientes',
+			link_to: '/private/patients',
 		},
-		[ id ],
-	)
+		{
+			link_name: loading ? 'Paciente' : patientData.patient_short_name,
+			link_to: `/private/patients/${id}`,
+		},
+		{
+			link_name: `Actualizar datos de ${loading
+				? 'paciente'
+				: patientData.patient_short_name}`,
+			link_to: `/private/patients/update-patient/${id}`,
+		},
+	]
+
+	useEffect(() => setTimeout(() => getPatientData(), 500), [ id ])
 
 	return {
-		PatientData,
+		patientData,
 		validData,
 		loading,
+		breadCrumbsLink,
+		validShowContent,
 		onChangeInput,
 		onChangeDate,
 		onChangePhone,

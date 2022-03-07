@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getRole } from '@utils/utils'
+import { getRole, nameSplit } from '@utils/utils'
 import notificationContext from '@context/notificationContext'
 
 function useSideBar(){
@@ -10,6 +10,7 @@ function useSideBar(){
 	const { setNotification } = useContext(notificationContext)
 	const [ dataUser, setDataUser ] = useState({
 		user_name: '',
+		user_name_short: '',
 		user_role: '',
 	})
 
@@ -53,6 +54,9 @@ function useSideBar(){
 	useEffect(() => {
 		setTimeout(() => {
 			setDataUser({
+				user_name_short: sessionStorage.getItem('user')
+					? nameSplit(JSON.parse(sessionStorage.getItem('user')).user_name)
+					: '',
 				user_name: sessionStorage.getItem('user')
 					? JSON.parse(sessionStorage.getItem('user')).user_name
 					: '',

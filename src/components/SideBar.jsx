@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Avatar, IconButton, Tooltip } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import logo64x64 from '@image/icons/logo64x64.png'
 import aegros from '@image/aegros.png'
 import useSideBar from '@hooks/useSideBar'
-import { stringAvatar } from '@utils/utils'
 import { IoPeopleOutline } from 'react-icons/io5'
+import { AvatarComponent } from '@components'
 import {
 	FiChevronRight,
 	FiCalendar,
@@ -31,10 +31,12 @@ const SideBar = ({ openSideBar, changeValueSidebar }) => {
 	return (
 		<div className={`side__bar ${openSideBar ? 'open__sidebar' : 'close__sidebar'}`}>
 			<div className="navbar__brand">
-				<Link className="navbar__brand__link" to="/private/">
-					<img src={logo64x64} alt="Aegros system" className="image__brand__1" />
-					<img src={aegros} alt="Aegros system" className="image__brand__2" />
-				</Link>
+				<Tooltip title="Volver al inicio">
+					<Link className="navbar__brand__link" to="/private/">
+						<img src={logo64x64} alt="Aegros system" className="image__brand__1" />
+						<img src={aegros} alt="Aegros system" className="image__brand__2" />
+					</Link>
+				</Tooltip>
 			</div>
 			<div className="navbar__nav">
 				<Link className={`nav__link ${stateLinkDashboard}`} to="/private/">
@@ -83,14 +85,16 @@ const SideBar = ({ openSideBar, changeValueSidebar }) => {
 					</IconButton>
 				</Tooltip>
 				<div className="side__bar__footer__user">
-					<Avatar
+					<AvatarComponent
+						name={dataUser.user_name}
 						className="side__bar__footer__user__avatar"
-						{...stringAvatar(dataUser.user_name)}
 					/>
 					<article className="side__bar__footer__user__data">
-						<h2 className="side__bar__footer__user__data__name">
-							{dataUser.user_name}
-						</h2>
+						<Tooltip title={dataUser.user_name}>
+							<h2 className="side__bar__footer__user__data__name">
+								{dataUser.user_name_short}
+							</h2>
+						</Tooltip>
 						<small className="side__bar__footer__user__data__role">
 							{dataUser.user_role}
 						</small>

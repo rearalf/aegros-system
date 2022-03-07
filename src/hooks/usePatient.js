@@ -1,20 +1,21 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { useNavigate } from 'react-router'
-import { getAge } from '@utils/utils'
-import { nameSplit } from '@utils/utils'
+import { useNavigate, useParams } from 'react-router'
+import { getAge, nameSplit } from '@utils/utils'
+import { formatDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
 import dialogContext from '@context/dialogContext'
 
-function usePatient({ id }){
+function usePatient(){
 	const navigate = useNavigate()
+	const { id } = useParams()
 	/* Context */
 	const { dialog, setDialog } = useContext(dialogContext)
 	const { setNotification } = useContext(notificationContext)
 	/* State */
 	const [ patient, setPatient ] = useState({})
 	const [ appointments, setAppointments ] = useState([])
-	const [ loading, setLoading ] = useState(false)
+	const [ loading, setLoading ] = useState(true)
 	const [ inputStates, setInputState ] = useState({
 		state__appointment: 0,
 	})
@@ -40,7 +41,11 @@ function usePatient({ id }){
 			/* Calculate age */
 			patient_result.patient_age = getAge(patient_date_birth)
 			/* Shorten name */
-			patient_result.shorten_name = nameSplit(patient_name)
+			patient_result.patient_short_name = nameSplit(patient_name)
+			patient_result.patient_date_birth_format = formatDate({
+				date: patient_date_birth,
+				formatDate: 'dd / MMMM / yyyy',
+			})
 			setPatient(patient_result)
 			setInputAllergies({
 				...inputAllergies,
@@ -209,6 +214,8 @@ function usePatient({ id }){
 			link_to: `/private/patients/${id}`,
 		},
 	]
+	const titleState = patient.patient_state ? 'Deshabilitar paciente' : 'Habilitar paciente'
+	const validShowContent = loading ? 'hide' : ''
 	const titleTooltip = inputAllergies.state_input_allergies
 		? 'Activar edición'
 		: 'Desactivar edición'
@@ -216,9 +223,7 @@ function usePatient({ id }){
 	useEffect(
 		() => {
 			setLoading(true)
-			setTimeout(() => {
-				getPatient()
-			}, 1000)
+			setTimeout(() => getPatient(), 500)
 		},
 		[ id ],
 	)
@@ -233,6 +238,8 @@ function usePatient({ id }){
 		inputStates,
 		breadCrumbs,
 		titleTooltip,
+		titleState,
+		validShowContent,
 		changeStateInputAllergies,
 		changeInputeAllergies,
 		cancelChangeAllergies,

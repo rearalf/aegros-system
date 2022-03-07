@@ -18,6 +18,7 @@
 		justify-content: center;
 		flex-direction: column;
 		gap: 25px;
+		transition: opacity .5s ease-in-out;
 		.patients__search {
 			display: flex;
 			align-items: center;
@@ -64,9 +65,11 @@
 		display: flex;
 		justify-content: flex-end;
 		margin-right: 15px;
+		transition: opacity .5s ease-in-out;
 	}
 	.table__patients {
 		margin-bottom: 25px;
+		transition: opacity .5s ease-in-out;
 	}
 	.table__basic.table__patients.MuiTableContainer-root
 		.MuiTable-root

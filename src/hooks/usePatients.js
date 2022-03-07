@@ -20,7 +20,6 @@ function usePatients(){
 	})
 	const [ patientSearch, setPatientSearch ] = useState({
 		patient_name: '',
-		patients_search: [],
 		show_patient_form: false,
 	})
 
@@ -40,11 +39,11 @@ function usePatients(){
 				totalPage,
 				currentPage,
 				totalPatients,
-				loadingSort: true,
+				loadingSort: false,
 			})
-			setLoading(true)
+			setLoading(false)
 		} catch (error) {
-			setLoading(true)
+			setLoading(false)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
@@ -84,34 +83,10 @@ function usePatients(){
 		return patients
 	}
 
-	const onChangeInputSearch = e => {
-		const { value } = e.target
-		setPatientSearch({
-			...patientSearch,
-			patient_name: value,
-		})
-	}
-
-	const onChangeStateShowSearch = () =>
-		setPatientSearch({
-			...patientSearch,
-			show_patient_form: !patientSearch.show_patient_form,
-		})
-
-	const handleResetPatients = () => {
-		getPateints()
-		setPatientSearch({
-			...patientSearch,
-			patients_search: [],
-			patient_name: '',
-			show_patient_form: !patientSearch.show_patient_form,
-		})
-	}
-
 	const handleSearchPatients = async e => {
 		try {
-			setLoading(false)
 			e.preventDefault()
+			handleLoading(true)
 			const { patient_name } = patientSearch
 			if (patient_name.length < 5) {
 				throw {
@@ -132,7 +107,7 @@ function usePatients(){
 				}
 			}
 			const format_patients = formatPatients(JSON.parse(result.patients))
-			format_patients === null
+			format_patients.length === 0
 				? setNotification({
 						isOpenNotification: true,
 						titleNotification: 'Información',
@@ -140,10 +115,9 @@ function usePatients(){
 						typeNotification: 'information',
 					})
 				: setPatients(format_patients)
-			setLoading(true)
+			handleLoading(false)
 		} catch (error) {
-			setLoading(true)
-			/* Notification */
+			handleLoading(false)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: error.title ? error.title : 'Error',
@@ -153,80 +127,106 @@ function usePatients(){
 		}
 	}
 
+	const handleChangeInput = e => {
+		const { value } = e.target
+		setPatientSearch({
+			...patientSearch,
+			patient_name: value,
+		})
+	}
+
+	const handleLoading = value => {
+		setLoading(value)
+		setPagesAndLimit({
+			...pagesAndLimit,
+			loadingSort: value,
+		})
+	}
+
+	const handleResetSearch = () => {
+		handleLoading(true)
+		handleResetUserSearch()
+		setTimeout(() => getPateints(), 500)
+	}
+
+	const handleChangeStateForm = () =>
+		patientSearch.show_patient_form
+			? handleResetSearch()
+			: setPatientSearch({
+					...patientSearch,
+					show_patient_form: !patientSearch.show_patient_form,
+				})
+
+	const handleResetUserSearch = () =>
+		setPatientSearch({
+			...patientSearch,
+			patient_name: '',
+			show_patient_form: false,
+		})
+
 	const handleChangeLimit = e => {
+		handleLoading(true)
+		handleResetUserSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
 			limit: e.target.value,
 			currentPage: 1,
-			loadingSort: false,
-		})
-		setPatientSearch({
-			...patientSearch,
-			patients_search: [],
-			patient_name: '',
-			show_patient_form: false,
+			loadingSort: true,
 		})
 	}
 
 	const handleChangeSortBy = e => {
+		handleLoading(true)
+		handleResetUserSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
 			sortBy: e.target.value,
 			loadingSort: false,
 		})
-		setPatientSearch({
-			...patientSearch,
-			patients_search: [],
-			patient_name: '',
-			show_patient_form: false,
-		})
 	}
 
-	const handleChangePage = async (event, pageNumber) =>
+	const handleChangePage = async (e, pageNumber) => {
+		handleLoading(true)
 		setPagesAndLimit({
 			...pagesAndLimit,
 			currentPage: pageNumber,
-			loadingSort: false,
-		})
-
-	const handleChangeAsc = e => {
-		setPagesAndLimit({
-			...pagesAndLimit,
-			asc: e.target.checked,
-			loadingSort: false,
-		})
-		setPatientSearch({
-			...patientSearch,
-			patients_search: [],
-			patient_name: '',
-			show_patient_form: false,
+			loadingSort: true,
 		})
 	}
 
-	const linkBreadCrumbs = [
+	const handleChangeAsc = e => {
+		handleLoading(true)
+		handleResetUserSearch()
+		setPagesAndLimit({
+			...pagesAndLimit,
+			asc: e.target.checked,
+			loadingSort: true,
+		})
+	}
+
+	const validLoading = loading && pagesAndLimit.loadingSort
+	const validPatients = patients.length === 0
+	const validShowContent = validLoading ? 'hide' : ''
+	const validShowTable = !validLoading && validPatients ? 'hide__it' : ''
+	const validaPagination = !validLoading
+		? !validPatients && pagesAndLimit.totalPage > 1 ? '' : 'hide__it'
+		: ''
+	const classFormShow = patientSearch.show_patient_form ? 'patients__search__form__show' : null
+	const validAditional = {
+		toolTipTitle: patientSearch.show_patient_form ? 'Cancelar busqueda' : 'Buscar por nombre',
+		sortAsc: pagesAndLimit.asc ? 'Descendente' : 'Ascendente',
+		validLengthName: patientSearch.patient_name.length >= 5 ? '' : 'hide',
+	}
+	const breadCrumbsLinks = [
 		{
 			link_name: 'Pacientes',
 			link_to: '/private/patients',
 		},
 	]
 
-	const validLoading = loading && pagesAndLimit.loadingSort
-	const validationPatientParams = loading && pagesAndLimit.totalPatients !== 0
-	const classValidationInputSearch = patientSearch.show_patient_form
-		? 'patients__search__form__show'
-		: null
-	const validaPagination =
-		validLoading &&
-		patients.length &&
-		pagesAndLimit.totalPage > 1 &&
-		!patientSearch.patients_search.length
-
 	useEffect(
 		() => {
-			setLoading(false)
-			setTimeout(() => {
-				getPateints()
-			}, 1000)
+			setTimeout(() => getPateints(), 500)
 			ipcRenderer.setMaxListeners(35)
 		},
 		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
@@ -239,13 +239,16 @@ function usePatients(){
 		pagesAndLimit,
 		validLoading,
 		validaPagination,
-		validationPatientParams,
-		classValidationInputSearch,
-		linkBreadCrumbs,
-		onChangeInputSearch,
+		classFormShow,
+		breadCrumbsLinks,
+		validShowContent,
+		validShowTable,
+		validPatients,
+		validAditional,
+		handleResetSearch,
+		handleChangeStateForm,
+		handleChangeInput,
 		handleSearchPatients,
-		onChangeStateShowSearch,
-		handleResetPatients,
 		handleChangePage,
 		handleChangeLimit,
 		handleChangeAsc,

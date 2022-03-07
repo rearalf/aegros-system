@@ -1,54 +1,49 @@
 @import '../variables.sass';
 
-.Patient {
+.patient {
 	.patient__section {
 		display: grid;
 		justify-content: space-between;
 		gap: 50px;
 		grid-template-columns: repeat(1, 1fr);
-		:is(.patient__section__personal__information__data, .patient__section__personal__information__allergies, .patient__section__apointment) {
+		transition: opacity .5s ease-in-out;
+		:is(.patient__section__information__header, .patient__section__personal__information__allergies, .patient__section__apointment) {
 			border-radius: 5px;
 			padding: 25px;
 			background-color: $background_2;
 			box-shadow: $shadow_background_3;
 		}
-		.patient__section__personal__information {
+		.patient__section__information {
 			display: flex;
 			flex-direction: column;
 			gap: 25px;
-			.patient__section__personal__information__data {
+			.patient__section__information__header {
 				display: flex;
 				flex-direction: column;
 				gap: 25px;
 				position: relative;
-				.patient__section__personal__information__data__header {
-					display: flex;
-					gap: 15px;
-					.patient__section__personal__information__data__header__avatar {
-						width: 75px;
-						height: 75px;
-						font-size: 30px;
-					}
-					.patient__section__personal__information__data__header__data {
-						display: flex;
-						flex-direction: column;
-						gap: 5px;
-						.patient__section__personal__information__data__header__data__title {
-							text-transform: capitalize;
-						}
-					}
-				}
-				.patient__section__personal__information__data__header__extra {
+				.patient__section__information__header__additional {
 					display: grid;
 					grid-template-columns: repeat(2, 1fr);
 					justify-content: space-between;
-					.patient__section__personal__information__data__header__extra__contacts,
-					.patient__section__personal__information__data__header__extra__information {
+					.patient__section__information__header__additional__contacts {
 						display: flex;
 						flex-direction: column;
 						gap: 10px;
-						.patient__section__personal__information__data__header__extra__contacts__contact,
-						.patient__section__personal__information__data__header__extra__information__height {
+						.additional__contact {
+							display: flex;
+							gap: 10px;
+							align-items: center;
+							&:hover {
+								color: $color_text_link_hover;
+							}
+						}
+					}
+					.patient__section__information__header__additional__health {
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+						.additional__health {
 							display: flex;
 							gap: 10px;
 							align-items: center;
@@ -57,10 +52,19 @@
 				}
 				.patient__section__personal__information__data__actions {
 					position: absolute;
-					right: 20px;
-					bottom: 15px;
 					display: flex;
-					gap: 15px;
+					flex-direction: column;
+					gap: 10px;
+					right: 25px;
+					top: 25px;
+					.btn__icon {
+						padding: 5px;
+					}
+					.btn__edit__patient {
+						&:hover {
+							color: $color_icons_hover;
+						}
+					}
 					.btn__delete__patient {
 						&:hover {
 							color: $border_color_button_error_hover;
@@ -226,19 +230,6 @@
 	@media screen and (min-width: 1450px) {
 		.patient__section {
 			grid-template-columns: 1fr 65%;
-		}
-	}
-
-	@media only screen and (max-width: 1550px) {
-		.patient__section {
-			.patient__section__personal__information
-				.patient__section__personal__information__data
-				.patient__section__personal__information__data__header
-				.patient__section__personal__information__data__header__data
-				.patient__section__personal__information__data__header__data__title {
-				font-size: 30px;
-				letter-spacing: 0;
-			}
 		}
 	}
 }

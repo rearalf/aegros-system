@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
+import { nameSplit, getAge } from '@utils/utils'
+import { formatDate, formatDistanceToNowDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
-import { format, formatDistanceToNow } from 'date-fns'
-import { nameSplit } from '@utils/utils'
-import esLocale from 'date-fns/locale/es'
 
-function useAppointment(id){
+function useAppointment(){
+	const { id } = useParams()
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	const [ appointment, setAppointment ] = useState({
@@ -17,22 +17,19 @@ function useAppointment(id){
 		format_appointment_cancel_date: '',
 		format_appointment_date: '',
 		distance_to_now_appointment_date: '',
-		id,
+		state_date: true,
 	})
 	const [ patient, setPatient ] = useState({
 		appointments: [],
 		patient_phone_number: '',
 		patient_email: '',
 		patient_name: '',
-		patient_name_short: '',
+		patient_short_name: '',
 		patient_age: '',
 		patient_allergies: '',
 		patient_gender: '',
 	})
-	const [ loading, setLoading ] = useState(false)
-	const [ changeDate, setChangeDate ] = useState({
-		openDialog: false,
-	})
+	const [ loading, setLoading ] = useState(true)
 
 	const getAppointment = async () => {
 		try {
@@ -63,45 +60,34 @@ function useAppointment(id){
 	const formatAppointment = data => {
 		const { appointment_date, createdAt } = data
 		/* Da formato a las fechas */
-		data.format_appointment_date = format(
-			new Date(appointment_date),
-			'dd / MMM / yyyy - h:mm bbbb',
-		)
-		data.format_created = format(new Date(createdAt), 'dd / MMM / yyyy - h:mm bbbb', {
-			locale: esLocale,
+		data.format_appointment_date = formatDate({
+			date: appointment_date,
+			formatDate: 'dd / MMM / yyyy - h:mm bbbb',
+		})
+		data.format_created = formatDate({
+			date: createdAt,
+			formatDate: 'dd / MMM / yyyy - h:mm bbbb',
 		})
 		/* Calcula distancias entre fechas */
-		data.distance_to_now = formatDistanceToNow(new Date(appointment_date), {
-			locale: esLocale,
-			addSuffix: true,
-		})
+		data.distance_to_now = formatDistanceToNowDate(appointment_date)
 		/* Agrega los nuevos valores */
 		data.state_date = new Date(data.appointment_date).getTime() > new Date().getTime()
 		if (data.appointment_observation === undefined) data.appointment_observation = ''
 		if (data.appointment_update_date !== undefined)
-			data.format_appointment_update_date = format(
-				new Date(data.appointment_update_date),
-				'dd / MMM / yyyy - h:mm bbbb',
-				{
-					locale: esLocale,
-				},
-			)
+			data.format_appointment_update_date = formatDate({
+				date: data.appointment_update_date,
+				formatDate: 'dd / MMM / yyyy - h:mm bbbb',
+			})
 		if (data.appointment_end_date !== undefined)
-			data.format_appointment_end_date = format(
-				new Date(data.appointment_end_date),
-				'dd / MMM / yyyy - h:mm bbbb',
-				{
-					locale: esLocale,
-				},
-			)
+			data.format_appointment_end_date = formatDate({
+				date: data.appointment_end_date,
+				formatDate: 'dd / MMM / yyyy - h:mm bbbb',
+			})
 		if (data.appointment_cancel_date !== undefined)
-			data.format_appointment_cancel_date = format(
-				new Date(data.appointment_cancel_date),
-				'dd / MMM / yyyy - h:mm bbbb',
-				{
-					locale: esLocale,
-				},
-			)
+			data.format_appointment_cancel_date = formatDate({
+				date: data.appointment_cancel_date,
+				formatDate: 'dd / MMM / yyyy - h:mm bbbb',
+			})
 		setAppointment({
 			...appointment,
 			...data,
@@ -109,38 +95,48 @@ function useAppointment(id){
 	}
 
 	const formatPatient = data => {
-		const { patient_date_birth } = data
-		const resultAge = formatDistanceToNow(new Date(patient_date_birth))
-		if (
-			new Date(patient_date_birth).getMonth() === 0 ||
-			new Date(patient_date_birth).getMonth() === 1 ||
-			new Date(patient_date_birth).getMonth() === 2
-		) {
-			const patient_age = resultAge.split(' ')[1] - 1
-			data.patient_age = patient_age
-		}
-		else {
-			const patient_age = resultAge.split(' ')[1]
-			data.patient_age = patient_age
-		}
+		const { patient_date_birth, appointments } = data
+		data.appointments = formatPatientAppointmets(appointments)
+		data.patient_date_birth_format = formatDate({
+			date: patient_date_birth,
+			formatDate: 'dd / MMMM / yyyy',
+		})
+		data.patient_age = getAge(patient_date_birth)
 		data.appointments = data.appointments.reverse()
-		data.patient_name_short = nameSplit(data.patient_name)
+		data.patient_short_name = nameSplit(data.patient_name)
 		setPatient({
 			...patient,
 			...data,
 		})
 	}
 
+	const formatPatientAppointmets = data => {
+		if (data.length) {
+			const result = data.map(({ _id, appointment_date, appointment_state, createdAt }) => {
+				const appointment_date__format = formatDate({
+					date: appointment_date,
+					formatDate: 'dd / MMM / yyyy - h:m bbbb',
+				})
+				const createdAt__format = formatDate({
+					date: createdAt,
+					formatDate: 'dd / MMM / yyyy - h:m bbbb',
+				})
+				let arrayData = {
+					_id,
+					appointment_state,
+					appointment_date__format,
+					createdAt__format,
+				}
+				return arrayData
+			})
+			return result
+		}
+	}
+
 	const handleChangeObservation = e =>
 		setAppointment({
 			...appointment,
 			appointment_observation: e.target.value,
-		})
-
-	const handleOpenDialog = () =>
-		setChangeDate({
-			...changeDate,
-			openDialog: !changeDate.openDialog,
 		})
 
 	const handleCancelAppointment = async () => {
@@ -206,13 +202,17 @@ function useAppointment(id){
 		}
 	}
 
+	const validShowContent = loading ? 'hide' : ''
+	const validStateAppointment = appointment.appointment_state === 'Activa'
+	const validShowContacts = patient.patient_phone_number && patient.patient_email
+	const validAlert = validStateAppointment && !appointment.state_date
 	const breadCrumbs = [
 		{
 			link_name: 'Citas',
 			link_to: '/private/appointments',
 		},
 		{
-			link_name: patient.patient_name ? `Cita de ${patient.patient_name_short}` : '',
+			link_name: patient.patient_name ? `Cita de ${patient.patient_short_name}` : '',
 			link_to: `/private/appointments/${appointment.id}`,
 		},
 	]
@@ -220,10 +220,8 @@ function useAppointment(id){
 	useEffect(
 		() => {
 			setLoading(true)
-			setTimeout(() => {
-				getAppointment()
-				ipcRenderer.setMaxListeners(30)
-			}, 1000)
+			setTimeout(() => getAppointment(), 500)
+			ipcRenderer.setMaxListeners(30)
 		},
 		[ id ],
 	)
@@ -232,10 +230,12 @@ function useAppointment(id){
 		appointment,
 		patient,
 		loading,
-		changeDate,
+		validShowContent,
 		breadCrumbs,
+		validAlert,
+		validShowContacts,
+		validStateAppointment,
 		handleChangeObservation,
-		handleOpenDialog,
 		handleCancelAppointment,
 		handleFinishedAppointment,
 	}

@@ -39,7 +39,7 @@ const Routers = () => (
 				</Route>
 				<Route path="appointments" element={<AppointmentTemplate />}>
 					<Route index element={<Appointments />} />
-					<Route path=":appointment__id" element={<Appointment />} />
+					<Route path=":id" element={<Appointment />} />
 					<Route path="creat-appointment" element={<CreateAppointment />} />
 					<Route path="creat-appointment/:patient_id" element={<CreateAppointment />} />
 					<Route path="update-appointment/:id" element={<UpdateAppointment />} />

@@ -1,0 +1,22 @@
+@import '../variables.sass';
+
+.patient__information {
+	display: flex;
+	gap: 15px;
+	.patient__information__avatar {
+		width: 75px;
+		height: 75px;
+		font-size: 35px;
+		font-weight: 700;
+		cursor: help;
+	}
+	.patient__information__data {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		.patient__information__data__title,
+		.patient__information__data__sub .patient__information__data__sub__date {
+			cursor: help;
+		}
+	}
+}

@@ -67,9 +67,14 @@
 			align-items: center;
 			justify-content: center;
 			gap: 15px;
+			.side__bar__footer__user__avatar {
+				font-weight: 700;
+				cursor: help;
+			}
 			.side__bar__footer__user__data {
 				.side__bar__footer__user__data__name {
 					font-size: 16px;
+					cursor: help;
 				}
 				.side__bar__footer__user__data__role {
 					font-size: 12px;

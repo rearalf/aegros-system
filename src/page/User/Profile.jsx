@@ -76,19 +76,23 @@ const Profile = () => {
 					</div>
 					<div className="profile__contents__person__contacts">
 						<h3 className="profile__contents__person__contacts__title">Contactos</h3>
-						<a
-							href={`mailto:${userData.user_email}`}
-							className="profile__contents__person__contacts__text">
-							<FiMail />
-							{userData.user_email}
-						</a>
-						{userData.user_phone && (
+						<Tooltip title="Enviar un email al paciente">
 							<a
-								href={`tel:${userData.user_phone}`}
+								href={`mailto:${userData.user_email}`}
 								className="profile__contents__person__contacts__text">
-								<FiPhone />
-								{userData.user_phone}
+								<FiMail />
+								{userData.user_email}
 							</a>
+						</Tooltip>
+						{userData.user_phone && (
+							<Tooltip title="Llamar al paciente">
+								<a
+									href={`tel:${userData.user_phone}`}
+									className="profile__contents__person__contacts__text">
+									<FiPhone />
+									{userData.user_phone}
+								</a>
+							</Tooltip>
 						)}
 					</div>
 				</div>

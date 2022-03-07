@@ -1,19 +1,19 @@
 import { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import { nameSplit, roundDate, getAge } from '@utils/utils'
+import { formatDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import format from 'date-fns/format'
 
-function useUpdateAppointment(id){
+function useUpdateAppointment(){
 	const navigate = useNavigate()
+	const { id } = useParams()
 	const { setNotification } = useContext(notificationContext)
 	const [ appointment, setAppointment ] = useState({})
 	const [ appointmentsToday, setAppointmentsToday ] = useState([])
 	const [ patient, setPatient ] = useState({
 		patient_name: '',
-		patient_name_short: '',
+		patient_short_name: '',
 		patient_age: 0,
 	})
 	const [ loading, setLoading ] = useState(true)
@@ -32,7 +32,7 @@ function useUpdateAppointment(id){
 			const patient_result = JSON.parse(result.patient)
 			formatPatient(patient_result)
 			setAppointment(appointment_result)
-			setLoading(!loading)
+			setLoading(false)
 		} catch (error) {
 			navigate(-1)
 			setLoading(false)
@@ -47,9 +47,12 @@ function useUpdateAppointment(id){
 
 	const formatPatient = data => {
 		const { patient_date_birth, patient_name } = data
-		const result_age = formatDistanceToNow(new Date(patient_date_birth))
 		data.patient_age = getAge(patient_date_birth)
-		data.patient_name_short = nameSplit(patient_name)
+		data.patient_short_name = nameSplit(patient_name)
+		data.patient_date_birth_format = formatDate({
+			date: patient_date_birth,
+			formatDate: 'dd / MMMM / yyyy',
+		})
 		setPatient(data)
 	}
 
@@ -85,6 +88,7 @@ function useUpdateAppointment(id){
 				id,
 				appointment_date,
 			})
+			if (!result.success) throw 'Ocurrio un error.'
 			navigate(`/private/appointments/${id}`)
 			setNotification({
 				isOpenNotification: true,
@@ -116,9 +120,10 @@ function useUpdateAppointment(id){
 		try {
 			const { appointment_date } = appointment
 			if (appointment_date) {
-				const appointment_date_split = format(new Date(appointment_date), 'd/M/yyyy').split(
-					'/',
-				)
+				const appointment_date_split = formatDate({
+					date: appointment_date,
+					formatDate: 'd/M/yyyy',
+				}).split('/')
 				const result = await ipcRenderer.sendSync('get-all-appointments-of-the-day-main', {
 					dateYear: appointment_date_split[2],
 					dateMonth: appointment_date_split[1] - 1,
@@ -129,14 +134,15 @@ function useUpdateAppointment(id){
 				}
 				const appointments_result = JSON.parse(result.appointments)
 				setAppointmentsToday(appointments_result)
-				setLoadingSchedule(true)
+				setLoadingSchedule(false)
 			}
 		} catch (error) {
-			setLoadingSchedule(true)
+			setLoadingSchedule(false)
 			console.log(error)
 		}
 	}
 
+	const validShowContent = loading ? 'hide' : ''
 	const link = '/private/appointments'
 	const linksBreadCrumbs = [
 		{
@@ -144,7 +150,7 @@ function useUpdateAppointment(id){
 			link_to: link,
 		},
 		{
-			link_name: patient.patient_name ? `Cita de ${patient.patient_name_short}` : '',
+			link_name: patient.patient_name ? `Cita de ${patient.patient_short_name}` : '',
 			link_to: `${link}/${id}`,
 		},
 		{
@@ -153,20 +159,18 @@ function useUpdateAppointment(id){
 		},
 	]
 
-	useEffect(() => {
-		setLoading(!loading)
-		getAppointment()
-	}, [])
+	useEffect(() => setTimeout(() => getAppointment(), 1000), [])
 
 	useEffect(
 		() => {
-			setLoadingSchedule(false)
-			getAllAppointmentsOfTheDay()
+			setLoadingSchedule(true)
+			setTimeout(() => getAllAppointmentsOfTheDay(), 1000)
 		},
 		[ appointment.appointment_date ],
 	)
 
 	return {
+		validShowContent,
 		loading,
 		loadingSchedule,
 		appointment,

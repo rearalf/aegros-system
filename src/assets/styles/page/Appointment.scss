@@ -11,15 +11,17 @@
 		.appointment__header__button_group {
 			display: flex;
 			gap: 25px;
+			transition: opacity .5s ease-in-out;
 		}
 	}
 	.appointment__alert__date {
-		margin-bottom: 25px;
 		background-color: $background_2;
 		box-shadow: $shadow_background_3;
+		display: inline-block;
 		border-radius: 5px;
 		padding: 25px;
-		display: inline-block;
+		margin-bottom: 25px;
+		transition: opacity .5s ease-in-out;
 		.appointment__alert__date__title {
 			color: $notification_background_warning;
 			text-align: center;
@@ -34,6 +36,7 @@
 		justify-content: center;
 		align-items: center;
 		gap: 25px;
+		transition: opacity .5s ease-in-out;
 		:is(.appointment__information__patient, .appointment__information__allergies, .appointment__information__observation, .appointment__information__appointments, .appointment__information__reason) {
 			background-color: $background_2;
 			box-shadow: $shadow_background_3;
@@ -43,30 +46,35 @@
 			height: 100%;
 		}
 		.appointment__information__patient {
-			grid-area: "data";
+			grid-area: data;
 			position: relative;
-			.appointment__information__patient__header {
-				display: flex;
-				gap: 25px;
-				position: relative;
-				margin-bottom: 25px;
-				.appointment__information__patient__header__avatar {
-					width: 75px;
-					height: 75px;
-					font-size: 36px;
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+			.appointment__information__patient__profile {
+				position: absolute;
+				right: 25px;
+				top: 25px;
+				a {
+					font-size: 18px;
+					&:hover {
+						color: $color_text_link_hover;
+					}
 				}
-				.appointment__information__patient__header__information {
+			}
+			.appointment__information__patient__contacts {
+				.appointment__information__patient__contacts__title {
+					margin-bottom: 10px;
+				}
+				.appointment__information__patient__contacts__content {
 					display: flex;
 					flex-direction: column;
-					justify-content: center;
-					gap: 5px;
-				}
-				.appointment__information__patient__header__profile {
-					position: absolute;
-					right: 0;
-					top: 10px;
-					a {
-						font-size: 18px;
+					gap: 10px;
+					.appointment__information__patient__contacts__content__contact {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						width: 50%;
 						&:hover {
 							color: $color_text_link_hover;
 						}
@@ -78,11 +86,13 @@
 					margin-bottom: 10px;
 				}
 				.appointment__information__patient__appointment__data {
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
 					.appointment__information__patient__appointment__data__text {
-						margin-bottom: 10px;
-						b {
-							margin-right: 5px;
-						}
+						display: flex;
+						align-items: center;
+						gap: 10px;
 						.Activa {
 							color: $background_color_button_success_hover;
 						}
@@ -97,8 +107,7 @@
 			}
 		}
 		.appointment__information__observation {
-			/* width: 500px; */
-			grid-area: "observation";
+			grid-area: observation;
 			.appointment__information__observation__title {
 				margin-bottom: 25px;
 			}
@@ -106,7 +115,7 @@
 				width: 100%;
 				.MuiOutlinedInput-root {
 					textarea#appointment_observation {
-						height: 200px !important;
+						height: 240px !important;
 						width: 100%;
 						overflow-y: auto !important;
 					}
@@ -114,8 +123,7 @@
 			}
 		}
 		.appointment__information__reason {
-			/* width: 500px; */
-			grid-area: "reason";
+			grid-area: reason;
 			.appointment__information__reason__title {
 				margin-bottom: 25px;
 			}
@@ -153,8 +161,7 @@
 			}
 		}
 		.appointment__information__allergies {
-			/* width: 500px; */
-			grid-area: "allergies";
+			grid-area: allergies;
 			.appointment__information__allergies__title {
 				margin-bottom: 25px;
 			}

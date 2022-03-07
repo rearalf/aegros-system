@@ -17,7 +17,6 @@ function useUsers(){
 	})
 	const [ userSearch, setUserSearch ] = useState({
 		user_name: '',
-		users_search: [],
 		show_users_form: false,
 	})
 
@@ -52,7 +51,7 @@ function useUsers(){
 	const handleSearchUser = async e => {
 		try {
 			e.preventDefault()
-			handleLoading()
+			handleLoading(true)
 			if (!userSearch.user_name)
 				throw {
 					message: 'No deje el campo vacío.',
@@ -76,23 +75,18 @@ function useUsers(){
 					message: 'Ocurrio un error al buscar.',
 				}
 			}
-			setLoading(false)
-			setPagesAndLimit({
-				...pagesAndLimit,
-				loadingSort: !pagesAndLimit.loadingSort,
-			})
-			setUsers(JSON.parse(result.users))
-			setUserSearch({
-				...userSearch,
-				users_search: JSON.parse(result.users),
-			})
-			setLoading(false)
-			setPagesAndLimit({
-				...pagesAndLimit,
-				loadingSort: !pagesAndLimit.loadingSort,
-			})
+			const user_result = JSON.parse(result.users)
+			user_result.length === 0
+				? setNotification({
+						isOpenNotification: true,
+						titleNotification: 'Información',
+						subTitleNotification: 'No existe usuarios con ese nombre.',
+						typeNotification: 'information',
+					})
+				: setUsers(user_result)
+			handleLoading(false)
 		} catch (error) {
-			setLoading(false)
+			handleLoading(false)
 			setPagesAndLimit({
 				...pagesAndLimit,
 				loadingSort: !pagesAndLimit.loadingSort,
@@ -119,31 +113,28 @@ function useUsers(){
 		})
 
 	const handleResetSearch = () => {
-		handleLoading()
+		handleLoading(true)
 		handleResetUserSearch()
-		setTimeout(() => {
-			getUsers()
-		}, 500)
+		setTimeout(() => getUsers(), 500)
 	}
 
-	const handleLoading = () => {
-		setLoading(!loading)
+	const handleLoading = value => {
+		setLoading(value)
 		setPagesAndLimit({
 			...pagesAndLimit,
-			loadingSort: !pagesAndLimit.loadingSort,
+			loadingSort: value,
 		})
 	}
 
 	const handleResetUserSearch = () => {
 		setUserSearch({
 			user_name: '',
-			users_search: [],
 			show_users_form: false,
 		})
 	}
 
 	const handleChangePage = (e, pageNumber) => {
-		handleLoading()
+		handleLoading(true)
 		setPagesAndLimit({
 			...pagesAndLimit,
 			currentPage: pageNumber,
@@ -152,7 +143,7 @@ function useUsers(){
 	}
 
 	const handleChangeLimit = e => {
-		handleLoading()
+		handleLoading(true)
 		handleResetUserSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
@@ -162,7 +153,7 @@ function useUsers(){
 	}
 
 	const handleChangeSortBy = e => {
-		handleLoading()
+		handleLoading(true)
 		handleResetUserSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
@@ -172,7 +163,7 @@ function useUsers(){
 	}
 
 	const handleChangeAsc = e => {
-		handleLoading()
+		handleLoading(true)
 		handleResetUserSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
@@ -190,20 +181,30 @@ function useUsers(){
 		: ''
 	const classFormShow = userSearch.show_users_form ? 'users__params__search__form__show' : ''
 	const validUserPerfil = JSON.parse(sessionStorage.getItem('user'))._id
-
-	useEffect(
-		() => {
-			setTimeout(() => {
-				getUsers()
-			}, 500)
+	const validAditional = {
+		toolTipTitle: userSearch.show_users_form ? 'Cancelar busqueda' : 'Buscar por nombre',
+		sortAsc: pagesAndLimit.asc ? 'Descendente' : 'Ascendente',
+		validLengthName: userSearch.user_name.length >= 5 ? '' : 'hide',
+	}
+	const breadCrumbsLinks = [
+		{
+			link_name: 'Usuarios',
+			link_to: '/private/users',
 		},
-		[ pagesAndLimit.currentPage, pagesAndLimit.limit, pagesAndLimit.asc, pagesAndLimit.sortBy ],
-	)
+	]
+
+	useEffect(() => setTimeout(() => getUsers(), 500), [
+		pagesAndLimit.currentPage,
+		pagesAndLimit.limit,
+		pagesAndLimit.asc,
+		pagesAndLimit.sortBy,
+	])
 
 	return {
 		users,
 		pagesAndLimit,
 		userSearch,
+		breadCrumbsLinks,
 		validUsers,
 		validLoading,
 		validShowContent,
@@ -211,6 +212,7 @@ function useUsers(){
 		validaPagination,
 		classFormShow,
 		validUserPerfil,
+		validAditional,
 		handleChangePage,
 		handleChangeStateForm,
 		handeChangeInput,

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { IconButton, Tooltip } from '@mui/material'
 import { FiExternalLink } from 'react-icons/fi'
 import { AvatarComponent } from '@components'
+import { nameSplit } from '@utils/utils'
 import '@styles/components/CardAppointment.scss'
 
 const CardAppointment = ({
@@ -36,7 +37,9 @@ const CardAppointment = ({
 					name={patient_name}
 					className="dashboard__appointments__schedule__appointment__patient__avatar"
 				/>
-				<h3>{patient_name}</h3>
+				<Tooltip title={patient_name}>
+					<h3>{nameSplit(patient_name)}</h3>
+				</Tooltip>
 			</article>
 			<div
 				className={`dashboard__appointments__schedule__appointment__state ${appointment_state}`}>

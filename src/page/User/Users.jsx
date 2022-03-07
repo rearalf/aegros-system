@@ -15,13 +15,15 @@ const Users = () => {
 		users,
 		pagesAndLimit,
 		userSearch,
+		breadCrumbsLinks,
+		classFormShow,
 		validUsers,
 		validLoading,
 		validShowContent,
 		validShowTable,
 		validaPagination,
-		classFormShow,
 		validUserPerfil,
+		validAditional,
 		handleChangePage,
 		handeChangeInput,
 		handleChangeStateForm,
@@ -33,14 +35,7 @@ const Users = () => {
 	} = useUsers()
 	return (
 		<main className="container users" id="layout">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Usuarios',
-						link_to: '/private/users',
-					},
-				]}
-			/>
+			<BreadCrumbsComponent links={breadCrumbsLinks} />
 			<header className="users__header">
 				<h1>Usuarios</h1>
 				<Link to="create-user">
@@ -54,6 +49,9 @@ const Users = () => {
 				userSearch={userSearch}
 				pagesAndLimit={pagesAndLimit}
 				classFormShow={classFormShow}
+				loading={validShowContent}
+				validShow={validShowTable}
+				validAditional={validAditional}
 				handleChangeStateForm={handleChangeStateForm}
 				handeChangeInput={handeChangeInput}
 				handleSearchUser={handleSearchUser}
@@ -61,10 +59,13 @@ const Users = () => {
 				handleChangeLimit={handleChangeLimit}
 				handleChangeSortBy={handleChangeSortBy}
 				handleChangeAsc={handleChangeAsc}
-				loading={validShowContent}
-				validShow={validShowTable}
 			/>
-			<UsersTable users={users} loading={validShowContent} validShowTable={validShowTable} id_user={validUserPerfil} />
+			<UsersTable
+				users={users}
+				loading={validShowContent}
+				validShowTable={validShowTable}
+				id_user={validUserPerfil}
+			/>
 			{validUsers && <EmptyData loading={validLoading} title="No hay usuarios en la base." />}
 			<div className={`users__total ${validShowContent}`}>
 				<p>Total de usuarios: {pagesAndLimit.totalUser}</p>

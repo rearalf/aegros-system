@@ -2,6 +2,7 @@
 
 .create__patient {
 	.create__patient__header {
+		transition: opacity .5s ease-in-out;
 		.create__patient__header__title {
 			margin-bottom: 50px;
 		}
@@ -11,6 +12,7 @@
 		grid-template-rows: repeat(3, auto);
 		justify-items: center;
 		gap: 50px;
+		transition: opacity .5s ease-in-out;
 		.create__patient__form__secondary__information,
 		.create__patient__form__main__information {
 			padding: 25px;
