@@ -20,7 +20,8 @@ import System from '@page/System'
 import PublicLayout from '@layout/PublicLayout'
 import PrivateLayout from '@layout/PrivateLayout'
 import UpdateUser from '@page/User/UpdateUser'
-import ChangePassword from '../page/User/ChangePassword'
+import ChangePassword from '@page/User/ChangePassword'
+import UpdatePatient from '@page/Patient/UpdatePatient'
 
 const Routers = () => (
 	<HashRouter>
@@ -34,7 +35,7 @@ const Routers = () => (
 				<Route path="patients" element={<PatientTemplate />}>
 					<Route index element={<Patients />} />
 					<Route path=":id" element={<Patient />} />
-					<Route path="update-patient/:id_patient" element={<CreatePatient />} />
+					<Route path="update-patient/:id" element={<UpdatePatient />} />
 					<Route path="create-patient" element={<CreatePatient />} />
 				</Route>
 				<Route path="appointments" element={<AppointmentTemplate />}>

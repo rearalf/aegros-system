@@ -9,7 +9,6 @@ function useCreatePatient(){
 	const navigate = useNavigate()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
-	const [ loading, setLoading ] = useState(true)
 	const [ patientData, setPatientData ] = useState({
 		patient_name: '',
 		patient_email: '',
@@ -37,7 +36,7 @@ function useCreatePatient(){
 	})
 
 	/* Changes for input */
-	const onChangeInput = e => {
+	const handleChangeInput = e => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
 		if (e.target.type === 'number') validateNumbers(value, name)
@@ -71,7 +70,7 @@ function useCreatePatient(){
 	}
 
 	/* Changes for date */
-	const onChangeDate = value => {
+	const handleChangeDate = value => {
 		try {
 			setPatientData({
 				...patientData,
@@ -88,7 +87,7 @@ function useCreatePatient(){
 	}
 
 	/* Changes for Phone number */
-	const onChangePhone = value =>
+	const handleChangePhone = value =>
 		setPatientData({
 			...patientData,
 			patient_phone_number: value,
@@ -207,7 +206,6 @@ function useCreatePatient(){
 		})
 	}
 
-	const validShowContent = loading ? 'hide' : ''
 	const breadCrumbsLink = [
 		{
 			link_name: 'Pacientes',
@@ -219,17 +217,13 @@ function useCreatePatient(){
 		},
 	]
 
-	useEffect(() => setTimeout(() => setLoading(false), 1000), [])
-
 	return {
 		patientData,
 		validData,
-		loading,
 		breadCrumbsLink,
-		validShowContent,
-		onChangeInput,
-		onChangeDate,
-		onChangePhone,
+		handleChangeInput,
+		handleChangeDate,
+		handleChangePhone,
 		handleOnSubmit,
 		handleCanceled,
 	}

@@ -2,6 +2,8 @@
 
 .create__user {
 	display: grid;
+	animation-duration: .5s;
+	animation-name: slidein;
 	.create__user__header {
 		margin-bottom: 25px;
 	}

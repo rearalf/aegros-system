@@ -223,7 +223,7 @@ function useCreateUser(){
 			user_phone: '',
 			user_role: '',
 		})
-		navigate(-1)
+		navigate('/private/users')
 		setNotification({
 			isOpenNotification: true,
 			titleNotification: 'Información',
@@ -232,12 +232,24 @@ function useCreateUser(){
 		})
 	}
 
+	const breadCrumbsLinks = [
+		{
+			link_name: 'Usuarios',
+			link_to: '/private/users',
+		},
+		{
+			link_name: 'Crear usuario',
+			link_to: '/private/users/create-user',
+		},
+	]
+
 	return {
 		userForm,
 		showPassword1,
 		showPassword2,
 		userFormError,
 		userPasswordValid,
+		breadCrumbsLinks,
 		handleChangePassword,
 		handleClickShowPassword1,
 		handleClickShowPassword2,

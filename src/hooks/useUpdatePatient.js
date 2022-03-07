@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 import { capitlizeString, nameSplit, validateEmails } from '@utils/utils'
 import { formatDate, subYearsDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
 
-function useUpdatePatient({ id }){
+function useUpdatePatient(){
 	const navigate = useNavigate()
+	const { id } = useParams()
 	const { setNotification } = useContext(notificationContext)
 	/* States */
 	const [ loading, setLoading ] = useState(true)
 	const [ patientData, setPatientData ] = useState({
 		patient_name: '',
-		patient_short_name: '',
+		user_name_short: '',
 		patient_email: '',
 		patient_gender: '',
 		patient_allergies: '',
@@ -38,7 +39,7 @@ function useUpdatePatient({ id }){
 	})
 
 	/* Changes for input */
-	const onChangeInput = e => {
+	const handleChangeInput = e => {
 		const { name, value } = e.target
 		/* For inputs weight and height */
 		if (e.target.type === 'number') validateNumbers(value, name)
@@ -72,7 +73,7 @@ function useUpdatePatient({ id }){
 	}
 
 	/* Changes for date */
-	const onChangeDate = value => {
+	const handleChangeDate = value => {
 		try {
 			setPatientData({
 				...patientData,
@@ -89,7 +90,7 @@ function useUpdatePatient({ id }){
 	}
 
 	/* Changes for Phone number */
-	const onChangePhone = value =>
+	const handleChangePhone = value =>
 		setPatientData({
 			...patientData,
 			patient_phone_number: value,
@@ -132,7 +133,7 @@ function useUpdatePatient({ id }){
 				}),
 				patient_weight: patient_weight ? patient_weight : '',
 				patient_height: patient_height ? patient_height : '',
-				patient_short_name: nameSplit(patient_name),
+				user_name_short: nameSplit(patient_name),
 			})
 			setLoading(false)
 		} catch (error) {
@@ -162,28 +163,35 @@ function useUpdatePatient({ id }){
 				patient_allergies,
 			} = patientData
 			/* Validation */
-			if (patient_name === '')
+			if (patient_name === '') {
+				handleInputError('patient_name')
 				throw {
 					title: 'Error',
 					type: 'error',
 					message: 'Dede de agregar el nombre del paciente.',
 				}
-			if (patient_date_birth === '')
+			}
+			if (patient_date_birth === '') {
+				handleInputError('patient_date_birth')
 				throw {
 					title: 'Error',
 					type: 'error',
 					message: 'Debe de seleccionar un la fecha de nacimiento.',
 				}
-			if (patient_gender === '')
+			}
+			if (patient_gender === '') {
+				handleInputError('patient_gender')
 				throw {
 					title: 'Error',
 					type: 'error',
 					message: 'Debe de seleccionar un genero.',
 				}
+			}
 			if (patient_email !== '') {
 				/* Validate for email */
-				const emailValid = validateEmails(patientData.patient_email)
+				const emailValid = validateEmails(patient_email)
 				if (!emailValid) {
+					handleInputError('patient_email')
 					throw {
 						title: 'Error',
 						type: 'error',
@@ -191,13 +199,16 @@ function useUpdatePatient({ id }){
 					}
 				}
 			}
-			if (patient_phone_number !== '' && !/\d{4}-\d{4}/.test(patient_phone_number))
+			if (patient_phone_number !== '' && !/\d{4}-\d{4}/.test(patient_phone_number)) {
+				handleInputError('patient_phone_number')
 				throw {
 					title: 'Error',
 					type: 'error',
 					message: 'El número de teléfono no es valido.',
 				}
+			}
 			if (patient_weight !== '' && patient_weight < 0) {
+				handleInputError('patient_weight')
 				throw {
 					title: 'Error',
 					type: 'error',
@@ -205,6 +216,7 @@ function useUpdatePatient({ id }){
 				}
 			}
 			if (patient_height !== '' && patient_height < 0) {
+				handleInputError('patient_height')
 				throw {
 					title: 'Error',
 					type: 'error',
@@ -247,7 +259,6 @@ function useUpdatePatient({ id }){
 				typeNotification: 'success',
 			})
 		} catch (error) {
-			console.log(error)
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
@@ -267,6 +278,21 @@ function useUpdatePatient({ id }){
 		})
 	}
 
+	const handleInputError = input => {
+		setValidData({
+			...validData,
+			patient_name_error: false,
+			patient_date_birth_error: false,
+			patient_gender_error: false,
+			patient_email_error: false,
+			patient_allergies_error: false,
+			patient_phone_number_error: false,
+			patient_weight_error: false,
+			patient_height_error: false,
+			[`${input}_error`]: true,
+		})
+	}
+
 	const validShowContent = loading ? 'hide' : ''
 	const breadCrumbsLink = [
 		{
@@ -274,13 +300,11 @@ function useUpdatePatient({ id }){
 			link_to: '/private/patients',
 		},
 		{
-			link_name: loading ? 'Paciente' : patientData.patient_short_name,
+			link_name: loading ? 'Paciente' : patientData.user_name_short,
 			link_to: `/private/patients/${id}`,
 		},
 		{
-			link_name: `Actualizar datos de ${loading
-				? 'paciente'
-				: patientData.patient_short_name}`,
+			link_name: `Actualizar datos de ${loading ? 'paciente' : patientData.user_name_short}`,
 			link_to: `/private/patients/update-patient/${id}`,
 		},
 	]
@@ -293,9 +317,9 @@ function useUpdatePatient({ id }){
 		loading,
 		breadCrumbsLink,
 		validShowContent,
-		onChangeInput,
-		onChangeDate,
-		onChangePhone,
+		handleChangeInput,
+		handleChangeDate,
+		handleChangePhone,
 		handleOnSubmit,
 		handleCanceled,
 	}

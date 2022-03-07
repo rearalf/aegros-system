@@ -1,29 +1,35 @@
 import React from 'react'
-import useCreatePatient from '@hooks/useCreatePatient'
-import { BreadCrumbsComponent } from '@components'
+import useUpdatePatient from '@hooks/useUpdatePatient'
+import { BreadCrumbsComponent, Loading } from '@components'
 import FormPatient from './components/FormPatient'
 import '@styles/page/CreatePatient.scss'
 
-const CreatePatient = () => {
+const UpdatePatient = () => {
 	const {
 		patientData,
 		validData,
 		breadCrumbsLink,
+		validShowContent,
+		loading,
 		handleChangeInput,
 		handleChangeDate,
 		handleChangePhone,
 		handleOnSubmit,
 		handleCanceled,
-	} = useCreatePatient()
+	} = useUpdatePatient()
 	return (
 		<main className="container create__patient" id="layout">
+			{loading ? <Loading /> : null}
 			<BreadCrumbsComponent links={breadCrumbsLink} />
-			<header className={`create__patient__header`}>
-				<h1 className="create__patient__header__title">Crear paciente</h1>
+			<header className={`create__patient__header ${validShowContent}`}>
+				<h1 className="create__patient__header__title">
+					{`Actualizar datos de ${patientData.user_name_short}`}
+				</h1>
 			</header>
 			<FormPatient
 				patientData={patientData}
 				validData={validData}
+				validShowContent={validShowContent}
 				handleChangeInput={handleChangeInput}
 				handleChangeDate={handleChangeDate}
 				handleChangePhone={handleChangePhone}
@@ -34,4 +40,4 @@ const CreatePatient = () => {
 	)
 }
 
-export default CreatePatient
+export default UpdatePatient

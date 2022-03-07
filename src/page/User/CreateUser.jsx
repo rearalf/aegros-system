@@ -13,6 +13,7 @@ const CreateUser = () => {
 		showPassword2,
 		userFormError,
 		userPasswordValid,
+		breadCrumbsLinks,
 		handleChangePassword,
 		handleClickShowPassword1,
 		handleClickShowPassword2,
@@ -33,18 +34,7 @@ const CreateUser = () => {
 	} = userFormError
 	return (
 		<main className="container create__user" id="layout">
-			<BreadCrumbsComponent
-				links={[
-					{
-						link_name: 'Usuarios',
-						link_to: '/private/users',
-					},
-					{
-						link_name: 'Crear usuario',
-						link_to: '/private/users/create-user',
-					},
-				]}
-			/>
+			<BreadCrumbsComponent links={breadCrumbsLinks} />
 			<header className="create__user__header">
 				<h1>Crear ususario</h1>
 			</header>

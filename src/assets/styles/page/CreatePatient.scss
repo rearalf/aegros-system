@@ -1,6 +1,8 @@
 @import '../variables.sass';
 
 .create__patient {
+	animation-duration: 1s;
+	animation-name: slidein;
 	.create__patient__header {
 		transition: opacity .5s ease-in-out;
 		.create__patient__header__title {
