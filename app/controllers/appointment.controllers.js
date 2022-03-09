@@ -24,7 +24,7 @@ const getAllappointments = async (event, args) => {
 		const appointments = await Appointment.find(sortByStatus)
 			.lean()
 			.populate('patient')
-			.limit(limit)
+			.limit(limit * 1)
 			.skip((currentPage - 1) * limit)
 			.sort({
 				[sortBy]: asc ? 1 : -1,

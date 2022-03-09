@@ -20,7 +20,6 @@ const Login = () => {
 						name="user_email"
 						label="Correo"
 						type="email"
-						placeholder="correo@caliente.com"
 						error={errroEmail}
 						required
 						autoFocus

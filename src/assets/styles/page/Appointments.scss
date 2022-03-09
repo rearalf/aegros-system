@@ -1,6 +1,8 @@
 @import '../variables.sass';
 
 .Appointments {
+	animation-duration: 1s;
+	animation-name: slidein;
 	.appointments__header {
 		display: flex;
 		justify-content: space-between;
@@ -17,10 +19,17 @@
 		align-items: center;
 		flex-direction: column;
 		gap: 25px;
+		transition: opacity .5s ease-in-out;
 		.appointment__params__search {
 			display: flex;
 			align-items: center;
 			gap: 15px;
+			.btn__icon__basic {
+				svg {
+					animation-duration: 1.5s;
+					animation-name: slidein;
+				}
+			}
 			.appointment__params__search__form {
 				display: flex;
 				align-items: center;
@@ -58,6 +67,7 @@
 	}
 	.appointment__table {
 		margin-bottom: 25px;
+		transition: opacity .5s ease-in-out;
 		a:hover {
 			color: $color_text_link_hover;
 		}
@@ -78,6 +88,7 @@
 		display: flex;
 		justify-content: flex-end;
 		margin-right: 15px;
+		transition: opacity .5s ease-in-out;
 	}
 	@media screen and (min-width: 1250px) {
 		.appointment__params {

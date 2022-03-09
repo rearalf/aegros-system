@@ -67,32 +67,20 @@
 		margin-right: 15px;
 		transition: opacity .5s ease-in-out;
 	}
-	.table__patients {
+	.table__basic.table__patients {
 		margin-bottom: 25px;
 		transition: opacity .5s ease-in-out;
-	}
-	.table__basic.table__patients.MuiTableContainer-root
-		.MuiTable-root
-		.MuiTableBody-root
-		tr
-		td:first-child {
-		&:hover a div {
-			color: $color_text_link_hover;
+		.MuiTable-root .MuiTableBody-root tr td:first-child {
+			&:hover a div {
+				color: $color_text_link_hover;
+			}
 		}
-	}
-	.table__basic.table__patients.MuiTableContainer-root
-		.MuiTable-root
-		.MuiTableBody-root
-		tr
-		td:nth-child(5),
-	.table__basic.table__patients.MuiTableContainer-root
-		.MuiTable-root
-		.MuiTableBody-root
-		tr
-		td:nth-child(4) {
-		text-transform: inherit;
-	}
-	.table__basic.table__patients {
+		.additional__contact {
+			text-transform: lowercase;
+			&:hover {
+				color: $color_text_link_hover;
+			}
+		}
 		.table__patients__row__disabled a div {
 			color: $border_color_button_error;
 			display: flex;

@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { format } from 'date-fns'
 import { getAge } from '@utils/utils'
+import { formatDate } from '@utils/FormatDate'
 import notificationContext from '@context/notificationContext'
-import esLocale from 'date-fns/locale/es'
 
 function usePatients(){
 	const { setNotification } = useContext(notificationContext)
@@ -64,8 +63,9 @@ function usePatients(){
 					patient_phone_number,
 					patient_state,
 				} = data
-				const formatDate = format(new Date(patient_date_birth), 'dd - MMMM - yyyy', {
-					locale: esLocale,
+				const patient_date_birth_format = formatDate({
+					date: patient_date_birth,
+					formatDate: 'dd - MMMM - yyyy',
 				})
 				const patient_age = getAge(patient_date_birth)
 				return {
@@ -75,7 +75,7 @@ function usePatients(){
 					patient_phone_number,
 					patient_state,
 					patient_age,
-					formatDate,
+					patient_date_birth_format,
 				}
 			})
 			return result
@@ -111,7 +111,7 @@ function usePatients(){
 				? setNotification({
 						isOpenNotification: true,
 						titleNotification: 'Información',
-						subTitleNotification: 'No existe pacientes con ese nombre.',
+						subTitleNotification: 'No existe paciente con ese nombre.',
 						typeNotification: 'information',
 					})
 				: setPatients(format_patients)
@@ -145,7 +145,7 @@ function usePatients(){
 
 	const handleResetSearch = () => {
 		handleLoading(true)
-		handleResetUserSearch()
+		handleResetPatientSearch()
 		setTimeout(() => getPateints(), 500)
 	}
 
@@ -157,7 +157,7 @@ function usePatients(){
 					show_patient_form: !patientSearch.show_patient_form,
 				})
 
-	const handleResetUserSearch = () =>
+	const handleResetPatientSearch = () =>
 		setPatientSearch({
 			...patientSearch,
 			patient_name: '',
@@ -166,7 +166,7 @@ function usePatients(){
 
 	const handleChangeLimit = e => {
 		handleLoading(true)
-		handleResetUserSearch()
+		handleResetPatientSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
 			limit: e.target.value,
@@ -177,11 +177,23 @@ function usePatients(){
 
 	const handleChangeSortBy = e => {
 		handleLoading(true)
-		handleResetUserSearch()
+		handleResetPatientSearch()
 		setPagesAndLimit({
 			...pagesAndLimit,
 			sortBy: e.target.value,
-			loadingSort: false,
+			currentPage: 1,
+			loadingSort: true,
+		})
+	}
+
+	const handleChangeAsc = e => {
+		handleLoading(true)
+		handleResetPatientSearch()
+		setPagesAndLimit({
+			...pagesAndLimit,
+			asc: e.target.checked,
+			currentPage: 1,
+			loadingSort: true,
 		})
 	}
 
@@ -190,16 +202,6 @@ function usePatients(){
 		setPagesAndLimit({
 			...pagesAndLimit,
 			currentPage: pageNumber,
-			loadingSort: true,
-		})
-	}
-
-	const handleChangeAsc = e => {
-		handleLoading(true)
-		handleResetUserSearch()
-		setPagesAndLimit({
-			...pagesAndLimit,
-			asc: e.target.checked,
 			loadingSort: true,
 		})
 	}
@@ -234,7 +236,6 @@ function usePatients(){
 
 	return {
 		patients,
-		loading,
 		patientSearch,
 		pagesAndLimit,
 		validLoading,

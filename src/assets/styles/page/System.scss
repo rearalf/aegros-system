@@ -4,6 +4,8 @@
 .system {
 	display: inline-grid;
 	width: 100%;
+	animation-duration: 1s;
+	animation-name: slidein;
 	.system__header {
 		margin-bottom: 25px;
 	}

@@ -149,6 +149,7 @@ function useUsers(){
 			...pagesAndLimit,
 			limit: e.target.value,
 			currentPage: 1,
+			loadingSort: true,
 		})
 	}
 
@@ -159,6 +160,7 @@ function useUsers(){
 			...pagesAndLimit,
 			sortBy: e.target.value,
 			currentPage: 1,
+			loadingSort: true,
 		})
 	}
 
@@ -169,6 +171,7 @@ function useUsers(){
 			...pagesAndLimit,
 			asc: e.target.checked,
 			currentPage: 1,
+			loadingSort: true,
 		})
 	}
 
