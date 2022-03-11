@@ -26,16 +26,7 @@
 				.update__appointment__section__content__patient__data {
 					display: flex;
 					flex-direction: column;
-					gap: 15px;
-					.additional__contact {
-						display: flex;
-						align-items: center;
-						gap: 10px;
-						width: 50%;
-						&:hover {
-							color: $color_text_link_hover;
-						}
-					}
+					gap: 10px;
 				}
 			}
 			.button__group {

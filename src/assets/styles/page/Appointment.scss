@@ -70,15 +70,6 @@
 					display: flex;
 					flex-direction: column;
 					gap: 10px;
-					.appointment__information__patient__contacts__content__contact {
-						display: flex;
-						align-items: center;
-						gap: 10px;
-						width: 50%;
-						&:hover {
-							color: $color_text_link_hover;
-						}
-					}
 				}
 			}
 			.appointment__information__patient__appointment {

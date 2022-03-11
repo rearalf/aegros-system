@@ -4,7 +4,7 @@ import usePatient from '@hooks/usePatient'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
 import image__empty from '@image/no-data.svg'
 import { format } from 'date-fns'
-import { BreadCrumbsComponent, Loading, PatientInformation } from '@components'
+import { BreadCrumbsComponent, Loading, PatientInformation, Contacts } from '@components'
 import { Button, TextField, IconButton, Tooltip, MenuItem } from '@mui/material'
 import {
 	FiPhone,
@@ -142,24 +142,10 @@ const Patient = () => {
 						<div className="patient__section__information__header__additional">
 							<div className="patient__section__information__header__additional__contacts">
 								{patient_email && (
-									<Tooltip title="Enviar un email al paciente">
-										<a
-											href={`mailto:${patient_email}`}
-											className="additional__contact">
-											<FiMail />
-											{patient_email}
-										</a>
-									</Tooltip>
+									<Contacts contact={patient_email} type="mailto" />
 								)}
 								{patient_phone_number && (
-									<Tooltip title="Llamar al paciente">
-										<a
-											href={`tel:${patient_phone_number}`}
-											className="additional__contact">
-											<FiPhone />
-											{patient_phone_number}
-										</a>
-									</Tooltip>
+									<Contacts contact={patient_phone_number} type="tel" />
 								)}
 							</div>
 							<div className="patient__section__information__header__additional__health">

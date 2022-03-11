@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { IconButton, Tooltip } from '@mui/material'
-import { FiEdit, FiKey, FiMail, FiPhone, FiThumbsDown, FiThumbsUp, FiTrash } from 'react-icons/fi'
-import { BreadCrumbsComponent, Loading, AvatarComponent } from '@components'
+import { FiEdit, FiKey, FiThumbsDown, FiThumbsUp, FiTrash } from 'react-icons/fi'
+import { BreadCrumbsComponent, Loading, AvatarComponent, Contacts } from '@components'
 import useProfile from '@hooks/useProfile'
 import '@styles/page/Profile.scss'
 
@@ -76,23 +76,9 @@ const Profile = () => {
 					</div>
 					<div className="profile__contents__person__contacts">
 						<h3 className="profile__contents__person__contacts__title">Contactos</h3>
-						<Tooltip title="Enviar un email al paciente">
-							<a
-								href={`mailto:${userData.user_email}`}
-								className="profile__contents__person__contacts__text">
-								<FiMail />
-								{userData.user_email}
-							</a>
-						</Tooltip>
+						<Contacts contact={userData.user_email} type="mailto" />
 						{userData.user_phone && (
-							<Tooltip title="Llamar al paciente">
-								<a
-									href={`tel:${userData.user_phone}`}
-									className="profile__contents__person__contacts__text">
-									<FiPhone />
-									{userData.user_phone}
-								</a>
-							</Tooltip>
+							<Contacts contact={userData.user_phone} type="tel" />
 						)}
 					</div>
 				</div>

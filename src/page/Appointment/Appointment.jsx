@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import useAppointment from '@hooks/useAppointment'
-import { Loading, PatientInformation, BreadCrumbsComponent } from '@components'
+import { Loading, PatientInformation, BreadCrumbsComponent, Contacts } from '@components'
 import { Button, IconButton, TextField, Tooltip } from '@mui/material'
 import {
 	FiExternalLink,
@@ -93,24 +93,10 @@ const Appointment = () => {
 								</h3>
 								<div className="appointment__information__patient__contacts__content">
 									{patient_email && (
-										<Tooltip title="Enviar un email al paciente">
-											<a
-												href={`mailto:${patient_email}`}
-												className="appointment__information__patient__contacts__content__contact">
-												<FiMail size={18} />
-												{patient_email}
-											</a>
-										</Tooltip>
+										<Contacts contact={patient_email} type="mailto" />
 									)}
 									{patient_phone_number && (
-										<Tooltip title="Llamar al paciente">
-											<a
-												href={`tel:${patient_phone_number}`}
-												className="appointment__information__patient__contacts__content__contact">
-												<FiPhone size={18} />
-												{patient_phone_number}
-											</a>
-										</Tooltip>
+										<Contacts contact={patient_phone_number} type="tel" />
 									)}
 								</div>
 							</article>

@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Loading, PatientInformation, BreadCrumbsComponent } from '@components'
+import { Loading, PatientInformation, BreadCrumbsComponent, Contacts } from '@components'
 import { FiMail, FiPhone, FiSave, FiXCircle } from 'react-icons/fi'
 import { Button, TextField, Tooltip } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/lab'
@@ -34,24 +34,10 @@ const UpdateAppointment = () => {
 						<PatientInformation {...patient} />
 						<div className="update__appointment__section__content__patient__data">
 							{patient.patient_email && (
-								<Tooltip title="Enviar un email al paciente">
-									<a
-										href={`mailto:${patient.patient_email}`}
-										className="additional__contact">
-										<FiMail size={18} />
-										{patient.patient_email}
-									</a>
-								</Tooltip>
+								<Contacts contact={patient.patient_email} type="mailto" />
 							)}
 							{patient.patient_phone_number && (
-								<Tooltip title="Llamar al paciente">
-									<a
-										href={`tel:${patient.patient_phone_number}`}
-										className="additional__contact">
-										<FiPhone size={18} />
-										{patient.patient_phone_number}
-									</a>
-								</Tooltip>
+								<Contacts contact={patient.patient_phone_number} type="tel" />
 							)}
 						</div>
 					</div>
