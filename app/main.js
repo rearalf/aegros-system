@@ -1,6 +1,5 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const url = require('url')
 const {
 	getAllappointments,
 	createAppointment,
@@ -60,25 +59,17 @@ function createWindow(){
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
+			preload: path.join(__dirname, 'preload.js'),
 		},
 	})
 	mainWindow.setIcon(path.join(__dirname, icons[process.platform]))
 
 	let indexPath
-	if (dev && process.argv.indexOf('--noDevServer') === -1) {
-		indexPath = url.format({
-			protocol: 'http:',
-			host: 'localhost:8080',
-			pathname: 'index.html',
-			slashes: true,
-		})
+	if (dev) {
+		indexPath = 'http://localhost:3000'
 	}
 	else {
-		indexPath = url.format({
-			protocol: 'file:',
-			pathname: path.join(__dirname, 'dist', 'index.html'),
-			slashes: true,
-		})
+		indexPath = `file://${path.join(__dirname, 'dist/index.html')}`
 	}
 
 	mainWindow.loadURL(indexPath)

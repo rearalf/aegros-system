@@ -63,18 +63,18 @@
 		justify-content: center;
 		flex-direction: column;
 		gap: 50px;
+		.image__login,
 		.big__brand__white {
-			opacity: 1;
+			animation-duration: 1s;
+			animation-name: slidein;
+		}
+		.big__brand__white {
 			width: 55%;
 			transition: opacity .5s ease-in-out;
 		}
 		.image__login {
-			opacity: 1;
 			width: 75%;
 			transition: opacity .5s ease-in-out;
-		}
-		.load__image {
-			opacity: 0;
 		}
 	}
 	@media screen and (min-width: 1024px) {

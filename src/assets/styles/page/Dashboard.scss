@@ -117,6 +117,8 @@
 				padding: 10px 10px 25px 15px;
 				border: 2px solid $background_3;
 				border-radius: 5px;
+				animation-duration: 1s;
+				animation-name: slidein;
 				.dashboard__appointments__schedule__week {
 					display: flex;
 					flex-direction: column;
