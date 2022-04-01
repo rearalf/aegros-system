@@ -284,9 +284,9 @@ const getCountDataDashboard = async (event, args) => {
 		console.log(error)
 		event.returnValue = {
 			success: false,
-			error_message: err.message,
-			error_code: err.code,
-			error: err,
+			error_message: error.message,
+			error_code: error.code,
+			error: error,
 		}
 	}
 }

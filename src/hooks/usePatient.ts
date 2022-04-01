@@ -2,7 +2,11 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { getAge, nameSplit } from '../utils/Utils'
 import { formatDate } from '../utils/FormatDate'
-import { patientDefault, patientInterface } from '../Interface/PatientsInterface'
+import {
+	appointmentPatientInterface,
+	patientDefault,
+	patientInterface,
+} from '../Interface/PatientsInterface'
 import { linkInterface } from '../Interface/Interface'
 import NotificationContext from '../context/NotificationContext'
 import DialogContext from '../context/DialogContext'
@@ -15,11 +19,9 @@ function usePatient(){
 	const { setNotification } = useContext(NotificationContext)
 	/* State */
 	const [ patient, setPatient ] = useState<patientInterface>(patientDefault)
-	const [ appointments, setAppointments ] = useState([])
+	const [ appointments, setAppointments ] = useState<appointmentPatientInterface[]>([])
 	const [ loading, setLoading ] = useState(true)
-	const [ inputStates, setInputState ] = useState({
-		state__appointment: 0,
-	})
+	const [ inputStates, setInputState ] = useState('all')
 	const [ inputAllergies, setInputAllergies ] = useState({
 		state_input_allergies: true,
 		state_button_allergies: true,
@@ -52,8 +54,7 @@ function usePatient(){
 				...inputAllergies,
 				input_allergies: patient_allergies,
 			})
-			const appointments_reverse = patient_result.appointments.reverse()
-			setAppointments(appointments => appointments.concat(appointments_reverse))
+			formatAppointments(patient_result.appointments)
 			setLoading(false)
 		} catch (error) {
 			const { message } = error as any
@@ -66,6 +67,42 @@ function usePatient(){
 				subTitleNotification: message,
 				typeNotification: 'error',
 			})
+		}
+	}
+	
+	const formatAppointments = (appointments: appointmentPatientInterface[]) => {
+		if (appointments.length > 0) {
+			const resultFormat = appointments.map(appointment => {
+				const { appointment_date, createdAt, _id, appointment_state } = appointment
+				appointment.createdAt_format = formatDate({
+					date: createdAt,
+					formatDate: 'MMMM dd yyyy',
+				})
+				appointment.createdAt_format_hour = formatDate({
+					date: createdAt,
+					formatDate: 'h:m bbbb',
+				})
+				appointment.appointment_date_format = formatDate({
+					date: appointment_date,
+					formatDate: 'MMMM dd yyyy',
+				})
+				appointment.appointment_date_format_hour = formatDate({
+					date: appointment_date,
+					formatDate: 'h:m bbbb',
+				})
+				return {
+					_id,
+					createdAt,
+					appointment_date,
+					appointment_state,
+					createdAt_format_hour: appointment.createdAt_format_hour,
+					createdAt_format: appointment.createdAt_format,
+					appointment_date_format: appointment.appointment_date_format,
+					appointment_date_format_hour: appointment.appointment_date_format_hour,
+				}
+			})
+			const appointments_reverse = resultFormat.reverse()
+			setAppointments(appointments_reverse)
 		}
 	}
 
@@ -145,13 +182,7 @@ function usePatient(){
 		}
 	}
 
-	const handleChangeInputState = (e: any) => {
-		const { name, value } = e.target
-		setInputState({
-			...inputStates,
-			[name]: value,
-		})
-	}
+	const handleChangeInputState = (e: any) => setInputState(e.target.value)
 
 	const handleDeletePatient = () => {
 		setDialog({
@@ -232,7 +263,7 @@ function usePatient(){
 		[ id ],
 	)
 
-	useEffect(() => {}, [ inputStates.state__appointment ])
+	useEffect(() => {}, [ inputStates ])
 
 	return {
 		patient,

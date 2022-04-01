@@ -1,19 +1,16 @@
 import { Link } from 'react-router-dom'
 import { GiBodyHeight, GiWeightScale } from 'react-icons/gi'
-import image__empty from '../../assets/image/no-data.svg'
-import { format } from 'date-fns'
-import { BreadCrumbsComponent, Loading, PatientInformation, Contacts } from '../../components'
 import { Button, TextField, IconButton, Tooltip, MenuItem } from '@mui/material'
 import usePatient from '../../hooks/usePatient'
+import ListAppointments from './components/ListAppointments'
 import {
-	FiCalendar,
-	FiEdit,
-	FiSave,
-	FiXCircle,
-	FiThumbsDown,
-	FiThumbsUp,
-	FiExternalLink,
-} from 'react-icons/fi'
+	BreadCrumbsComponent,
+	Loading,
+	PatientInformation,
+	Contacts,
+	EmptyData,
+} from '../../components'
+import { FiCalendar, FiEdit, FiSave, FiXCircle, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
 import '../../assets/styles/page/Patient.scss'
 
 const Patient = () => {
@@ -35,7 +32,6 @@ const Patient = () => {
 		handleDeletePatient,
 	} = usePatient()
 	const { state_input_allergies, input_allergies, state_button_allergies } = inputAllergies
-	const { state__appointment } = inputStates
 	const {
 		patient_phone_number,
 		patient_email,
@@ -44,90 +40,6 @@ const Patient = () => {
 		patient_state,
 		_id,
 	} = patient
-	const showAppointments = () =>
-		appointments.map(({ _id, appointment_date, appointment_state, createdAt }) => {
-			const appointment_date_format = format(
-				new Date(appointment_date),
-				'dd / MMM / yyyy - h:m bbbb',
-			)
-			const createdAt__format = format(new Date(createdAt), 'dd / MMM / yyyy - h:m bbbb')
-			if (state__appointment === 0) {
-				return (
-					<article
-						key={_id}
-						className="patient__section__apointment__appointments__article">
-						<Tooltip title={`Cita ${appointment_state}`}>
-							<div
-								className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
-							/>
-						</Tooltip>
-						<div className="patient__section__apointment__appointments__article__date">
-							<h3 className="patient__section__apointment__appointments__article__date__title">
-								{appointment_date_format}
-							</h3>
-							<p className="patient__section__apointment__appointments__article__date__p">
-								Fecha de la cita
-							</p>
-						</div>
-						<div className="patient__section__apointment__appointments__article__parting_line" />
-						<div className="patient__section__apointment__appointments__article__created">
-							<h3 className="patient__section__apointment__appointments__article__created__title">
-								{createdAt__format}
-							</h3>
-							<p className="patient__section__apointment__appointments__article__created__created">
-								Fecha de creación
-							</p>
-						</div>
-						<div className="patient__section__apointment__appointments__article__parting_line" />
-						<Tooltip title="Ver cita">
-							<Link to={`/private/appointments/${_id}`}>
-								<IconButton className="btn__icon">
-									<FiExternalLink size={18} />
-								</IconButton>
-							</Link>
-						</Tooltip>
-					</article>
-				)
-			}
-			else if (state__appointment === appointment_state) {
-				return (
-					<article
-						key={_id}
-						className="patient__section__apointment__appointments__article">
-						<Tooltip title={`Cita ${appointment_state}`}>
-							<div
-								className={`patient__section__apointment__appointments__article__circle__state ${appointment_state}`}
-							/>
-						</Tooltip>
-						<div className="patient__section__apointment__appointments__article__date">
-							<h3 className="patient__section__apointment__appointments__article__date__title">
-								{appointment_date_format}
-							</h3>
-							<p className="patient__section__apointment__appointments__article__date__p">
-								Fecha de la cita
-							</p>
-						</div>
-						<div className="patient__section__apointment__appointments__article__parting_line" />
-						<div className="patient__section__apointment__appointments__article__created">
-							<h3 className="patient__section__apointment__appointments__article__created__title">
-								{createdAt__format}
-							</h3>
-							<p className="patient__section__apointment__appointments__article__created__created">
-								Fecha de creación
-							</p>
-						</div>
-						<div className="patient__section__apointment__appointments__article__parting_line" />
-						<Tooltip title="Ver cita">
-							<Link to="/private/patients">
-								<IconButton className="btn__icon">
-									<FiExternalLink size={18} />
-								</IconButton>
-							</Link>
-						</Tooltip>
-					</article>
-				)
-			}
-		})
 	return (
 		<main className="container patient" id="layout">
 			<BreadCrumbsComponent links={breadCrumbs} />
@@ -240,14 +152,14 @@ const Patient = () => {
 					{appointments.length > 0 && (
 						<div className="patient__section__apointment__state">
 							<TextField
-								id="state__appointment"
-								name="state__appointment"
+								id="state_appointment"
+								name="state_appointment"
 								label="Statdos de citas"
 								className="patient__section__apointment__state__input"
-								value={inputStates.state__appointment}
+								value={inputStates}
 								onChange={handleChangeInputState}
 								select>
-								<MenuItem value={0}>Todos</MenuItem>
+								<MenuItem value={'all'}>Todos</MenuItem>
 								<MenuItem value={'Activa'}>Activas</MenuItem>
 								<MenuItem value={'Finalizada'}>Finalizadas</MenuItem>
 								<MenuItem value={'Cancelada'}>Canceladas</MenuItem>
@@ -255,20 +167,12 @@ const Patient = () => {
 						</div>
 					)}
 					{appointments.length > 0 ? (
-						<div className="patient__section__apointment__appointments">
-							{showAppointments()}
-						</div>
+						<ListAppointments
+							appointments={appointments}
+							state_appointment={inputStates}
+						/>
 					) : (
-						<div className="patient__section__apointment__empty">
-							<img
-								src={image__empty}
-								alt="No hay citas"
-								className="patient__section__apointment__empty__image"
-							/>
-							<h3 className="patient__section__apointment__empty__title">
-								No tiene citas
-							</h3>
-						</div>
+						<EmptyData title="No tiene citas." />
 					)}
 				</section>
 			</section>

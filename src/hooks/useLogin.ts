@@ -64,12 +64,13 @@ function useLogin(){
 				subTitleNotification: 'Credenciales validas.',
 				typeNotification: 'success',
 			})
-		} catch (error:any) {
+		} catch (error) {
+			const { title, message, type } = error as any
 			setNotification({
 				isOpenNotification: true,
-				titleNotification: error.title ? error.title : 'Error',
-				subTitleNotification: error.message,
-				typeNotification: error.type ? error.type : 'error',
+				titleNotification: title ? title : 'Error',
+				subTitleNotification: message,
+				typeNotification: type ? type : 'error',
 			})
 		}
 	}
@@ -99,11 +100,13 @@ function useLogin(){
 				})
 			}
 			setLoading(false)
-		} catch (error:any) {
+		} catch (error) {
+			setLoading(false)
+			const { message } = error as any
 			setNotification({
 				isOpenNotification: true,
 				titleNotification: 'Error',
-				subTitleNotification: error.message,
+				subTitleNotification: message,
 				typeNotification: 'error',
 			})
 		}

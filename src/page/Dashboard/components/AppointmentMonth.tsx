@@ -1,12 +1,9 @@
 import { FiArrowRight } from 'react-icons/fi'
-import { CardAppointment, EmptyData } from '../../../components'
+import { EmptyData } from '../../../components'
+import { propsAppointmentMonth } from '../../../Interface/DashboardInterface'
+import CardAppointment from './CardAppointment'
 
-interface props {
-	appointments: any[]
-	daysAppointments: any[]
-}
-
-const AppointmentMonth = ({ appointments = [], daysAppointments = [] }: props) => {
+const AppointmentMonth = ({ appointments = [], daysAppointments = [] }: propsAppointmentMonth) => {
 	return appointments.length ? (
 		<div className="dashboard__appointments__schedule">
 			{daysAppointments.map((day: any) => {

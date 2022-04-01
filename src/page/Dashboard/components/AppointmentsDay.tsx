@@ -1,13 +1,13 @@
-import { CardAppointment, EmptyData } from '../../../components'
+import { EmptyData } from '../../../components'
+import { propsAppointmentsDay } from '../../../Interface/DashboardInterface'
+import CardAppointment from './CardAppointment'
 
-interface props {
-	appointments: any[]
-}
-
-const AppointmentsDay = ({ appointments = [] }: props) => {
+const AppointmentsDay = ({ appointments = [] }: propsAppointmentsDay) => {
 	return appointments.length ? (
 		<div className="dashboard__appointments__schedule dashboard__appointments__schedule__day">
-			{appointments.map(data => <CardAppointment {...data} key={data._id} />)}
+			{appointments.map(appointment => (
+				<CardAppointment {...appointment} key={appointment._id} />
+			))}
 		</div>
 	) : (
 		<EmptyData title="No hay citas para hoy." />

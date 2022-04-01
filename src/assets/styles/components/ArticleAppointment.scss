@@ -1,0 +1,54 @@
+@import '../variables.sass';
+
+.article__appointment {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 5px;
+	padding: 15px 25px;
+	position: relative;
+	background-color: $background_2;
+	transition: box-shadow .5s ease-in-out;
+	&:hover {
+		box-shadow: $shadow_background_3;
+	}
+	.article__appointment__circle__state {
+		position: absolute;
+		left: -30px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 25px;
+		height: 25px;
+		border-radius: 50%;
+		z-index: 1;
+		&.Activa {
+			background-color: $background_2;
+			border: 2px solid $background_color_button_success_hover;
+		}
+		&.Finalizada {
+			background-color: $background_2;
+			border: 2px solid $background_color_button_basic_hover;
+		}
+		&.Cancelada {
+			background-color: $background_2;
+			border: 2px solid $color_text_button_error;
+		}
+	}
+	.article__appointment__created,
+	.article__appointment__date {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+		.article__appointment__date__title,
+		.article__appointment__created__title {
+			text-transform: capitalize;
+			cursor: help;
+		}
+	}
+	.article__appointment__parting_line {
+		width: 3px;
+		height: 100%;
+		background-color: $line_color;
+	}
+}

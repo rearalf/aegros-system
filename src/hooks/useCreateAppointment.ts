@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { roundDate } from '../utils/Utils'
 import { formatDate } from '../utils/FormatDate'
 import NotificationContext from '../context/NotificationContext'
@@ -7,10 +7,11 @@ import { patientInterface } from '../Interface/PatientsInterface'
 import {
 	appointmentInterface,
 	CreateAppointmentInterface,
-	propUseCreateAppointment,
+	createAppointmentPatientInterface,
 } from '../Interface/AppointmentsInterface'
 
-function useCreateAppointment({ patient_id }: propUseCreateAppointment){
+function useCreateAppointment(){
+	const { patient_id } = useParams()
 	const navigate = useNavigate()
 	const { setNotification } = useContext(NotificationContext)
 	const [ appointment, setAppointment ] = useState<CreateAppointmentInterface>({
@@ -20,10 +21,11 @@ function useCreateAppointment({ patient_id }: propUseCreateAppointment){
 		appointment_state: true,
 		appointment_current_date: new Date().getTime(),
 	})
-	const [ patient, setPatient ] = useState<patientInterface>({
+	const [ patient, setPatient ] = useState<createAppointmentPatientInterface>({
+		_id: '',
 		patient_name: '',
-		patient_state_form: false,
 		appointments: [],
+		patient_state_form: false,
 	})
 	const [ appointments, setAppointments ] = useState([])
 	const [ appointmentsToday, setAppointmentsToday ] = useState<appointmentInterface[]>([])

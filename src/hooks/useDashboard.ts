@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { getNext12MonthNamesWithYear } from '../utils/Utils'
 import { formatDate } from '../utils/FormatDate'
 import NotificationContext from '../context/NotificationContext'
+import { countsInterface } from '../Interface/DashboardInterface'
 
 function useDashboard(){
 	const { setNotification } = useContext(NotificationContext)
@@ -149,7 +150,7 @@ function useDashboard(){
 					})
 					const format_day_appointment_date = formatDate({
 						date: appointment_date,
-						formatDate: 'h:m bbbb',
+						formatDate: 'EEEE dd',
 					})
 					let indexValue = dayAppointments.indexOf(format_day_appointment_date)
 					if (indexValue === -1) {
@@ -163,6 +164,15 @@ function useDashboard(){
 						patient_name,
 						_id,
 					})
+				})
+				dayAppointments.sort((a, b) => {
+					if (a.split(' ')[1] > b.split(' ')[1]) {
+						return 1
+					}
+					if (a.split(' ')[1] < b.split(' ')[1]) {
+						return -1
+					}
+					return 0
 				})
 				setDaysAppointments(dayAppointments)
 				setAppointments(result)
@@ -175,24 +185,37 @@ function useDashboard(){
 					const { patient_name } = patient
 					const format_appointment_date = formatDate({
 						date: appointment_date,
-						formatDate: 'EEEE dd',
+						formatDate: 'h:m bbbb',
 					})
 					const format_day_appointment_date = formatDate({
 						date: appointment_date,
-						formatDate: 'h:m bbbb',
+						formatDate: 'EEEE dd',
 					})
 					let indexValue = dayAppointments.indexOf(format_day_appointment_date)
 					if (indexValue === -1) {
 						dayAppointments.push(format_day_appointment_date)
 					}
+					const appointment_state_current =
+						appointment_state === 'Activa' &&
+						new Date().getTime() >= new Date(appointment_date).getTime()
 					result.push({
-						format_day_appointment_date,
-						format_appointment_date,
+						_id,
+						patient_name,
 						appointment_state,
 						appointment_date,
-						patient_name,
-						_id,
+						format_appointment_date,
+						appointment_state_current,
+						format_day_appointment_date,
 					})
+				})
+				dayAppointments.sort((a, b) => {
+					if (a.split(' ')[1] > b.split(' ')[1]) {
+						return 1
+					}
+					if (a.split(' ')[1] < b.split(' ')[1]) {
+						return -1
+					}
+					return 0
 				})
 				setAppointments(result)
 				setDaysAppointments(dayAppointments)
@@ -200,14 +223,10 @@ function useDashboard(){
 		}
 	}
 
-	interface objectInterface {
-		name: string
-		number: number
-	}
 	const formatAppointmentsByMonth = (data: {}) => {
 		const numbers: number[] = Object.values(data)
 		const names = Object.getOwnPropertyNames(data)
-		const counts: objectInterface[] = []
+		const counts: countsInterface[] = []
 		names.map((name, i) => {
 			let object = {
 				name,

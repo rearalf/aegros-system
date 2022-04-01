@@ -15,6 +15,7 @@ export interface appointmentInterface {
 	state_date?: boolean
 	appointment_date_format?: string
 	createdAt__format?: string
+	createdAt?: Date
 	patient_id?: string
 	patient?: patientInterface
 }
@@ -88,6 +89,20 @@ export interface CreateAppointmentInterface {
 	appointment_current_date: number
 }
 
-export interface propUseCreateAppointment {
-	patient_id?: string
+export interface propsDialogCreateAppointment {
+	dialog: boolean
+	patient_name: string
+	appointment_date: Date
+	appointment_reason: string
+	handleChangeInput: (e: any) => void
+	handleCreateAppointment: (e: any) => void
+	handleOpenDialogCreateAppointment: (e: any) => void
+	handleChangeInpuDate: (e: any) => void
+}
+
+export interface createAppointmentPatientInterface {
+	_id: string
+	patient_name: string
+	patient_state_form: boolean
+	appointments: []
 }

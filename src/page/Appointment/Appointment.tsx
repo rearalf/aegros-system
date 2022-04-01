@@ -1,17 +1,11 @@
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import useAppointment from '../../hooks/useAppointment'
-import { appointmentInterface } from '../../Interface/AppointmentsInterface'
+import { appointmentPatientInterface } from '../../Interface/PatientsInterface'
 import { Loading, PatientInformation, BreadCrumbsComponent, Contacts } from '../../components'
-import { Button, IconButton, TextField, Tooltip } from '@mui/material'
-import {
-	FiExternalLink,
-	FiActivity,
-	FiSave,
-	FiXCircle,
-	FiCalendar,
-	FiAlertTriangle,
-} from 'react-icons/fi'
+import { Button, TextField, Tooltip } from '@mui/material'
+import useAppointment from '../../hooks/useAppointment'
+import ArticleAppointment from '../../components/ArticleAppointment'
+import { FiActivity, FiSave, FiXCircle, FiCalendar, FiAlertTriangle } from 'react-icons/fi'
 import '../../assets/styles/page/Appointment.scss'
 
 const Appointment = () => {
@@ -171,45 +165,12 @@ const Appointment = () => {
 						<h2 className="appointment__information__appointments__title">Citas</h2>
 						<div className="appointment__information__appointments__list">
 							<div className="appointment__information__appointments__list__line" />
-							{appointments.map((data: appointmentInterface) => (
-								<article
+							{appointments.map((data: appointmentPatientInterface) => (
+								<ArticleAppointment
 									key={data._id}
-									className="appointment__information__appointments__list__appointment">
-									<Tooltip title={`Cita ${data.appointment_state}`}>
-										<div
-											className={`appointment__information__appointments__list__appointment__state ${data.appointment_state}`}
-										/>
-									</Tooltip>
-									<div className="appointment__information__appointments__list__appointment__date">
-										<h3 className="appointment__information__appointments__list__appointment__title">
-											{data.appointment_date_format}
-										</h3>
-										<p className="appointment__information__appointments__list__appointment__p">
-											Fecha de la cita
-										</p>
-									</div>
-									<div className="appointment__information__appointments__list__appointment__parting__line" />
-									<div className="appointment__information__appointments__list__appointment__created">
-										<h3 className="appointment__information__appointments__list__appointment__created__title">
-											{data.createdAt__format}
-										</h3>
-										<p className="appointment__information__appointments__list__appointment__created__created">
-											Fecha de creación
-										</p>
-									</div>
-									<div className="appointment__information__appointments__list__appointment__parting__line" />
-									{appointment._id === data._id ? (
-										<h3>Cita actual</h3>
-									) : (
-										<Tooltip title="Ver cita">
-											<Link to={`/private/appointments/${data._id}`}>
-												<IconButton className="btn__icon">
-													<FiExternalLink size={18} />
-												</IconButton>
-											</Link>
-										</Tooltip>
-									)}
-								</article>
+									appointment={data}
+									appointment_current_id={appointment._id}
+								/>
 							))}
 						</div>
 					</section>

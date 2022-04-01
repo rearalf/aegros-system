@@ -8,6 +8,7 @@
 	padding: 20px 25px;
 	border-radius: 5px;
 	transition: box-shadow .5s ease-in-out;
+	background-color: $background_2;
 	.dashboard__appointments__schedule__appointment__moment {
 		white-space: nowrap;
 		text-overflow: ellipsis;

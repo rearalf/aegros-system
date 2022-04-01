@@ -4,7 +4,11 @@ import { nameSplit, getAge } from '../utils/Utils'
 import { formatDate, formatDistanceToNowDate } from '../utils/FormatDate'
 import NotificationContex from '../context/NotificationContext'
 import { appointmentDefault, appointmentInterface } from '../Interface/AppointmentsInterface'
-import { patientDefault, patientInterface } from '../Interface/PatientsInterface'
+import {
+	appointmentPatientInterface,
+	patientDefault,
+	patientInterface,
+} from '../Interface/PatientsInterface'
 
 function useAppointment(){
 	const { id } = useParams()
@@ -94,26 +98,38 @@ function useAppointment(){
 		})
 	}
 
-	const formatPatientAppointmets = (data: []) => {
+	const formatPatientAppointmets = (data: appointmentPatientInterface[]) => {
 		if (data.length) {
-			const result = data.map(({ _id, appointment_date, appointment_state, createdAt }) => {
-				const appointment_date_format = formatDate({
-					date: appointment_date,
-					formatDate: 'dd / MMM / yyyy - h:m bbbb',
-				})
-				const createdAt__format = formatDate({
+			const resultFormat = data.map(appointment => {
+				const { appointment_date, createdAt, _id, appointment_state } = appointment
+				appointment.createdAt_format = formatDate({
 					date: createdAt,
-					formatDate: 'dd / MMM / yyyy - h:m bbbb',
+					formatDate: 'MMMM dd yyyy',
 				})
-				let arrayData = {
+				appointment.createdAt_format_hour = formatDate({
+					date: createdAt,
+					formatDate: 'h:m bbbb',
+				})
+				appointment.appointment_date_format = formatDate({
+					date: appointment_date,
+					formatDate: 'MMMM dd yyyy',
+				})
+				appointment.appointment_date_format_hour = formatDate({
+					date: appointment_date,
+					formatDate: 'h:m bbbb',
+				})
+				return {
 					_id,
+					createdAt,
+					appointment_date,
 					appointment_state,
-					appointment_date_format,
-					createdAt__format,
+					createdAt_format_hour: appointment.createdAt_format_hour,
+					createdAt_format: appointment.createdAt_format,
+					appointment_date_format: appointment.appointment_date_format,
+					appointment_date_format_hour: appointment.appointment_date_format_hour,
 				}
-				return arrayData
 			})
-			return result
+			return resultFormat
 		}
 	}
 

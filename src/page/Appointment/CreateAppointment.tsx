@@ -1,17 +1,16 @@
 import { lazy, Suspense } from 'react'
-import { useParams } from 'react-router'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import BreadCrumbsComponent from '../../components/BreadCrumbsComponent'
+import DialogCreateAppointment from './components/DialogCreateAppointment'
 import useCreateAppointment from '../../hooks/useCreateAppointment'
-import { Button, IconButton, TextField, Dialog, Tooltip } from '@mui/material'
-import { FiLogIn, FiSave, FiXCircle, FiX, FiCheckCircle } from 'react-icons/fi'
-import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/lab'
-const ScheduleOneDay = lazy(() => import('../../components/ScheduleOneDay'))
-import '../../assets/styles/page/CreateAppointment.scss'
+import { Button, IconButton, TextField } from '@mui/material'
+import { FiLogIn, FiXCircle, FiCheckCircle } from 'react-icons/fi'
+import { DatePicker, LocalizationProvider } from '@mui/lab'
 import { patientInterface } from '../../Interface/PatientsInterface'
+import '../../assets/styles/page/CreateAppointment.scss'
+const ScheduleOneDay = lazy(() => import('../../components/ScheduleOneDay'))
 
 function CreateAppointment(){
-	const { patient_id } = useParams()
 	const {
 		patient,
 		patients,
@@ -28,77 +27,10 @@ function CreateAppointment(){
 		handleCreateAppointment,
 		handleGetTiemeSchedule,
 		handleOpenDialogCreateAppointment,
-	} = useCreateAppointment({
-		patient_id,
-	})
+	} = useCreateAppointment()
 	const { patient_name, patient_state_form, _id } = patient
 	const { appointment_date, appointment_reason } = appointment
 
-	const DialogCreateAppointment = () => (
-		<Dialog open={dialog} className="create__appointment__dialog">
-			<div className="create__appointment__dialog__header">
-				<h2 className="create__appointment__dialog__header__title">Crear Cita</h2>
-				<Tooltip title="Cerrar ventana">
-					<IconButton
-						className="btn__icon create__appointment__dialog__header__btn"
-						onClick={handleOpenDialogCreateAppointment}>
-						<FiX />
-					</IconButton>
-				</Tooltip>
-			</div>
-			<form className="create__appointment__dialog__form">
-				<TextField
-					id="patient_name"
-					name="patient_name"
-					label="Nombre del paciente"
-					type="text"
-					className="create__appointment__dialog__form__input"
-					onChange={handleChangeInput}
-					value={patient_name}
-					disabled={true}
-					required
-				/>
-				<TextField
-					id="appointment_reason"
-					name="appointment_reason"
-					label="Razon"
-					className="create__appointment__content__form__input"
-					onChange={handleChangeInput}
-					value={appointment_reason}
-					multiline
-					rows={4}
-					autoFocus={true}
-					required
-				/>
-				<LocalizationProvider dateAdapter={AdapterDateFns}>
-					<DateTimePicker
-						label="Fecha y hora de la cita"
-						value={appointment_date}
-						onChange={handleChangeInpuDate}
-						disabled={true}
-						renderInput={params => <TextField {...params} required />}
-					/>
-				</LocalizationProvider>
-				<div className="create__appointment__dialog__form__buttons">
-					<Button
-						type="submit"
-						variant="contained"
-						color="success"
-						className="btn__success"
-						onClick={handleCreateAppointment}>
-						<FiSave size={18} /> Guardar
-					</Button>
-					<Button
-						variant="outlined"
-						color="error"
-						className="btn__error"
-						onClick={handleOpenDialogCreateAppointment}>
-						<FiXCircle size={18} /> Cancelar
-					</Button>
-				</div>
-			</form>
-		</Dialog>
-	)
 	return (
 		<main className="container CreateAppointment" id="layout">
 			<BreadCrumbsComponent links={linksBreadCrumbs} />
@@ -216,7 +148,16 @@ function CreateAppointment(){
 					</div>
 				)}
 			</section>
-			{DialogCreateAppointment()}
+			<DialogCreateAppointment
+				dialog={dialog}
+				patient_name={patient.patient_name}
+				appointment_date={appointment_date}
+				appointment_reason={appointment.appointment_reason}
+				handleChangeInput={handleChangeInput}
+				handleChangeInpuDate={handleChangeInpuDate}
+				handleCreateAppointment={handleCreateAppointment}
+				handleOpenDialogCreateAppointment={handleOpenDialogCreateAppointment}
+			/>
 		</main>
 	)
 }

@@ -1,5 +1,4 @@
 import { subYearsDate } from '../utils/FormatDate'
-import { appointmentInterface } from './AppointmentsInterface'
 
 export const patientDefault = {
 	_id: '',
@@ -45,7 +44,7 @@ export interface patientInterface {
 	patient_gender?: string
 	patient_date_birth?: string
 	patient_state_form?: boolean
-	appointments: appointmentInterface[]
+	appointments: appointmentPatientInterface[]
 }
 
 export interface propsPatientsParams {
@@ -117,4 +116,24 @@ export interface CreatePatientInterface {
 	patient_weight: number
 	patient_height: number
 	patient_name_short?: string
+}
+export interface appointmentPatientInterface {
+	_id: string
+	createdAt: Date
+	appointment_date: Date
+	appointment_state: string
+	createdAt_format: string
+	createdAt_format_hour: string
+	appointment_date_format: string
+	appointment_date_format_hour: string
+}
+
+export interface propsListAppointments {
+	appointments: appointmentPatientInterface[]
+	state_appointment: string
+}
+
+export interface propsArticleAppointment {
+	appointment: appointmentPatientInterface
+	appointment_current_id?: string
 }

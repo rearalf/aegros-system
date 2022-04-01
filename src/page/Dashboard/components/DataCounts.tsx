@@ -1,13 +1,5 @@
+import { propsDataCounts } from '../../../Interface/DashboardInterface'
 import ArticleDataCounts from './ArticleDataCounts'
-
-interface props {
-	totalAppointments: number
-	totalPatients: number
-	todayAppointments: number
-	totalAppointmentsCancel: number
-	totalAppointmentsFinish: number
-	loadingDataCount: boolean
-}
 
 const DataCounts = ({
 	totalAppointments,
@@ -16,7 +8,7 @@ const DataCounts = ({
 	totalAppointmentsCancel,
 	totalAppointmentsFinish,
 	loadingDataCount,
-}: props) => {
+}: propsDataCounts) => {
 	return (
 		<section className="dashboard__data__counts">
 			<ArticleDataCounts
